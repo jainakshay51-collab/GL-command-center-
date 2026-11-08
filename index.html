@@ -6,7 +6,10 @@
 <meta name="theme-color" content="#0d1a2f">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>GL Command Center • Advanced • Nov 2026</title>
+<meta name="apple-mobile-web-app-title" content="GL Command">
+<title>GL Command Center • Advanced Business Intelligence</title>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
 <style>
 :root{
   --navy:#0d1a2f;--navy2:#16304f;--navy3:#1f3f66;
@@ -14,6 +17,19 @@
   --bg:#f2f6fc;--card:#ffffff;--line:#e3e9f2;
   --ink:#16243a;--muted:#64748b;
   --green:#0f9d63;--amber:#d9902b;--red:#d0454f;--blue:#3b74c4;
+  --header-bg:linear-gradient(135deg,#0d1a2f 0%,#16304f 55%,#1d3b60 100%);
+  --tab-active:linear-gradient(135deg,#12253f,#1c3a5e);
+  --btn-main:linear-gradient(135deg,#12253f,#1c3a5e);
+}
+[data-theme="gold"]{
+  --navy:#2b1b04;--navy2:#4d3209;--navy3:#6d480f;
+  --gold:#d49a1d;--gold2:#fce18d;
+  --bg:#fbf7ed;--card:#ffffff;--line:#ebdcb8;
+  --ink:#281802;--muted:#7c694a;
+  --green:#118c54;--amber:#c47a17;--red:#c43b45;--blue:#3a69a8;
+  --header-bg:linear-gradient(135deg,#231401 0%,#4a3106 50%,#754f0c 100%);
+  --tab-active:linear-gradient(135deg,#382203,#5e3d09);
+  --btn-main:linear-gradient(135deg,#382203,#5e3d09);
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;padding:0}
@@ -24,27 +40,62 @@ body{
     var(--bg);
   color:var(--ink);min-height:100vh;
   font:14px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,Ubuntu,sans-serif;
+  transition:background-color .3s ease, color .3s ease;
+}
+[data-theme="gold"] body{
+  background:
+    radial-gradient(1200px 620px at 8% -12%,#fdf5df 0%,transparent 62%),
+    radial-gradient(900px 520px at 100% 0%,#faecd0 0%,transparent 58%),
+    var(--bg);
 }
 button,input,select,textarea{font:inherit;color:inherit}
 button{cursor:pointer}
 
 header{
-  background:linear-gradient(135deg,#0d1a2f 0%,#16304f 55%,#1d3b60 100%);
-  color:#fff;padding:16px 16px 14px;position:sticky;top:0;z-index:30;
+  background:var(--header-bg);
+  color:#fff;padding:14px 16px 12px;position:sticky;top:0;z-index:30;
   box-shadow:0 6px 26px rgba(10,22,40,.28);
   border-bottom:1px solid rgba(232,188,99,.28);
+  transition:background .3s ease;
+}
+[data-theme="gold"] header{
+  border-bottom:1.5px solid rgba(245,214,143,.55);
+  box-shadow:0 8px 30px rgba(70,45,6,.32);
 }
 .topline{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;max-width:1440px;margin:0 auto}
 .brand{font-size:10px;letter-spacing:2.4px;color:var(--gold);font-weight:800;text-transform:uppercase}
 .headline{font-size:19px;font-weight:850;letter-spacing:-.2px;margin:3px 0 2px}
 .sub{font-size:11px;color:#c8d5e6}
+[data-theme="gold"] .sub{color:#f5dfaf}
+.header-actions{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+
 .tag{
   background:rgba(232,188,99,.14);color:#ffdf98;border:1px solid rgba(232,188,99,.45);
-  padding:6px 10px;border-radius:999px;font-size:10px;font-weight:800;white-space:nowrap;
+  padding:5px 9px;border-radius:999px;font-size:10px;font-weight:800;white-space:nowrap;
   display:flex;align-items:center;gap:6px;
 }
 .dot{width:6px;height:6px;border-radius:50%;background:#4ade80;box-shadow:0 0 8px #4ade80;animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+
+.theme-btn{
+  background:rgba(255,255,255,.14);border:1px solid rgba(232,188,99,.55);
+  color:#ffdf98;padding:5px 10px;border-radius:999px;font-size:10.5px;font-weight:750;
+  display:inline-flex;align-items:center;gap:4px;cursor:pointer;transition:all .15s ease;
+}
+.theme-btn:hover{background:rgba(255,255,255,.24);transform:scale(1.03)}
+.coin-btn{
+  background:linear-gradient(135deg,#e0ae4a,#f0cd7d);color:#1a2740;border:0;
+  padding:5px 9px;border-radius:999px;font-size:10.5px;font-weight:800;
+  display:inline-flex;align-items:center;gap:4px;cursor:pointer;
+  box-shadow:0 3px 10px rgba(224,174,74,.35);transition:all .15s ease;
+}
+.coin-btn:hover{transform:scale(1.04)}
+
+#coinCanvas{
+  position:fixed;top:0;left:0;width:100vw;height:100vh;
+  pointer-events:none;z-index:999999;transition:opacity 1.5s ease;
+  display:none;
+}
 
 .wrap{max-width:1440px;margin:0 auto;padding:12px 12px 100px}
 
@@ -65,6 +116,7 @@ header{
   width:32px;height:32px;border-radius:10px;display:grid;place-items:center;font-size:15px;
   background:#eef3fa;flex:0 0 auto;
 }
+[data-theme="gold"] .kpi-icon{background:#fdf2d9}
 .kpi.gold .kpi-icon{background:#fdf4e0}
 .kpi.green .kpi-icon{background:#e6f6ee}
 .kpi.red .kpi-icon{background:#fdecee}
@@ -75,7 +127,7 @@ header{
 
 .tabs{
   display:flex;gap:7px;overflow-x:auto;padding:13px 2px 11px;
-  scrollbar-width:none;position:sticky;top:92px;z-index:19;
+  scrollbar-width:none;position:sticky;top:84px;z-index:19;
   background:linear-gradient(var(--bg) 72%,rgba(242,246,252,0));
 }
 .tabs::-webkit-scrollbar{display:none}
@@ -84,8 +136,9 @@ header{
   padding:9px 13px;border-radius:11px;white-space:nowrap;font-size:12px;font-weight:750;
   transition:all .15s ease;box-shadow:0 2px 6px rgba(20,39,71,.04);
 }
+[data-theme="gold"] .tab{border-color:#e4d2a9;background:#fff;color:#452f08}
 .tab:hover{border-color:#b9c8dd}
-.tab.active{background:linear-gradient(135deg,#12253f,#1c3a5e);color:#ffdd97;border-color:#12253f;box-shadow:0 4px 14px rgba(18,37,63,.3)}
+.tab.active{background:var(--tab-active);color:#ffdd97;border-color:#12253f;box-shadow:0 4px 14px rgba(18,37,63,.3)}
 
 .panel{
   background:var(--card);border:1px solid var(--line);border-radius:16px;
@@ -93,6 +146,7 @@ header{
 }
 .panel h2{margin:0 0 12px;font-size:15px;font-weight:820;display:flex;align-items:center;gap:7px;letter-spacing:-.2px}
 .panel h3{margin:16px 0 8px;font-size:13px;font-weight:800;color:#2b3f5c}
+[data-theme="gold"] .panel h3{color:#573909}
 .muted{color:var(--muted);font-size:11px}
 .flex{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .between{justify-content:space-between}
@@ -105,13 +159,14 @@ header{
   background:#fff;border:1px solid #cbd7e5;border-radius:9px;padding:9px 10px;
   min-width:0;width:100%;transition:border-color .15s, box-shadow .15s;
 }
+[data-theme="gold"] .field input,[data-theme="gold"] .field select{border-color:#ded0b0}
 .field input:focus,.field select:focus,input.edit:focus,select.edit:focus{
   outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(232,188,99,.22)
 }
 .formgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 
 .btn{
-  background:linear-gradient(135deg,#12253f,#1c3a5e);border:0;color:#fff;border-radius:10px;
+  background:var(--btn-main);border:0;color:#fff;border-radius:10px;
   padding:9px 14px;font-size:12px;font-weight:780;transition:all .15s ease;
   box-shadow:0 3px 10px rgba(18,37,63,.22);white-space:nowrap;
 }
@@ -119,9 +174,11 @@ header{
 .btn:active{transform:translateY(0)}
 .btn.gold{background:linear-gradient(135deg,#e0ae4a,#f0cd7d);color:#1a2740;box-shadow:0 3px 10px rgba(224,174,74,.32)}
 .btn.light{background:#eef3fa;color:#1e3653;box-shadow:none;border:1px solid #dbe4f0}
+[data-theme="gold"] .btn.light{background:#fdf5e2;color:#4a3206;border-color:#ebd8af}
 .btn.light:hover{background:#e4ecf7}
 .btn.danger{background:#fdecee;color:#a8283a;box-shadow:none;border:1px solid #f8d3d8}
 .btn.ghost{background:transparent;color:#3b74c4;box-shadow:none;padding:6px 4px}
+[data-theme="gold"] .btn.ghost{color:#a67315}
 .btn:disabled{opacity:.45;pointer-events:none}
 
 .scroll{overflow:auto;border:1px solid var(--line);border-radius:12px;background:#fff}
@@ -133,16 +190,19 @@ th{
   font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;
   padding:10px;border-bottom:1px solid #dde6f1;z-index:2;
 }
+[data-theme="gold"] th{background:#faeed2;color:#452d05;border-bottom-color:#e6d3a8}
 th:first-child{border-radius:11px 0 0 0}
 th:last-child{border-radius:0 11px 0 0}
 td{padding:9px 10px;border-bottom:1px solid #edf2f8;vertical-align:middle}
 tr:last-child td{border-bottom:0}
 tbody tr:hover{background:#f8fbff}
+[data-theme="gold"] tbody tr:hover{background:#fdfcf5}
 td.num{text-align:right;font-variant-numeric:tabular-nums}
 td input{width:88px;min-width:70px;padding:7px 8px;border:1px solid #cfdae8;border-radius:7px;font-size:12px;text-align:right;background:#fff}
 td input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 2px rgba(232,188,99,.22)}
 
 .pill{padding:4px 8px;border-radius:999px;font-size:10px;font-weight:800;background:#eef3fa;color:#3a5273;display:inline-block;white-space:nowrap}
+[data-theme="gold"] .pill{background:#f7edd3;color:#4a3206}
 .pill.bad{background:#ffe7ea;color:#a62838}
 .pill.warn{background:#fff3dd;color:#8f6413}
 .pill.good{background:#def7eb;color:#0b7449}
@@ -176,38 +236,47 @@ svg.chart{width:100%;height:auto;display:block}
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   font-size:10px;cursor:pointer;transition:transform .12s, box-shadow .12s;padding:2px;
 }
+[data-theme="gold"] .calcell{border-color:#ebd8af}
 .calcell:hover{transform:scale(1.06);box-shadow:0 4px 12px rgba(20,39,71,.14);z-index:2}
 .calcell b{font-size:11px;font-weight:850;line-height:1}
 .calcell span{font-size:9px;opacity:.75;margin-top:2px;line-height:1}
 .calcell.empty{background:transparent;border:0;cursor:default;pointer-events:none}
 .calcell.future{opacity:.34;background:#f7f9fd}
 .calcell.today{outline:2px solid var(--gold);outline-offset:-2px;box-shadow:0 0 0 3px rgba(232,188,99,.25)}
+.calcell.holiday{border:1.5px dashed #e0ae4a!important;background:#fefbf3}
+.calcell.holiday span{color:#b45309;font-weight:750}
 
 /* ATTENDANCE */
 .att-summary-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}
 .att-stat{background:#f8fafc;border:1px solid var(--line);border-radius:11px;padding:11px 8px;text-align:center}
+[data-theme="gold"] .att-stat{background:#faf3e3;border-color:#ead5ab}
 .att-stat b{display:block;font-size:21px;font-weight:850;line-height:1.15;letter-spacing:-.4px}
 .att-stat span{font-size:9.5px;color:var(--muted);font-weight:750;text-transform:uppercase;letter-spacing:.45px}
 .att-stat.p b{color:var(--green)}
 .att-stat.a b{color:var(--red)}
+.att-stat.h b{color:var(--amber)}
 
-.att-table td.att-p,.att-table td.att-a{
+.att-table td.att-p,.att-table td.att-a,.att-table td.att-h{
   text-align:center;font-weight:800;font-size:10px;padding:5px 2px;
   border-right:1px solid #f0f4fa;
 }
 .att-table td.att-p{background:#def7eb;color:#0b7449}
 .att-table td.att-a{background:#ffe7ea;color:#a62838}
+.att-table td.att-h{background:#fff8e9;color:#b45309}
 .att-table th.att-head{text-align:center;padding:6px 2px;font-size:9px;min-width:24px;border-right:1px solid #e4ecf5}
 .att-table th:first-child,.att-table td:first-child{
   position:sticky;left:0;background:#fff;z-index:3;
   box-shadow:2px 0 5px rgba(15,30,54,.05);
 }
 .att-table thead th:first-child{background:#eef3fa;z-index:4}
+[data-theme="gold"] .att-table thead th:first-child{background:#faeed2}
 
 .calcell.att-p{background:#def7eb!important;border-color:#a7e8cd}
 .calcell.att-p b,.calcell.att-p span{color:#0b7449}
 .calcell.att-a{background:#ffe7ea!important;border-color:#f8c4ca}
 .calcell.att-a b,.calcell.att-a span{color:#a62838}
+.calcell.att-h{background:#fff8e9!important;border-color:#fce4a6}
+.calcell.att-h b,.calcell.att-h span{color:#b45309}
 
 .hide{display:none!important}
 textarea{
@@ -228,17 +297,18 @@ textarea{
   opacity:0;pointer-events:none;transition:all .28s cubic-bezier(.4,0,.2,1);z-index:9999;
   box-shadow:0 8px 26px rgba(10,22,40,.34);max-width:90vw;text-align:center;
 }
+[data-theme="gold"] #toast{background:#452e07;color:#fff1c9;box-shadow:0 8px 26px rgba(45,28,4,.45)}
 #toast.show{opacity:1;transform:translate(-50%,0)}
 
 @media(min-width:720px){
   .kpis{grid-template-columns:repeat(4,minmax(0,1fr))}
   .grid2{grid-template-columns:1fr 1fr}
   .grid3{grid-template-columns:repeat(3,1fr)}
-  .formgrid{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .formgrid{grid-template-columns:repeat(5,minmax(0,1fr))}
   .mobilecards{grid-template-columns:repeat(2,1fr)}
   .wrap{padding:18px 20px 70px}
   .headline{font-size:23px}
-  .tabs{top:96px}
+  .tabs{top:88px}
   .kpi strong{font-size:19px}
 }
 @media(max-width:400px){
@@ -248,37 +318,29 @@ textarea{
   .att-stat b{font-size:18px}
 }
 @media print{
-  header,.tabs,.actions,#toast{display:none!important}
+  header,.tabs,.actions,#toast,#coinCanvas{display:none!important}
   body{background:#fff}
   .panel{box-shadow:none;border:1px solid #ddd;break-inside:avoid}
   .wrap{padding:0}
 }
-
-/* HOLIDAY & ATTENDANCE H STYLES */
-.att-table td.att-h{
-  text-align:center;font-weight:800;font-size:10px;padding:5px 2px;
-  border-right:1px solid #f0f4fa;background:#fff8e9;color:#b45309;
-}
-.calcell.holiday{border:1.5px dashed #e0ae4a!important;background:#fefbf3}
-.calcell.holiday span{color:#b45309;font-weight:750}
-.calcell.att-h{background:#fff8e9!important;border-color:#fce4a6}
-.calcell.att-h b,.calcell.att-h span{color:#b45309}
-.att-stat.h b{color:var(--amber)}
 </style>
-  <link rel="manifest" href="manifest.json">
-  <meta name="apple-mobile-web-app-title" content="GL Command">
-  <link rel="apple-touch-icon" href="icon-192.png">
 </head>
 <body>
+
+<canvas id="coinCanvas"></canvas>
 
 <header>
   <div class="topline">
     <div>
       <div class="brand">Manipal • Rajasthan</div>
       <div class="headline">GL Business Command Center</div>
-      <div class="sub">November 2026 • SO-wise Performance Intelligence</div>
+      <div class="sub" id="headerSubtitle">November 2026 • SO-wise Performance Intelligence</div>
     </div>
-    <div class="tag"><span class="dot"></span> LIVE</div>
+    <div class="header-actions">
+      <button class="coin-btn" onclick="startCoinRain(30)" title="Play 30-Sec Gold Coin Rain">🪙 Coins</button>
+      <button class="theme-btn" id="themeToggleBtn" onclick="toggleTheme()">👑 Gold Theme</button>
+      <div class="tag"><span class="dot"></span> LIVE</div>
+    </div>
   </div>
 </header>
 
@@ -289,7 +351,7 @@ textarea{
   <div class="foot">
     Data is stored locally in this browser. Export a JSON backup regularly.
     Insurance cross-sell is tracked separately from GL and never added to GL achievement.
-    Attendance is auto-calculated from GL + Insurance entries (no manual marking).
+    Attendance is auto-calculated from GL + Insurance entries with Holiday protection.
   </div>
 </main>
 
@@ -299,30 +361,66 @@ textarea{
 <script>
 'use strict';
 
-/* ================= CONSTANTS ================= */
+/* ================= PRE-LOADED DATA CONSTANTS ================= */
 const INITIAL = [
   {id:"1", name:"Abhishek Soni",             cluster:"Jodhpur",      target:70,  code:"202607", baseL:0, baseC:0},
   {id:"2", name:"Adityaraj Singh Sisodiya",  cluster:"Ajmer",        target:125, code:"202237", baseL:0, baseC:0},
   {id:"3", name:"Arpit Pancholi",            cluster:"Udaipur",      target:100, code:"203134", baseL:0, baseC:0},
-  {id:"4", name:"Avinash Trivedi",           cluster:"Jodhpur",      target:100, code:"202551", baseL:0, baseC:0},
-  {id:"5", name:"Bablu Dhaker",              cluster:"Chittorgarh",  target:100, code:"203082", baseL:0, baseC:0},
+  {id:"4", name:"Avinash Trivedi",           cluster:"Jodhpur",      target:100, code:"202551", baseL:0, baseC:-1},
+  {id:"5", name:"Bablu Dhaker",              cluster:"Chittorgarh",  target:100, code:"203082", baseL:9.19, baseC:2},
   {id:"6", name:"Deepak Singh Rathore",      cluster:"Bikaner",      target:225, code:"200235", baseL:0, baseC:0},
   {id:"7", name:"Dimple Nagoura",            cluster:"Jodhpur",      target:225, code:"201206", baseL:0, baseC:0},
   {id:"8", name:"Firoz Khan",                cluster:"Nagaur",       target:225, code:"200047", baseL:0, baseC:0},
-  {id:"9", name:"Gourav Prajapat",           cluster:"Jaipur",       target:200, code:"202994", baseL:0, baseC:0},
+  {id:"9", name:"Gourav Prajapat",           cluster:"Jaipur",       target:200, code:"202994", baseL:43.36, baseC:1},
   {id:"10",name:"Indarajeet Bishnoi",        cluster:"Jodhpur",      target:225, code:"201846", baseL:0, baseC:0},
   {id:"11",name:"Kuldeep",                   cluster:"Jaipur",       target:50,  code:"203094", baseL:0, baseC:0},
   {id:"12",name:"Maan Kanwar",               cluster:"Jodhpur",      target:200, code:"201915", baseL:0, baseC:0},
   {id:"13",name:"Ram Kumar Yadav",           cluster:"Jaipur",       target:50,  code:"203116", baseL:0, baseC:0},
-  {id:"14",name:"Ravi Kumar",                cluster:"Jaipur",       target:130, code:"202835", baseL:0, baseC:0},
+  {id:"14",name:"Ravi Kumar",                cluster:"Jaipur",       target:130, code:"202835", baseL:30.5, baseC:1},
   {id:"15",name:"Rinku Kumar Saini",         cluster:"Jaipur",       target:50,  code:"203095", baseL:0, baseC:0},
   {id:"16",name:"Rishabh Dadha",             cluster:"Jodhpur",      target:225, code:"200531", baseL:0, baseC:0}
 ];
 
-const MONTH   = '2026-11';
-const DAYS    = 30;
-const KEY     = 'gl_advanced_nov26_v4';
+const KEY     = 'gl_command_center_v6';
 const INS_TGT = 15000;
+
+const MONTH_NAMES = [
+  'January','February','March','April','May','June',
+  'July','August','September','October','November','December'
+];
+
+/* ================= DYNAMIC DATE HELPERS ================= */
+function getYearMonth(){
+  return (state && state.asOf ? state.asOf.slice(0,7) : '2026-11');
+}
+function getYear(){
+  return Number(getYearMonth().slice(0,4));
+}
+function getMonth(){
+  return Number(getYearMonth().slice(5,7));
+}
+function getDaysInMonth(ym){
+  ym = ym || getYearMonth();
+  const parts = ym.split('-').map(Number);
+  return new Date(parts[0], parts[1], 0).getDate();
+}
+function getFirstDayOfWeek(ym){
+  ym = ym || getYearMonth();
+  const parts = ym.split('-').map(Number);
+  return new Date(parts[0], parts[1] - 1, 1).getDay();
+}
+function dayKey(d, ym){
+  ym = ym || getYearMonth();
+  return ym + '-' + String(d).padStart(2,'0');
+}
+function validDay(s){
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(String(s))) return false;
+  const parts = s.split('-').map(Number);
+  const y = parts[0], m = parts[1], d = parts[2];
+  if (m < 1 || m > 12 || d < 1) return false;
+  const maxD = new Date(y, m, 0).getDate();
+  return d <= maxD;
+}
 
 /* ================= UTILITIES ================= */
 const $      = id => document.getElementById(id);
@@ -331,14 +429,13 @@ const num    = v  => { const n = Number(v); return isFinite(n) && n > 0 ? n : 0;
 const fmt    = (v,d=2) => (Number(v)||0).toLocaleString('en-IN',{minimumFractionDigits:d,maximumFractionDigits:d});
 const cr     = v => '₹' + fmt(num(v)/100) + ' Cr';
 const esc    = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const dayKey = d => MONTH + '-' + String(d).padStart(2,'0');
-function validDay(s){ return /^2026-11-(0[1-9]|[12]\d|30)$/.test(String(s)); }
 function pct(a,b){ return b ? (100*a/b) : 0; }
 function clamp(v,a,b){ return Math.min(b, Math.max(a, v)); }
 
 let toastTimer = null;
 function toast(msg){
   const t = $('toast');
+  if (!t) return;
   t.textContent = msg;
   t.classList.add('show');
   clearTimeout(toastTimer);
@@ -347,11 +444,82 @@ function toast(msg){
 
 /* ================= STATE ================= */
 function freshState(){
-  return {"version": 2, "teamTarget": 2300, "asOf": "2026-11-06", "workingDays": 17, "manualProjection": 100, "projectionMode": "runrate", "people": [{"id": "1", "name": "Abhishek Soni", "cluster": "Jodhpur", "target": 70, "code": "202607", "baseL": 0, "baseC": 0}, {"id": "2", "name": "Adityaraj Singh Sisodiya", "cluster": "Ajmer", "target": 125, "code": "202237", "baseL": 0, "baseC": 0}, {"id": "3", "name": "Arpit Pancholi", "cluster": "Udaipur", "target": 100, "code": "203134", "baseL": 0, "baseC": 0}, {"id": "4", "name": "Avinash Trivedi", "cluster": "Jodhpur", "target": 100, "code": "202551", "baseL": 0, "baseC": -1}, {"id": "5", "name": "Bablu Dhaker", "cluster": "Chittorgarh", "target": 100, "code": "203082", "baseL": 9.19, "baseC": 2}, {"id": "6", "name": "Deepak Singh Rathore", "cluster": "Bikaner", "target": 225, "code": "200235", "baseL": 0, "baseC": 0}, {"id": "7", "name": "Dimple Nagoura", "cluster": "Jodhpur", "target": 225, "code": "201206", "baseL": 0, "baseC": 0}, {"id": "8", "name": "Firoz Khan", "cluster": "Nagaur", "target": 225, "code": "200047", "baseL": 0, "baseC": 0}, {"id": "9", "name": "Gourav Prajapat", "cluster": "Jaipur", "target": 200, "code": "202994", "baseL": 43.36, "baseC": 1}, {"id": "10", "name": "Indarajeet Bishnoi", "cluster": "Jodhpur", "target": 225, "code": "201846", "baseL": 0, "baseC": 0}, {"id": "11", "name": "Kuldeep", "cluster": "Jaipur", "target": 50, "code": "203094", "baseL": 0, "baseC": 0}, {"id": "12", "name": "Maan Kanwar", "cluster": "Jodhpur", "target": 200, "code": "201915", "baseL": 0, "baseC": 0}, {"id": "13", "name": "Ram Kumar Yadav", "cluster": "Jaipur", "target": 50, "code": "203116", "baseL": 0, "baseC": 0}, {"id": "14", "name": "Ravi Kumar", "cluster": "Jaipur", "target": 130, "code": "202835", "baseL": 30.5, "baseC": 1}, {"id": "15", "name": "Rinku Kumar Saini", "cluster": "Jaipur", "target": 50, "code": "203095", "baseL": 0, "baseC": 0}, {"id": "16", "name": "Rishabh Dadha", "cluster": "Jodhpur", "target": 225, "code": "200531", "baseL": 0, "baseC": 0}], "daily": {"2026-11-03": {"2": {"cases": 1, "amount": 9.95}, "4": {"cases": 1, "amount": 10.5}, "6": {"cases": 1, "amount": 26}, "7": {"cases": 1, "amount": 11}, "8": {"cases": 1, "amount": 10}, "10": {"cases": 1, "amount": 13}, "14": {"cases": 0, "amount": 0}}, "2026-11-04": {"3": {"cases": 1, "amount": 7}, "6": {"cases": 1, "amount": 65}}, "2026-11-05": {"3": {"cases": 1, "amount": 52}, "6": {"cases": 1, "amount": 17}, "12": {"cases": 1, "amount": 33}}, "2026-11-06": {"4": {"cases": 1, "amount": 2}, "5": {"cases": 1, "amount": 12.39}, "6": {"cases": 1, "amount": 4}, "11": {"cases": 1, "amount": 5.53}, "12": {"cases": 1, "amount": 26}, "14": {"cases": 2, "amount": 29}, "15": {"cases": 1, "amount": 7.49}}}, "commitments": {}, "insurance": {"daily": {}, "base": {"10": {"policies": 1, "premium": 1499}, "13": {"policies": 1, "premium": 13428}}}, "history": [{"time": "7/11/2026, 6:31:27 am", "action": "Report date change", "detail": "Report date = 2026-11-06"}, {"time": "7/11/2026, 6:35:40 am", "action": "FTD entry", "detail": "Bablu Dhaker \u2022 cases = 1 \u2022 2026-11-06"}, {"time": "7/11/2026, 6:35:45 am", "action": "FTD entry", "detail": "Bablu Dhaker \u2022 amount = 12.39 \u2022 2026-11-06"}, {"time": "7/11/2026, 6:35:51 am", "action": "FTD entry", "detail": "Deepak Singh Rathore \u2022 cases = 1 \u2022 2026-11-06"}, {"time": "7/11/2026, 6:35:54 am", "action": "FTD entry", "detail": "Deepak Singh Rathore \u2022 amount = 4 \u2022 2026-11-06"}, {"time": "7/11/2026, 6:38:07 am", "action": "FTD entry", "detail": "Rinku Kumar Saini \u2022 amount = 7.49 \u2022 2026-11-06"}, {"time": "7/11/2026, 6:38:57 am", "action": "FTD entry", "detail": "Avinash Trivedi \u2022 amount = 2 \u2022 2026-11-06"}, {"time": "7/11/2026, 6:41:06 am", "action": "FTD entry", "detail": "Ravi Kumar \u2022 amount = 29 \u2022 2026-11-06"}, {"time": "7/11/2026, 6:42:24 am", "action": "FTD entry", "detail": "Maan Kanwar \u2022 amount = 26 \u2022 2026-11-06"}, {"time": "7/11/2026, 12:19:52 pm", "action": "FTD entry", "detail": "Kuldeep \u2022 amount = 5.53 \u2022 2026-11-06"}]};
+  return {
+    version: 6,
+    asOf: "2026-11-06",
+    theme: "navy",
+    teamTarget: 2300,
+    workingDays: 17,
+    manualProjection: 100,
+    projectionMode: "runrate",
+    people: clone(INITIAL),
+    daily: {
+      "2026-11-03": {
+        "2": {"cases": 1, "amount": 9.95},
+        "4": {"cases": 1, "amount": 10.5},
+        "6": {"cases": 1, "amount": 26},
+        "7": {"cases": 1, "amount": 11},
+        "8": {"cases": 1, "amount": 10},
+        "10": {"cases": 1, "amount": 13},
+        "14": {"cases": 0, "amount": 0}
+      },
+      "2026-11-04": {
+        "3": {"cases": 1, "amount": 7},
+        "6": {"cases": 1, "amount": 65}
+      },
+      "2026-11-05": {
+        "3": {"cases": 1, "amount": 52},
+        "6": {"cases": 1, "amount": 17},
+        "12": {"cases": 1, "amount": 33}
+      },
+      "2026-11-06": {
+        "4": {"cases": 1, "amount": 2},
+        "5": {"cases": 1, "amount": 12.39},
+        "6": {"cases": 1, "amount": 4},
+        "11": {"cases": 1, "amount": 5.53},
+        "12": {"cases": 1, "amount": 26},
+        "14": {"cases": 2, "amount": 29},
+        "15": {"cases": 1, "amount": 7.49}
+      }
+    },
+    commitments: {},
+    insurance: {
+      daily: {},
+      base: {
+        "10": {"policies": 1, "premium": 1499},
+        "13": {"policies": 1, "premium": 13428}
+      }
+    },
+    history: [
+      {"time": "7/11/2026, 6:31:27 am", "action": "Report date change", "detail": "Report date = 2026-11-06"},
+      {"time": "7/11/2026, 6:35:40 am", "action": "FTD entry", "detail": "Bablu Dhaker • cases = 1 • 2026-11-06"},
+      {"time": "7/11/2026, 6:35:45 am", "action": "FTD entry", "detail": "Bablu Dhaker • amount = 12.39 • 2026-11-06"},
+      {"time": "7/11/2026, 6:35:51 am", "action": "FTD entry", "detail": "Deepak Singh Rathore • cases = 1 • 2026-11-06"},
+      {"time": "7/11/2026, 6:35:54 am", "action": "FTD entry", "detail": "Deepak Singh Rathore • amount = 4 • 2026-11-06"},
+      {"time": "7/11/2026, 6:38:07 am", "action": "FTD entry", "detail": "Rinku Kumar Saini • amount = 7.49 • 2026-11-06"},
+      {"time": "7/11/2026, 6:38:57 am", "action": "FTD entry", "detail": "Avinash Trivedi • amount = 2 • 2026-11-06"},
+      {"time": "7/11/2026, 6:41:06 am", "action": "FTD entry", "detail": "Ravi Kumar • amount = 29 • 2026-11-06"},
+      {"time": "7/11/2026, 6:42:24 am", "action": "FTD entry", "detail": "Maan Kanwar • amount = 26 • 2026-11-06"},
+      {"time": "7/11/2026, 12:19:52 pm", "action": "FTD entry", "detail": "Kuldeep • amount = 5.53 • 2026-11-06"}
+    ],
+    holidays: {
+      "2026-11-01": "Sunday",
+      "2026-11-08": "Sunday / Chhoti Diwali",
+      "2026-11-09": "Diwali",
+      "2026-11-10": "Govardhan Puja",
+      "2026-11-11": "Bhai Dooj",
+      "2026-11-15": "Sunday",
+      "2026-11-22": "Sunday",
+      "2026-11-24": "Guru Nanak Jayanti",
+      "2026-11-29": "Sunday"
+    }
+  };
 }
+
 function migrate(s){
-  s.version = 3;
+  s.version = 6;
   s.asOf = validDay(s.asOf) ? s.asOf : '2026-11-06';
+  s.theme = s.theme || 'navy';
   s.workingDays = num(s.workingDays) || 17;
   s.teamTarget  = num(s.teamTarget)  || 2300;
   s.projectionMode = s.projectionMode || 'runrate';
@@ -377,43 +545,6 @@ function migrate(s){
   return s;
 }
 
-/* ================= HOLIDAY HELPERS ================= */
-function isHoliday(date){
-  return Boolean(state.holidays && state.holidays[date]);
-}
-function toggleHoliday(date, reason){
-  if (!validDay(date)) { toast('Select a valid November 2026 date'); return; }
-  state.holidays = state.holidays || {};
-  if (state.holidays[date]) {
-    const oldReason = state.holidays[date];
-    delete state.holidays[date];
-    pushHistory('Holiday removed', date + ' (' + oldReason + ')');
-    toast('Holiday removed for ' + date);
-  } else {
-    state.holidays[date] = reason || 'Holiday';
-    pushHistory('Holiday added', date + ' (' + state.holidays[date] + ')');
-    toast('Holiday added: ' + state.holidays[date]);
-  }
-  state.workingDays = 30 - Object.keys(state.holidays).length;
-  persist(); render();
-}
-function fillSundays(){
-  state.holidays = state.holidays || {};
-  let count = 0;
-  for (let i = 1; i <= DAYS; i++){
-    if (new Date(2026, 10, i).getDay() === 0){
-      const k = dayKey(i);
-      if (!state.holidays[k]){
-        state.holidays[k] = 'Sunday';
-        count++;
-      }
-    }
-  }
-  state.workingDays = 30 - Object.keys(state.holidays).length;
-  pushHistory('Holidays updated', 'All Sundays marked as off');
-  persist(); render();
-  toast(count ? count + ' Sundays marked off' : 'Sundays already marked');
-}
 function loadState(){
   try {
     const raw = JSON.parse(localStorage.getItem(KEY));
@@ -440,6 +571,198 @@ function pushHistory(action, detail){
   if (state.history.length > 400) state.history = state.history.slice(-400);
 }
 
+/* ================= THEME CONTROLLER ================= */
+function applyTheme(){
+  const isGold = (state && state.theme === 'gold');
+  if (isGold){
+    document.documentElement.setAttribute('data-theme', 'gold');
+    const btn = $('themeToggleBtn');
+    if (btn) btn.innerHTML = '🔷 Navy Theme';
+  } else {
+    document.documentElement.removeAttribute('data-theme');
+    const btn = $('themeToggleBtn');
+    if (btn) btn.innerHTML = '👑 Gold Theme';
+  }
+}
+
+function toggleTheme(){
+  state.theme = (state.theme === 'gold' ? 'navy' : 'gold');
+  applyTheme();
+  pushHistory('Theme Changed', 'Switched to ' + state.theme + ' theme');
+  persist();
+  toast(state.theme === 'gold' ? '👑 Luxury Gold Theme activated' : '🔷 Royal Navy Theme activated');
+  if (state.theme === 'gold') startCoinRain(15);
+}
+
+/* ================= 30-SEC GOLD COIN RAIN ENGINE ================= */
+let coinAnimId = null;
+let coinStopTimer = null;
+let coins = [];
+
+function startCoinRain(durationSeconds = 30){
+  const canvas = $('coinCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  canvas.style.opacity = '1';
+  canvas.style.display = 'block';
+
+  coins = [];
+  const maxCoins = Math.min(65, Math.floor(window.innerWidth / 16));
+  for (let i = 0; i < maxCoins; i++){
+    coins.push(createCoin(canvas, true));
+  }
+
+  const endTime = Date.now() + durationSeconds * 1000;
+  if (coinAnimId) cancelAnimationFrame(coinAnimId);
+  clearTimeout(coinStopTimer);
+
+  function loop(){
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const isSpawning = Date.now() < endTime;
+
+    for (let i = 0; i < coins.length; i++){
+      const c = coins[i];
+      c.y += c.speedY;
+      c.x += Math.sin(c.wobble) * 1.2;
+      c.wobble += 0.05;
+      c.spin += c.spinSpeed;
+
+      ctx.save();
+      ctx.translate(c.x, c.y);
+      const scaleX = Math.cos(c.spin);
+      ctx.scale(scaleX, 1);
+
+      // Metallic Radial Gold Gradient
+      const grad = ctx.createRadialGradient(-c.r * 0.3, -c.r * 0.3, c.r * 0.1, 0, 0, c.r);
+      grad.addColorStop(0, '#fff4cc');
+      grad.addColorStop(0.35, '#ffd700');
+      grad.addColorStop(0.85, '#d49a1d');
+      grad.addColorStop(1, '#8c5e07');
+
+      ctx.beginPath();
+      ctx.arc(0, 0, c.r, 0, Math.PI * 2);
+      ctx.fillStyle = grad;
+      ctx.fill();
+
+      // Golden Edge Rim
+      ctx.lineWidth = Math.max(1.2, c.r * 0.12);
+      ctx.strokeStyle = '#fff0a6';
+      ctx.stroke();
+
+      // Rupee Symbol on coin
+      if (Math.abs(scaleX) > 0.35 && c.r > 10){
+        ctx.fillStyle = '#6b4703';
+        ctx.font = 'bold ' + Math.floor(c.r * 1.05) + 'px system-ui, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('₹', 0, 1);
+      }
+      ctx.restore();
+
+      // Recycling
+      if (c.y > canvas.height + c.r + 20){
+        if (isSpawning){
+          coins[i] = createCoin(canvas, false);
+        } else {
+          coins.splice(i, 1);
+          i--;
+        }
+      }
+    }
+
+    if (coins.length > 0){
+      coinAnimId = requestAnimationFrame(loop);
+    } else {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      canvas.style.opacity = '0';
+      setTimeout(() => { if (!coins.length) canvas.style.display = 'none'; }, 1500);
+    }
+  }
+
+  coinAnimId = requestAnimationFrame(loop);
+
+  coinStopTimer = setTimeout(() => {
+    canvas.style.opacity = '0.5';
+  }, Math.max(1000, (durationSeconds - 2) * 1000));
+}
+
+function createCoin(canvas, initialSpread = false){
+  const r = Math.random() * 9 + 13;
+  return {
+    x: Math.random() * canvas.width,
+    y: initialSpread ? Math.random() * -canvas.height : -r - Math.random() * 80,
+    r: r,
+    speedY: Math.random() * 2.8 + 2.2,
+    spin: Math.random() * Math.PI,
+    spinSpeed: Math.random() * 0.08 + 0.04,
+    wobble: Math.random() * Math.PI * 2
+  };
+}
+
+/* ================= MONTH / YEAR SWITCHER ================= */
+function changeMonthYear(year, month){
+  const newYM = year + '-' + String(month).padStart(2, '0');
+  const maxDays = getDaysInMonth(newYM);
+  let curDay = parseInt(state.asOf.slice(8), 10) || 1;
+  if (curDay > maxDays) curDay = maxDays;
+  state.asOf = newYM + '-' + String(curDay).padStart(2, '0');
+  
+  // Recalculate working days for the newly selected month
+  const holCount = Object.keys(state.holidays || {}).filter(d => d.startsWith(newYM)).length;
+  state.workingDays = maxDays - holCount;
+
+  pushHistory('Period Change', 'Switched to ' + MONTH_NAMES[month - 1] + ' ' + year);
+  persist();
+  render();
+}
+
+/* ================= HOLIDAY HELPERS ================= */
+function isHoliday(date){
+  return Boolean(state.holidays && state.holidays[date]);
+}
+function toggleHoliday(date, reason){
+  if (!validDay(date)) { toast('Select a valid date'); return; }
+  state.holidays = state.holidays || {};
+  if (state.holidays[date]) {
+    const oldReason = state.holidays[date];
+    delete state.holidays[date];
+    pushHistory('Holiday removed', date + ' (' + oldReason + ')');
+    toast('Holiday removed for ' + date);
+  } else {
+    state.holidays[date] = reason || 'Holiday';
+    pushHistory('Holiday added', date + ' (' + state.holidays[date] + ')');
+    toast('Holiday added: ' + state.holidays[date]);
+  }
+  const ym = getYearMonth();
+  const holCount = Object.keys(state.holidays).filter(d => d.startsWith(ym)).length;
+  state.workingDays = getDaysInMonth(ym) - holCount;
+  persist(); render();
+}
+function fillSundays(){
+  state.holidays = state.holidays || {};
+  const ym = getYearMonth();
+  const maxDays = getDaysInMonth(ym);
+  const parts = ym.split('-').map(Number);
+  let count = 0;
+  for (let i = 1; i <= maxDays; i++){
+    if (new Date(parts[0], parts[1] - 1, i).getDay() === 0){
+      const k = dayKey(i, ym);
+      if (!state.holidays[k]){
+        state.holidays[k] = 'Sunday';
+        count++;
+      }
+    }
+  }
+  const holCount = Object.keys(state.holidays).filter(d => d.startsWith(ym)).length;
+  state.workingDays = maxDays - holCount;
+  pushHistory('Holidays updated', 'All Sundays marked off for ' + ym);
+  persist(); render();
+  toast(count ? count + ' Sundays marked off' : 'Sundays already marked');
+}
+
 /* ================= DATA ACCESS ================= */
 function entry(id, date){
   const d = state.daily[date];
@@ -460,7 +783,8 @@ function insEntry(id, date){
 function calc(p){
   const today = entry(p.id, state.asOf);
   let amount = num(p.baseL), cases = num(p.baseC);
-  for (let i = 1; i <= DAYS; i++){
+  const totalDays = getDaysInMonth();
+  for (let i = 1; i <= totalDays; i++){
     const date = dayKey(i);
     if (date > state.asOf) break;
     const x = entry(p.id, date);
@@ -491,7 +815,8 @@ function insCalc(p){
   const today = insEntry(p.id, state.asOf);
   const base  = state.insurance.base[p.id] || { policies:0, premium:0 };
   let premium  = num(base.premium), policies = num(base.policies);
-  for (let i = 1; i <= DAYS; i++){
+  const totalDays = getDaysInMonth();
+  for (let i = 1; i <= totalDays; i++){
     const date = dayKey(i);
     if (date > state.asOf) break;
     const x = insEntry(p.id, date);
@@ -526,7 +851,8 @@ function attendanceFor(id, date){
 }
 function attendanceSummary(id){
   let present = 0, absent = 0, holidays = 0;
-  for (let i = 1; i <= DAYS; i++){
+  const totalDays = getDaysInMonth();
+  for (let i = 1; i <= totalDays; i++){
     const date = dayKey(i);
     if (date > state.asOf) break;
     const st = attendanceFor(id, date);
@@ -541,39 +867,43 @@ function attendanceSummary(id){
   };
 }
 function teamAttendance(){
-  let present = 0, absent = 0;
+  let present = 0, absent = 0, holidays = 0;
   state.people.forEach(p => {
     const s = attendanceSummary(p.id);
     present += s.present;
     absent  += s.absent;
+    holidays += s.holidays;
   });
   const total = present + absent;
-  return { present, absent, total, pct: total ? 100 * present / total : 0 };
+  return { present, absent, holidays, total, pct: total ? 100 * present / total : 0 };
 }
 function todayAttendance(){
-  let present = 0, absent = 0;
+  let present = 0, absent = 0, holidays = 0;
   state.people.forEach(p => {
-    if (attendanceFor(p.id, state.asOf) === 'P') present++;
+    const st = attendanceFor(p.id, state.asOf);
+    if (st === 'P') present++;
+    else if (st === 'H') holidays++;
     else absent++;
   });
   const total = present + absent;
-  return { present, absent, total, pct: total ? 100 * present / total : 0 };
+  return { present, absent, holidays, total, pct: total ? 100 * present / total : (present ? 100 : 0) };
 }
 
 /* ================= TIME HELPERS ================= */
 function elapsed(){
-  const date = Number(state.asOf.slice(-2));
+  const curDay = Number(state.asOf.slice(-2));
   let d = 0;
-  for (let i = 1; i <= date; i++){
+  for (let i = 1; i <= curDay; i++){
     const dt = dayKey(i);
     if (!isHoliday(dt)) d++;
   }
   return d;
 }
 function remaining(){
-  const date = Number(state.asOf.slice(-2));
+  const totalDays = getDaysInMonth();
+  const curDay = Number(state.asOf.slice(-2));
   let r = 0;
-  for (let i = date + 1; i <= DAYS; i++){
+  for (let i = curDay + 1; i <= totalDays; i++){
     const dt = dayKey(i);
     if (!isHoliday(dt)) r++;
   }
@@ -585,9 +915,11 @@ function projected(){
   if (state.projectionMode === 'required') return num(state.teamTarget);
   if (state.projectionMode === 'recent'){
     const last = [];
+    const ym = getYearMonth();
+    const parts = ym.split('-').map(Number);
     for (let i = Number(state.asOf.slice(-2)); i >= 1 && last.length < 3; i--){
       const date = dayKey(i);
-      if (new Date(2026,10,i).getDay() === 0) continue;
+      if (new Date(parts[0], parts[1] - 1, i).getDay() === 0 || isHoliday(date)) continue;
       last.push(dateTotals(date).amount);
     }
     const avg = last.length ? last.reduce((a,b)=>a+b,0)/last.length : 0;
@@ -639,7 +971,7 @@ function filtered(){
 /* ================= MUTATORS ================= */
 function setTab(t){ tab = t; render(); window.scrollTo({top:0, behavior:'smooth'}); }
 function setDate(date){
-  if (!validDay(date)){ toast('Choose a November 2026 date'); return; }
+  if (!validDay(date)){ toast('Choose a valid date'); return; }
   state.asOf = date;
   pushHistory('Report date change', 'Report date = ' + date);
   persist(); render();
@@ -681,7 +1013,8 @@ function editMTD(id, k, v){
   const p = state.people.find(x => x.id === id);
   if (!p) return;
   let total = 0;
-  for (let i = 1; i <= DAYS; i++){
+  const totalDays = getDaysInMonth();
+  for (let i = 1; i <= totalDays; i++){
     const date = dayKey(i);
     if (date > state.asOf) break;
     total += num(entry(id, date)[k]);
@@ -708,7 +1041,8 @@ function editInsuranceDaily(id, k, v){
 }
 function editInsuranceMTD(id, k, v){
   let total = 0;
-  for (let i = 1; i <= DAYS; i++){
+  const totalDays = getDaysInMonth();
+  for (let i = 1; i <= totalDays; i++){
     const date = dayKey(i);
     if (date > state.asOf) break;
     total += num(insEntry(id, date)[k]);
@@ -739,7 +1073,7 @@ function clearHistory(){
   state.history = []; persist(); render(); toast('History cleared');
 }
 function resetAll(){
-  if (!confirm('Reset ALL data to original 16 SOs and zero achievements?\nThis cannot be undone without a backup.')) return;
+  if (!confirm('Reset ALL data to original 16 SOs and preloaded achievements?\nThis cannot be undone without a backup.')) return;
   state = freshState(); persist(); render(); toast('All data reset');
 }
 
@@ -773,11 +1107,12 @@ function gaugeSVG(actual, pace){
     '</svg>';
 }
 function trendChart(){
-  const vals = Array.from({length:DAYS}, (_,i) => dateTotals(dayKey(i+1)).amount);
+  const totalDays = getDaysInMonth();
+  const vals = Array.from({length:totalDays}, (_,i) => dateTotals(dayKey(i+1)).amount);
   const W = 600, H = 175, PL = 26, PR = 10, PT = 12, PB = 22;
   const max = Math.max(1, ...vals);
   const innerW = W - PL - PR, innerH = H - PT - PB;
-  const bw = innerW / DAYS;
+  const bw = innerW / totalDays;
   const barW = Math.max(2, bw * 0.62);
   const paceL = num(state.teamTarget) / Math.max(1, num(state.workingDays));
 
@@ -793,9 +1128,11 @@ function trendChart(){
   });
   const paceY = PT + innerH - (Math.min(paceL, max) / max) * innerH;
   let labels = '';
-  [1,5,10,15,20,25,30].forEach(d => {
-    const x = PL + (d - 0.5) * bw;
-    labels += '<text x="' + x.toFixed(1) + '" y="' + (H-6) + '" text-anchor="middle" font-size="9" fill="#8a9ab0">' + d + '</text>';
+  [1,5,10,15,20,25,totalDays].forEach(d => {
+    if (d <= totalDays){
+      const x = PL + (d - 0.5) * bw;
+      labels += '<text x="' + x.toFixed(1) + '" y="' + (H-6) + '" text-anchor="middle" font-size="9" fill="#8a9ab0">' + d + '</text>';
+    }
   });
   const yTop  = '<text x="' + (PL-5) + '" y="' + (PT+6) + '" text-anchor="end" font-size="8.5" fill="#8a9ab0">' + fmt(max,0) + '</text>';
   const yZero = '<text x="' + (PL-5) + '" y="' + (PT+innerH) + '" text-anchor="end" font-size="8.5" fill="#8a9ab0">0</text>';
@@ -814,7 +1151,8 @@ function trendChart(){
 function sparkline(id, w, h){
   w = w || 84; h = h || 24;
   const vals = []; let cum = 0;
-  for (let i = 1; i <= DAYS; i++){
+  const totalDays = getDaysInMonth();
+  for (let i = 1; i <= totalDays; i++){
     const d = dayKey(i);
     if (d > state.asOf) break;
     cum += num(entry(id, d).amount);
@@ -840,15 +1178,22 @@ function showKpis(){
   const proj = projected();
   const att = todayAttendance();
 
+  const curMonthName = MONTH_NAMES[getMonth() - 1];
+  const curDayNum = state.asOf.slice(8);
+  const subtitle = $('headerSubtitle');
+  if (subtitle) {
+    subtitle.textContent = curMonthName + ' ' + getYear() + ' • SO-wise Performance Intelligence';
+  }
+
   const cards = [
     { t:'Team Target',        v: cr(target),                s: '₹' + fmt(target,0) + ' L',            c:'gold',  i:'🎯' },
     { t:'MTD Disbursement',   v: '₹' + fmt(s.mtdL) + ' L',  s: s.mtdC + ' cases',                     c:'green', i:'🚀' },
-    { t:'FTD Today',          v: '₹' + fmt(s.ftdL) + ' L',  s: s.ftdC + ' cases • ' + state.asOf.slice(8) + ' Nov', c:'blue', i:'⚡' },
+    { t:'FTD Today',          v: '₹' + fmt(s.ftdL) + ' L',  s: s.ftdC + ' cases • ' + curDayNum + ' ' + curMonthName.slice(0,3), c:'blue', i:'⚡' },
     { t:'Achievement',        v: fmt(ach,1) + '%',          s: 'Expected pace ' + fmt(pace,1) + '%',  c:'gold',  i:'📊' },
     { t:'Balance Gap',        v: cr(gap),                   s: '₹' + fmt(gap) + ' L remaining',       c:'red',   i:'📉' },
     { t:'Required DRR',       v: '₹' + fmt(remaining() ? gap/remaining() : gap) + ' L', s: remaining() + ' working days left', c:'blue', i:'⏱' },
     { t:'Projected Close',    v: cr(proj),                  s: proj >= target ? 'On track' : 'Short by ' + cr(target - proj), c: proj >= target ? 'green' : 'red', i:'🔮' },
-    { t:'Attendance Today',   v: att.present + '/' + att.total, s: fmt(att.pct,1) + '% present',       c:'green', i:'📋' }
+    { t:'Attendance Today',   v: att.present + '/' + (att.present + att.absent), s: fmt(att.pct,1) + '% present' + (att.holidays ? ' (' + att.holidays + ' on Off)' : ''), c:'green', i:'📋' }
   ];
 
   $('kpis').innerHTML = cards.map(c =>
@@ -865,11 +1210,30 @@ function showKpis(){
 
 /* ================= TOOLBAR ================= */
 function toolbar(){
+  const ym = getYearMonth();
+  const curY = getYear();
+  const curM = getMonth();
+  const totalDays = getDaysInMonth(ym);
   const clusterList = [...new Set(state.people.map(x => x.cluster))].sort();
+
+  let monthOptions = '';
+  MONTH_NAMES.forEach((m, idx) => {
+    monthOptions += '<option value="' + (idx+1) + '" ' + (idx+1 === curM ? 'selected' : '') + '>' + m + '</option>';
+  });
+
+  let yearOptions = '';
+  [2025, 2026, 2027, 2028].forEach(y => {
+    yearOptions += '<option value="' + y + '" ' + (y === curY ? 'selected' : '') + '>' + y + '</option>';
+  });
+
   return '<div class="panel">' +
-    '<div class="formgrid">' +
+    '<div class="formgrid" style="grid-template-columns:repeat(auto-fit,minmax(140px,1fr))">' +
+      '<div class="field"><label>Month</label>' +
+        '<select onchange="changeMonthYear(' + curY + ', this.value)">' + monthOptions + '</select></div>' +
+      '<div class="field"><label>Year</label>' +
+        '<select onchange="changeMonthYear(this.value, ' + curM + ')">' + yearOptions + '</select></div>' +
       '<div class="field"><label>Report Date</label>' +
-        '<input type="date" min="2026-11-01" max="2026-11-30" value="' + state.asOf + '" onchange="setDate(this.value)"></div>' +
+        '<input type="date" min="' + ym + '-01" max="' + ym + '-' + String(totalDays).padStart(2,'0') + '" value="' + state.asOf + '" onchange="setDate(this.value)"></div>' +
       '<div class="field"><label>Cluster</label>' +
         '<select onchange="setFilter(\'cluster\',this.value)"><option>All</option>' +
         clusterList.map(c => '<option ' + (filterCluster === c ? 'selected' : '') + '>' + esc(c) + '</option>').join('') +
@@ -943,7 +1307,7 @@ function viewOverview(){
       '<div class="att-summary-row">' +
         '<div class="att-stat p"><b>' + attToday.present + '</b><span>Present Today</span></div>' +
         '<div class="att-stat a"><b>' + attToday.absent + '</b><span>Absent Today</span></div>' +
-        '<div class="att-stat"><b>' + fmt(attToday.pct,1) + '%</b><span>Today Rate</span></div>' +
+        '<div class="att-stat h"><b>' + attToday.holidays + '</b><span>On Holiday</span></div>' +
       '</div>' +
       '<div class="att-summary-row">' +
         '<div class="att-stat p"><b>' + attTeam.present + '</b><span>MTD Present</span></div>' +
@@ -1040,6 +1404,7 @@ function viewDeepDive(){
   const projectedEnd = e ? p.mtdL / e * (e + r) : p.mtdL;
   const willAchieve = projectedEnd >= p.target;
   const att = attendanceSummary(p.id);
+  const totalDays = getDaysInMonth();
 
   return '<div class="panel">' + sel +
     '<h2>🔍 ' + esc(p.name) + '</h2>' +
@@ -1055,20 +1420,21 @@ function viewDeepDive(){
     '<div class="att-summary-row" style="margin-top:14px">' +
       '<div class="att-stat p"><b>' + att.present + '</b><span>Present Days</span></div>' +
       '<div class="att-stat a"><b>' + att.absent + '</b><span>Absent Days</span></div>' +
-      '<div class="att-stat"><b>' + fmt(att.pct,1) + '%</b><span>Attendance</span></div>' +
+      '<div class="att-stat h"><b>' + att.holidays + '</b><span>Holidays/Off</span></div>' +
     '</div>' +
     '<h3>Daily Trend</h3>' + personChart(p.id) +
     '<h3>Daily Entries</h3>' +
     '<div class="scroll"><table><thead><tr><th>Date</th><th>Attendance</th><th>Cases</th><th>Amount ₹L</th><th>Commitment ₹L</th><th>Variance ₹L</th></tr></thead><tbody>' +
-    Array.from({length:DAYS}, (_, i) => {
+    Array.from({length:totalDays}, (_, i) => {
       const d = dayKey(i+1);
       const x = entry(p.id, d);
       const c = commitEntry(p.id, d);
       const future = d > state.asOf;
       const st = future ? '' : attendanceFor(p.id, d);
+      const stBadge = (st === 'P') ? '<span class="pill good">P</span>' : ((st === 'H') ? '<span class="pill warn">H</span>' : '<span class="pill bad">A</span>');
       return '<tr style="' + (future ? 'opacity:.4' : '') + '">' +
         '<td>' + d + '</td>' +
-        '<td>' + (future ? '—' : (st === 'P' ? '<span class="pill good">P</span>' : '<span class="pill bad">A</span>')) + '</td>' +
+        '<td>' + (future ? '—' : stBadge) + '</td>' +
         '<td>' + (future ? '—' : x.cases) + '</td>' +
         '<td>' + (future ? '—' : fmt(x.amount)) + '</td>' +
         '<td>' + (future ? '—' : fmt(c.amount)) + '</td>' +
@@ -1082,7 +1448,8 @@ function viewDeepDive(){
 function personChart(id){
   const vals = [], cum = [];
   let c = 0;
-  for (let i = 1; i <= DAYS; i++){
+  const totalDays = getDaysInMonth();
+  for (let i = 1; i <= totalDays; i++){
     const d = dayKey(i);
     if (d > state.asOf) break;
     const a = num(entry(id, d).amount);
@@ -1092,7 +1459,7 @@ function personChart(id){
   const W = 600, H = 175, PL = 30, PR = 12, PT = 14, PB = 20;
   const max = Math.max(1, ...vals);
   const innerW = W - PL - PR, innerH = H - PT - PB;
-  const bw = innerW / DAYS;
+  const bw = innerW / totalDays;
   const barW = Math.max(2, bw * 0.6);
   let bars = '';
   vals.forEach((v, i) => {
@@ -1124,10 +1491,13 @@ function viewProjection(){
   const target = num(state.teamTarget);
   const r = remaining();
   const proj = projected();
+  const ym = getYearMonth();
+  const totalDays = getDaysInMonth(ym);
+
   return '<div class="panel"><h2>🔮 Smart Month-End Projection</h2>' +
     '<div class="formgrid">' +
-      '<div class="field"><label>Working Days (Nov)</label>' +
-        '<input type="number" min="1" max="30" value="' + state.workingDays + '" onchange="setConfig(\'workingDays\',this.value)"></div>' +
+      '<div class="field"><label>Working Days (' + MONTH_NAMES[getMonth()-1] + ')</label>' +
+        '<input type="number" min="1" max="' + totalDays + '" value="' + state.workingDays + '" onchange="setConfig(\'workingDays\',this.value)"></div>' +
       '<div class="field"><label>Projection Logic</label>' +
         '<select onchange="setConfig(\'projectionMode\',this.value)">' +
           '<option value="runrate" ' + (state.projectionMode === 'runrate' ? 'selected' : '') + '>Current run-rate</option>' +
@@ -1145,8 +1515,8 @@ function viewProjection(){
       'MTD: <b>' + cr(s.mtdL) + '</b> • Forecast: <b>' + cr(proj) + '</b><br>' +
       'Gap to target: <b>' + cr(Math.max(0, target - proj)) + '</b>' +
     '</p>' +
-    '<div class="note">Working-day count assumes Sundays off — adjust for company holidays. ' +
-      '"Recent 3-day average" uses the last three working days with data.</div>' +
+    '<div class="note">Working-day count excludes holidays and configured off-days. ' +
+      '"Recent 3-day average" uses the last three working days with business data.</div>' +
   '</div>' +
   '<div class="panel"><h2>SO-wise Projection & Required DRR</h2>' +
     '<div class="scroll"><table><thead><tr>' +
@@ -1235,14 +1605,18 @@ function viewClusters(){
 
 /* ================= VIEW: CALENDAR ================= */
 function viewCalendar(){
-  const vals = Array.from({length:DAYS}, (_,i) => dateTotals(dayKey(i+1)).amount);
+  const ym = getYearMonth();
+  const totalDays = getDaysInMonth(ym);
+  const vals = Array.from({length:totalDays}, (_,i) => dateTotals(dayKey(i+1, ym)).amount);
   const max = Math.max(1, ...vals);
-  const firstDow = new Date(2026,10,1).getDay();
+  const firstDow = getFirstDayOfWeek(ym);
+  
   let cells = '';
   ['S','M','T','W','T','F','S'].forEach(d => cells += '<div class="calhead">' + d + '</div>');
   for (let i = 0; i < firstDow; i++) cells += '<div class="calcell empty"></div>';
-  for (let d = 1; d <= DAYS; d++){
-    const date = dayKey(d);
+  
+  for (let d = 1; d <= totalDays; d++){
+    const date = dayKey(d, ym);
     const v = vals[d-1];
     const intensity = v / max;
     const alpha = (0.07 + intensity * 0.68).toFixed(2);
@@ -1251,42 +1625,44 @@ function viewCalendar(){
     const hol = isHoliday(date);
     const holTitle = hol ? ' • Holiday: ' + state.holidays[date] : '';
     const bg = future ? '' : (hol && !v ? 'background:#fefbf3;' : 'background:rgba(59,116,196,' + alpha + ');');
+    
     cells += '<div class="calcell ' + (future ? 'future' : '') + ' ' + (today ? 'today' : '') + (hol ? ' holiday' : '') + '"' +
       ' style="' + bg + '" onclick="setDate(\'' + date + '\')" title="' + date + holTitle + ' — ₹' + fmt(v) + ' L">' +
       '<b>' + d + '</b><span>' + (hol && !v ? 'OFF' : (v ? fmt(v,0) : '–')) + '</span></div>';
   }
+
   const s = sums();
   const bestDay = vals.indexOf(Math.max(...vals)) + 1;
-  const hList = Object.entries(state.holidays || {}).sort();
+  const hList = Object.entries(state.holidays || {}).filter(([d]) => d.startsWith(ym)).sort();
 
   return '<div class="panel">' +
-    '<h2>📅 November Heatmap & Working Days</h2>' +
+    '<h2>📅 ' + MONTH_NAMES[getMonth()-1] + ' ' + getYear() + ' Heatmap & Working Days</h2>' +
     '<div class="note" style="margin-bottom:12px">Tap any date to jump report date. ' +
-      'Dashed border = Holiday / Off-day. ' + (bestDay > 0 && vals[bestDay-1] > 0 ? 'Best day: <b>Nov ' + bestDay + '</b> (₹' + fmt(vals[bestDay-1]) + ' L).' : '') + '</div>' +
+      'Dashed border = Holiday / Off-day. ' + (bestDay > 0 && vals[bestDay-1] > 0 ? 'Best day: <b>' + bestDay + ' ' + MONTH_NAMES[getMonth()-1].slice(0,3) + '</b> (₹' + fmt(vals[bestDay-1]) + ' L).' : '') + '</div>' +
     '<div class="cal">' + cells + '</div>' +
     '<div class="actions">' +
       '<span class="pill">MTD ₹' + fmt(s.mtdL) + ' L • ' + s.mtdC + ' cases</span>' +
-      '<span class="pill">Working Days: ' + (30 - hList.length) + '</span>' +
-      '<span class="pill warn">Holidays: ' + hList.length + '</span>' +
+      '<span class="pill">Working Days: ' + (totalDays - hList.length) + '</span>' +
+      '<span class="pill warn">Holidays in Month: ' + hList.length + '</span>' +
     '</div>' +
   '</div>' +
   '<div class="panel">' +
     '<h2>🗓️ Manual Holiday & Off-Day Calendar</h2>' +
     '<div class="formgrid">' +
-      '<div class="field"><label>Select Date</label><input type="date" id="calHolDate" min="2026-11-01" max="2026-11-30" value="' + state.asOf + '"></div>' +
+      '<div class="field"><label>Select Date</label><input type="date" id="calHolDate" min="' + ym + '-01" max="' + ym + '-' + String(totalDays).padStart(2,'0') + '" value="' + state.asOf + '"></div>' +
       '<div class="field"><label>Holiday Reason / Festival</label><input type="text" id="calHolReason" placeholder="e.g. Festival / Company Holiday"></div>' +
     '</div>' +
     '<div class="actions" style="margin-top:10px">' +
       '<button class="btn gold" onclick="toggleHoliday(document.getElementById(\'calHolDate\').value, document.getElementById(\'calHolReason\').value || \'Holiday\')">Mark / Unmark Holiday</button>' +
-      '<button class="btn light" onclick="fillSundays()">⚡ Mark All Sundays Off</button>' +
+      '<button class="btn light" onclick="fillSundays()">⚡ Mark All Sundays Off (' + MONTH_NAMES[getMonth()-1].slice(0,3) + ')</button>' +
     '</div>' +
-    '<h3 style="margin-top:14px">Active Holidays (' + hList.length + ')</h3>' +
+    '<h3 style="margin-top:14px">Active Holidays in ' + MONTH_NAMES[getMonth()-1] + ' (' + hList.length + ')</h3>' +
     '<div class="flex" style="gap:6px">' +
       (hList.length ? hList.map(([d, r]) =>
         '<span class="pill warn" style="display:inline-flex;align-items:center;gap:4px">' +
-          d.slice(8) + ' Nov: ' + esc(r) +
+          d.slice(8) + ' ' + MONTH_NAMES[getMonth()-1].slice(0,3) + ': ' + esc(r) +
           '<b style="cursor:pointer;color:#a8283a;margin-left:4px" onclick="toggleHoliday(\'' + d + '\')">✕</b></span>'
-      ).join('') : '<span class="muted">No holidays configured yet.</span>') +
+      ).join('') : '<span class="muted">No holidays configured for this month.</span>') +
     '</div>' +
   '</div>' +
   '<div class="panel"><h2>📈 Daily Trend</h2>' + trendChart() + '</div>' +
@@ -1294,8 +1670,8 @@ function viewCalendar(){
     '<div class="scroll"><table><thead><tr>' +
       '<th>Date</th><th>Status</th><th>Cases</th><th>Amount ₹L</th><th>Commitment ₹L</th><th>Variance ₹L</th><th></th>' +
     '</tr></thead><tbody>' +
-    Array.from({length:DAYS}, (_, i) => {
-      const date = dayKey(i+1);
+    Array.from({length:totalDays}, (_, i) => {
+      const date = dayKey(i+1, ym);
       const d = dateTotals(date);
       const future = date > state.asOf;
       const hol = isHoliday(date);
@@ -1313,6 +1689,7 @@ function viewCalendar(){
   '</div>';
 }
 
+/* ================= VIEW: ALERTS ================= */
 function viewAlerts(){
   const rs = rows();
   const paceLine = 100 * elapsed() / Math.max(1, num(state.workingDays));
@@ -1344,13 +1721,15 @@ function viewAlerts(){
 function viewAttendance(){
   const today = state.asOf;
   const todayDay = Number(today.slice(-2));
+  const ym = getYearMonth();
+  const totalDays = getDaysInMonth(ym);
   const people = state.people;
   const tAtt = todayAttendance();
   const mAtt = teamAttendance();
 
   let head = '<th style="min-width:150px">SO / Cluster</th>';
   for (let i = 1; i <= todayDay; i++) {
-    const isHol = isHoliday(dayKey(i));
+    const isHol = isHoliday(dayKey(i, ym));
     head += '<th class="att-head" style="' + (isHol ? 'color:#b45309;background:#fff6e5;' : '') + '">' + i + (isHol ? 'H' : '') + '</th>';
   }
   head += '<th style="text-align:center;min-width:34px">P</th>' +
@@ -1363,9 +1742,9 @@ function viewAttendance(){
     const sum = attendanceSummary(p.id);
     let cells = '';
     for (let i = 1; i <= todayDay; i++){
-      const d = dayKey(i);
+      const d = dayKey(i, ym);
       const st = attendanceFor(p.id, d);
-      cells += '<td class="att-' + (st === 'P' ? 'p' : 'a') + '">' + st + '</td>';
+      cells += '<td class="att-' + (st === 'P' ? 'p' : (st === 'H' ? 'h' : 'a')) + '">' + st + '</td>';
     }
     body += '<tr>' +
       '<td><b>' + esc(p.name) + '</b><div class="muted">' + esc(p.cluster) + '</div></td>' +
@@ -1382,15 +1761,15 @@ function viewAttendance(){
   let calHTML = '';
   if (dp){
     let cal = '';
-    const firstDow = new Date(2026,10,1).getDay();
+    const firstDow = getFirstDayOfWeek(ym);
     ['S','M','T','W','T','F','S'].forEach(d => cal += '<div class="calhead">' + d + '</div>');
     for (let i = 0; i < firstDow; i++) cal += '<div class="calcell empty"></div>';
-    for (let d = 1; d <= DAYS; d++){
-      const date = dayKey(d);
+    for (let d = 1; d <= totalDays; d++){
+      const date = dayKey(d, ym);
       const future = date > today;
       const st = future ? null : attendanceFor(dp.id, d);
       const cls = future ? 'future' : (st === 'P' ? 'att-p' : (st === 'H' ? 'att-h' : 'att-a'));
-      const bg = future ? '' : (st === 'P' ? 'background:#def7eb;' : 'background:#ffe7ea;');
+      const bg = future ? '' : (st === 'P' ? 'background:#def7eb;' : (st === 'H' ? 'background:#fff8e9;' : 'background:#ffe7ea;'));
       cal += '<div class="calcell ' + cls + (date === today ? ' today' : '') + '" style="' + bg + '">' +
         '<b>' + d + '</b><span>' + (future ? '' : st) + '</span></div>';
     }
@@ -1399,11 +1778,11 @@ function viewAttendance(){
       '<div class="att-summary-row" style="margin-top:12px">' +
         '<div class="att-stat p"><b>' + ds.present + '</b><span>Present</span></div>' +
         '<div class="att-stat a"><b>' + ds.absent + '</b><span>Absent</span></div>' +
-        '<div class="att-stat"><b>' + fmt(ds.pct,1) + '%</b><span>Rate</span></div>' +
+        '<div class="att-stat h"><b>' + ds.holidays + '</b><span>Holidays/Off</span></div>' +
       '</div>';
   }
 
-  let presentList = '', absentList = '';
+  let presentList = '', absentList = '', holidayList = '';
   people.forEach(p => {
     const st = attendanceFor(p.id, today);
     const gl = entry(p.id, today);
@@ -1413,22 +1792,23 @@ function viewAttendance(){
       '<div class="muted">GL ₹' + fmt(gl.amount) + ' L (' + gl.cases + ') • Ins ₹' + fmt(ins.premium,0) + '</div>' +
     '</div>';
     if (st === 'P') presentList += line;
+    else if (st === 'H') holidayList += line;
     else absentList += line;
   });
 
   return '<div class="panel">' +
-    '<h2>📋 Automatic Attendance</h2>' +
-    '<div class="note">Attendance is calculated automatically. <b>PRESENT</b> when GL disbursement &gt; 0 <b>OR</b> insurance premium &gt; 0. ' +
-      '<b>ABSENT</b> when both are zero. No minimum target condition applies.</div>' +
+    '<h2>📋 Automatic Attendance (' + MONTH_NAMES[getMonth()-1] + ' ' + getYear() + ')</h2>' +
+    '<div class="note">Attendance is calculated automatically. <b>PRESENT (P)</b> when business &gt; 0. ' +
+      '<b>HOLIDAY (H)</b> on official off-days with zero business (not penalizing attendance). <b>ABSENT (A)</b> on working days without business.</div>' +
     '<div class="att-summary-row" style="margin-top:14px">' +
       '<div class="att-stat p"><b>' + tAtt.present + '</b><span>Present Today</span></div>' +
       '<div class="att-stat a"><b>' + tAtt.absent + '</b><span>Absent Today</span></div>' +
-      '<div class="att-stat"><b>' + fmt(tAtt.pct,1) + '%</b><span>Today Rate</span></div>' +
+      '<div class="att-stat h"><b>' + tAtt.holidays + '</b><span>On Holiday/Off</span></div>' +
     '</div>' +
     '<div class="att-summary-row">' +
       '<div class="att-stat p"><b>' + mAtt.present + '</b><span>MTD Present</span></div>' +
       '<div class="att-stat a"><b>' + mAtt.absent + '</b><span>MTD Absent</span></div>' +
-      '<div class="att-stat"><b>' + fmt(mAtt.pct,1) + '%</b><span>MTD Rate</span></div>' +
+      '<div class="att-stat"><b>' + fmt(mAtt.pct,1) + '%</b><span>Rate</span></div>' +
     '</div>' +
     '<div class="actions">' +
       '<button class="btn gold" onclick="downloadAttendanceDetailed()">⬇ Detailed CSV</button>' +
@@ -1438,8 +1818,7 @@ function viewAttendance(){
   '</div>' +
   '<div class="panel"><h2>📅 Monthly Attendance Register</h2>' +
     '<div class="scroll"><table class="att-table"><thead><tr>' + head + '</tr></thead><tbody>' + body + '</tbody></table></div>' +
-    '<div class="muted" style="margin-top:8px">P = Present, A = Absent. Only dates up to the report date are shown. ' +
-      'Scroll horizontally to see all dates.</div>' +
+    '<div class="muted" style="margin-top:8px">P = Present, A = Absent, H = Holiday. Dates up to the report date are recorded.</div>' +
   '</div>' +
   '<div class="panel"><h2>🔍 SO Attendance Calendar</h2>' +
     '<div class="field" style="max-width:280px;margin-bottom:12px"><label>Select SO</label>' +
@@ -1448,9 +1827,10 @@ function viewAttendance(){
       '</select></div>' +
     calHTML +
   '</div>' +
-  '<div class="grid2">' +
-    '<div class="panel"><h2>✅ Present Today (' + tAtt.present + ')</h2>' + (presentList || '<p class="muted">None</p>') + '</div>' +
-    '<div class="panel"><h2>❌ Absent Today (' + tAtt.absent + ')</h2>' + (absentList || '<p class="muted">None</p>') + '</div>' +
+  '<div class="grid3">' +
+    '<div class="panel"><h2>✅ Present (' + tAtt.present + ')</h2>' + (presentList || '<p class="muted">None</p>') + '</div>' +
+    '<div class="panel"><h2>❌ Absent (' + tAtt.absent + ')</h2>' + (absentList || '<p class="muted">None</p>') + '</div>' +
+    '<div class="panel"><h2>🏖️ Holiday / Off (' + tAtt.holidays + ')</h2>' + (holidayList || '<p class="muted">None</p>') + '</div>' +
   '</div>';
 }
 
@@ -1462,10 +1842,13 @@ function reportText(id){
   const iz = insSums(ins);
   const target = num(state.teamTarget);
   const date = state.asOf.split('-').reverse().join('-');
-  let txt = '*GL FTD / MTD PERFORMANCE REPORT*\n📅 *Report Date: ' + date + '*\n\n━━━━━━━━━━━━━━━━━━━━━\n';
+  const ym = getYearMonth();
+  const curMonthName = MONTH_NAMES[getMonth()-1];
+  
+  let txt = '*GL FTD / MTD PERFORMANCE REPORT*\n📅 *Report Date: ' + date + '* (' + curMonthName + ' ' + getYear() + ')\n\n━━━━━━━━━━━━━━━━━━━━━\n';
   if (id === 'all'){
     txt += '📊 *TEAM OVERALL SUMMARY:*\n' +
-      '🎯 *November Target:* ' + cr(target) + '\n' +
+      '🎯 *' + curMonthName + ' Target:* ' + cr(target) + '\n' +
       '⚡ FTD Disbursal: ₹' + fmt(s.ftdL) + ' L (' + s.ftdC + ' Cases)\n' +
       '🚀 *MTD Disbursal:* ₹' + fmt(s.mtdL) + ' L (' + s.mtdC + ' Cases)\n' +
       '📉 *Overall Balance Gap:* ' + cr(Math.max(0, target - s.mtdL)) + '\n' +
@@ -1544,7 +1927,7 @@ function viewInsurance(){
   const rs = insuranceRows().sort((a,b) => b.insMtdPremium - a.insMtdPremium);
   const z = insSums();
   return '<div class="panel"><h2>🛡️ Insurance Cross Sell</h2>' +
-    '<div class="note">Individual SO premium target is fixed at ₹15,000 for November. ' +
+    '<div class="note">Individual SO premium target is fixed at ₹15,000 for each month. ' +
       'Insurance is tracked <b>independently</b> and is never added to GL achievement, targets or cases.</div>' +
     '<div class="statline" style="margin-top:12px">' +
       '<b>Team Premium Target:</b> ₹' + fmt(z.target,0) + '<br>' +
@@ -1575,22 +1958,23 @@ function viewInsurance(){
         '<td>' + fmt(p.insGap,0) + '</td>' +
       '</tr>').join('') +
     '</tbody></table></div>' +
-    '<p class="muted" style="margin-top:8px">Enter today\'s FTD policies & premium. MTD fields are reconciliation-editable — ' +
-      'later FTD entries continue to add on top of the reconciled total.</p>' +
+    '<p class="muted" style="margin-top:8px">Enter today\'s FTD policies & premium. MTD fields are reconciliation-editable.</p>' +
   '</div>';
 }
 
 /* ================= VIEW: CONTROLS ================= */
 function viewControls(){
   const s = sums();
-  return '<div class="panel"><h2>⚙️ GL Controls</h2>' +
+  const ym = getYearMonth();
+  const totalDays = getDaysInMonth(ym);
+  return '<div class="panel"><h2>⚙️ GL Controls & Configuration</h2>' +
     '<div class="formgrid">' +
       '<div class="field"><label>Team Target (₹ Lakhs)</label>' +
         '<input type="number" min="0" value="' + state.teamTarget + '" onchange="setConfig(\'teamTarget\',this.value)"></div>' +
-      '<div class="field"><label>Working Days (Nov)</label>' +
-        '<input type="number" min="1" max="30" value="' + state.workingDays + '" onchange="setConfig(\'workingDays\',this.value)"></div>' +
+      '<div class="field"><label>Working Days (' + MONTH_NAMES[getMonth()-1] + ')</label>' +
+        '<input type="number" min="1" max="' + totalDays + '" value="' + state.workingDays + '" onchange="setConfig(\'workingDays\',this.value)"></div>' +
       '<div class="field"><label>Report Date</label>' +
-        '<input type="date" min="2026-11-01" max="2026-11-30" value="' + state.asOf + '" onchange="setDate(this.value)"></div>' +
+        '<input type="date" min="' + ym + '-01" max="' + ym + '-' + String(totalDays).padStart(2,'0') + '" value="' + state.asOf + '" onchange="setDate(this.value)"></div>' +
     '</div>' +
     '<div class="note" style="margin-top:12px">SO-wise targets total <b>₹' + fmt(s.target) + ' L</b>. ' +
       'Team target is <b>₹' + fmt(state.teamTarget) + ' L</b>. ' +
@@ -1620,7 +2004,7 @@ function viewBackup(){
       'SO controls, morning commitments, insurance data and manual MTD adjustments.</p>' +
     '<div class="actions">' +
       '<button class="btn gold" onclick="exportJSON()">⬇ Export JSON Backup</button>' +
-      '<button class="btn light" onclick="$(\'fileImport\').click()">⬆ Restore JSON Backup</button>' +
+      '<button class="btn light" onclick="document.getElementById(\'fileImport\').click()">⬆ Restore JSON Backup</button>' +
       '<button class="btn light" onclick="exportCSV()">⬇ Export Daily CSV</button>' +
       '<button class="btn danger" onclick="resetAll()">Reset All Data</button>' +
     '</div>' +
@@ -1663,7 +2047,7 @@ function download(name, content, type){
   setTimeout(() => URL.revokeObjectURL(url), 2000);
 }
 function exportJSON(){
-  download('Rajasthan_GL_Nov2026_Backup.json', JSON.stringify(state, null, 2), 'application/json');
+  download('Rajasthan_GL_Backup_' + getYearMonth() + '.json', JSON.stringify(state, null, 2), 'application/json');
   toast('Backup downloaded');
 }
 function exportCSV(){
@@ -1674,7 +2058,8 @@ function exportCSV(){
     'MTD Cases','MTD Disbursement (Lakhs)',
     'Manual MTD Recon Cases','Manual MTD Recon Lakhs'
   ]];
-  for (let i = 1; i <= DAYS; i++){
+  const totalDays = getDaysInMonth();
+  for (let i = 1; i <= totalDays; i++){
     const date = dayKey(i);
     state.people.forEach(p => {
       const d = entry(p.id, date);
@@ -1689,7 +2074,7 @@ function exportCSV(){
       ]);
     });
   }
-  downloadRows('Rajasthan_GL_Nov2026_Daily.csv', records);
+  downloadRows('Rajasthan_GL_Daily_' + getYearMonth() + '.csv', records);
   toast('CSV exported');
 }
 function downloadHistoryCsv(){
@@ -1698,7 +2083,7 @@ function downloadHistoryCsv(){
   toast('History exported');
 }
 function downloadInsuranceCsv(){
-  downloadRows('Rajasthan_Insurance_Nov2026.csv',
+  downloadRows('Rajasthan_Insurance_' + getYearMonth() + '.csv',
     [['SO','Cluster','Premium Target','FTD Premium','FTD Policies','MTD Premium','MTD Policies','Achievement %','Balance'],
       ...insuranceRows().map(p => [
         p.name, p.cluster, INS_TGT,
@@ -1712,19 +2097,20 @@ function downloadInsuranceCsv(){
 /* ================= ATTENDANCE EXPORTS ================= */
 function downloadAttendanceDetailed(){
   const todayDay = Number(state.asOf.slice(-2));
+  const ym = getYearMonth();
   const records = [[
     'Date','SO','Employee Code','Cluster','Attendance',
     'GL Amount (L)','GL Cases','Insurance Premium (₹)','Insurance Policies'
   ]];
   for (let i = 1; i <= todayDay; i++){
-    const date = dayKey(i);
+    const date = dayKey(i, ym);
     state.people.forEach(p => {
       const st = attendanceFor(p.id, date);
       const gl = entry(p.id, date);
       const ins = insEntry(p.id, date);
       records.push([
         date, p.name, p.code, p.cluster,
-        st === 'P' ? 'PRESENT' : 'ABSENT',
+        st === 'P' ? 'PRESENT' : (st === 'H' ? 'HOLIDAY' : 'ABSENT'),
         gl.amount, gl.cases,
         ins.premium, ins.policies
       ]);
@@ -1736,7 +2122,7 @@ function downloadAttendanceDetailed(){
 
 function downloadAttendanceSummary(){
   const records = [[
-    'SO','Employee Code','Cluster','Present Days','Absent Days','Total Days',
+    'SO','Employee Code','Cluster','Present Days','Absent Days','Holidays/Off','Total Working Days',
     'Attendance %','GL MTD (L)','GL Cases MTD','Insurance MTD (₹)'
   ]];
   state.people.forEach(p => {
@@ -1745,7 +2131,7 @@ function downloadAttendanceSummary(){
     const ip = insCalc(p);
     records.push([
       p.name, p.code, p.cluster,
-      s.present, s.absent, s.total,
+      s.present, s.absent, s.holidays, s.total,
       s.pct.toFixed(1),
       cp.mtdL, cp.mtdC,
       ip.insMtdPremium
@@ -1760,14 +2146,17 @@ function copyAttendanceWhatsApp(){
   const dateStr = today.split('-').reverse().join('-');
   const tAtt = todayAttendance();
   const mAtt = teamAttendance();
+  const ym = getYearMonth();
+  const totalDays = getDaysInMonth(ym);
 
   let txt = '📋 *RAJASTHAN ATTENDANCE REPORT*\n';
-  txt += '📅 *Report Date: ' + dateStr + '*\n';
+  txt += '📅 *Report Date: ' + dateStr + '* (' + MONTH_NAMES[getMonth()-1] + ' ' + getYear() + ')\n';
   txt += '━━━━━━━━━━━━━━━━━━━━━\n\n';
   txt += '*TEAM SUMMARY*\n';
   txt += '👥 Total SO: ' + state.people.length + '\n';
   txt += '✅ Present Today: ' + tAtt.present + '\n';
   txt += '❌ Absent Today: ' + tAtt.absent + '\n';
+  txt += '🏖️ Holiday/Off Today: ' + tAtt.holidays + '\n';
   txt += '📊 Today Rate: ' + fmt(tAtt.pct,1) + '%\n';
   txt += '📈 MTD Attendance: ' + fmt(mAtt.pct,1) + '% (' + mAtt.present + 'P / ' + mAtt.absent + 'A)\n\n';
   txt += '━━━━━━━━━━━━━━━━━━━━━\n';
@@ -1778,14 +2167,14 @@ function copyAttendanceWhatsApp(){
     const gl = entry(p.id, today);
     const ins = insEntry(p.id, today);
     const sum = attendanceSummary(p.id);
-    const statusIcon = st === 'P' ? '✅' : '❌';
-    const statusText = st === 'P' ? 'PRESENT' : 'ABSENT';
+    const statusIcon = st === 'P' ? '✅' : (st === 'H' ? '🏖️' : '❌');
+    const statusText = st === 'P' ? 'PRESENT' : (st === 'H' ? 'HOLIDAY' : 'ABSENT');
     let daily = '';
-    for (let d = 1; d <= DAYS; d++){
-      const date = dayKey(d);
+    for (let d = 1; d <= totalDays; d++){
+      const date = dayKey(d, ym);
       if (date > today) break;
       const s = attendanceFor(p.id, date);
-      daily += d + (s === 'P' ? '✓' : '✗') + ' ';
+      daily += d + (s === 'P' ? '✓' : (s === 'H' ? 'H' : '✗')) + ' ';
     }
     txt += (i+1) + '. *' + p.name + '* (' + p.cluster + ')\n';
     txt += '   ' + statusIcon + ' Status: *' + statusText + '*\n';
@@ -1861,19 +2250,20 @@ function render(){
 }
 
 /* ================= FILE IMPORT ================= */
-$('fileImport').addEventListener('change', async e => {
+document.getElementById('fileImport').addEventListener('change', async e => {
   const f = e.target.files && e.target.files[0];
   if (!f) return;
   try {
     const v = JSON.parse(await f.text());
     if (!Array.isArray(v.people) || !v.daily || !v.commitments || !validDay(v.asOf)) {
-      throw new Error('Invalid November GL backup');
+      throw new Error('Invalid GL Command Center backup file');
     }
     if (!confirm('Restore this backup and replace all current browser data?')) return;
     state = migrate(v);
+    applyTheme();
     persist();
     render();
-    toast('Backup restored');
+    toast('Backup restored successfully');
   } catch (err){
     toast('Restore failed: ' + err.message);
   } finally {
@@ -1882,16 +2272,22 @@ $('fileImport').addEventListener('change', async e => {
 });
 
 /* ================= BOOT ================= */
+applyTheme();
 persist();
 render();
+
+// 30-Second Gold Coin Rain upon page open
+window.addEventListener('load', () => {
+  startCoinRain(30);
+});
 </script>
 
 <script>
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('sw.js')
-      .then(reg => console.log('Service Worker registered successfully:', reg.scope))
-      .catch(err => console.log('Service Worker registration failed:', err));
+      .then(reg => console.log('Service Worker registered:', reg.scope))
+      .catch(err => console.log('Service Worker registration skipped:', err));
   });
 }
 </script>

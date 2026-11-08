@@ -253,6 +253,17 @@ textarea{
   .panel{box-shadow:none;border:1px solid #ddd;break-inside:avoid}
   .wrap{padding:0}
 }
+
+/* HOLIDAY & ATTENDANCE H STYLES */
+.att-table td.att-h{
+  text-align:center;font-weight:800;font-size:10px;padding:5px 2px;
+  border-right:1px solid #f0f4fa;background:#fff8e9;color:#b45309;
+}
+.calcell.holiday{border:1.5px dashed #e0ae4a!important;background:#fefbf3}
+.calcell.holiday span{color:#b45309;font-weight:750}
+.calcell.att-h{background:#fff8e9!important;border-color:#fce4a6}
+.calcell.att-h b,.calcell.att-h span{color:#b45309}
+.att-stat.h b{color:var(--amber)}
 </style>
   <link rel="manifest" href="manifest.json">
   <meta name="apple-mobile-web-app-title" content="GL Command">
@@ -310,7 +321,7 @@ const INITIAL = [
 
 const MONTH   = '2026-11';
 const DAYS    = 30;
-const KEY     = 'gl_advanced_nov26_v3';
+const KEY     = 'gl_advanced_nov26_v4';
 const INS_TGT = 15000;
 
 /* ================= UTILITIES ================= */
@@ -339,9 +350,9 @@ function freshState(){
   return {"version": 2, "teamTarget": 2300, "asOf": "2026-11-06", "workingDays": 17, "manualProjection": 100, "projectionMode": "runrate", "people": [{"id": "1", "name": "Abhishek Soni", "cluster": "Jodhpur", "target": 70, "code": "202607", "baseL": 0, "baseC": 0}, {"id": "2", "name": "Adityaraj Singh Sisodiya", "cluster": "Ajmer", "target": 125, "code": "202237", "baseL": 0, "baseC": 0}, {"id": "3", "name": "Arpit Pancholi", "cluster": "Udaipur", "target": 100, "code": "203134", "baseL": 0, "baseC": 0}, {"id": "4", "name": "Avinash Trivedi", "cluster": "Jodhpur", "target": 100, "code": "202551", "baseL": 0, "baseC": -1}, {"id": "5", "name": "Bablu Dhaker", "cluster": "Chittorgarh", "target": 100, "code": "203082", "baseL": 9.19, "baseC": 2}, {"id": "6", "name": "Deepak Singh Rathore", "cluster": "Bikaner", "target": 225, "code": "200235", "baseL": 0, "baseC": 0}, {"id": "7", "name": "Dimple Nagoura", "cluster": "Jodhpur", "target": 225, "code": "201206", "baseL": 0, "baseC": 0}, {"id": "8", "name": "Firoz Khan", "cluster": "Nagaur", "target": 225, "code": "200047", "baseL": 0, "baseC": 0}, {"id": "9", "name": "Gourav Prajapat", "cluster": "Jaipur", "target": 200, "code": "202994", "baseL": 43.36, "baseC": 1}, {"id": "10", "name": "Indarajeet Bishnoi", "cluster": "Jodhpur", "target": 225, "code": "201846", "baseL": 0, "baseC": 0}, {"id": "11", "name": "Kuldeep", "cluster": "Jaipur", "target": 50, "code": "203094", "baseL": 0, "baseC": 0}, {"id": "12", "name": "Maan Kanwar", "cluster": "Jodhpur", "target": 200, "code": "201915", "baseL": 0, "baseC": 0}, {"id": "13", "name": "Ram Kumar Yadav", "cluster": "Jaipur", "target": 50, "code": "203116", "baseL": 0, "baseC": 0}, {"id": "14", "name": "Ravi Kumar", "cluster": "Jaipur", "target": 130, "code": "202835", "baseL": 30.5, "baseC": 1}, {"id": "15", "name": "Rinku Kumar Saini", "cluster": "Jaipur", "target": 50, "code": "203095", "baseL": 0, "baseC": 0}, {"id": "16", "name": "Rishabh Dadha", "cluster": "Jodhpur", "target": 225, "code": "200531", "baseL": 0, "baseC": 0}], "daily": {"2026-11-03": {"2": {"cases": 1, "amount": 9.95}, "4": {"cases": 1, "amount": 10.5}, "6": {"cases": 1, "amount": 26}, "7": {"cases": 1, "amount": 11}, "8": {"cases": 1, "amount": 10}, "10": {"cases": 1, "amount": 13}, "14": {"cases": 0, "amount": 0}}, "2026-11-04": {"3": {"cases": 1, "amount": 7}, "6": {"cases": 1, "amount": 65}}, "2026-11-05": {"3": {"cases": 1, "amount": 52}, "6": {"cases": 1, "amount": 17}, "12": {"cases": 1, "amount": 33}}, "2026-11-06": {"4": {"cases": 1, "amount": 2}, "5": {"cases": 1, "amount": 12.39}, "6": {"cases": 1, "amount": 4}, "11": {"cases": 1, "amount": 5.53}, "12": {"cases": 1, "amount": 26}, "14": {"cases": 2, "amount": 29}, "15": {"cases": 1, "amount": 7.49}}}, "commitments": {}, "insurance": {"daily": {}, "base": {"10": {"policies": 1, "premium": 1499}, "13": {"policies": 1, "premium": 13428}}}, "history": [{"time": "7/11/2026, 6:31:27 am", "action": "Report date change", "detail": "Report date = 2026-11-06"}, {"time": "7/11/2026, 6:35:40 am", "action": "FTD entry", "detail": "Bablu Dhaker \u2022 cases = 1 \u2022 2026-11-06"}, {"time": "7/11/2026, 6:35:45 am", "action": "FTD entry", "detail": "Bablu Dhaker \u2022 amount = 12.39 \u2022 2026-11-06"}, {"time": "7/11/2026, 6:35:51 am", "action": "FTD entry", "detail": "Deepak Singh Rathore \u2022 cases = 1 \u2022 2026-11-06"}, {"time": "7/11/2026, 6:35:54 am", "action": "FTD entry", "detail": "Deepak Singh Rathore \u2022 amount = 4 \u2022 2026-11-06"}, {"time": "7/11/2026, 6:38:07 am", "action": "FTD entry", "detail": "Rinku Kumar Saini \u2022 amount = 7.49 \u2022 2026-11-06"}, {"time": "7/11/2026, 6:38:57 am", "action": "FTD entry", "detail": "Avinash Trivedi \u2022 amount = 2 \u2022 2026-11-06"}, {"time": "7/11/2026, 6:41:06 am", "action": "FTD entry", "detail": "Ravi Kumar \u2022 amount = 29 \u2022 2026-11-06"}, {"time": "7/11/2026, 6:42:24 am", "action": "FTD entry", "detail": "Maan Kanwar \u2022 amount = 26 \u2022 2026-11-06"}, {"time": "7/11/2026, 12:19:52 pm", "action": "FTD entry", "detail": "Kuldeep \u2022 amount = 5.53 \u2022 2026-11-06"}]};
 }
 function migrate(s){
-  s.version = 2;
-  s.asOf = validDay(s.asOf) ? s.asOf : '2026-11-08';
-  s.workingDays = num(s.workingDays) || 23;
+  s.version = 3;
+  s.asOf = validDay(s.asOf) ? s.asOf : '2026-11-06';
+  s.workingDays = num(s.workingDays) || 17;
   s.teamTarget  = num(s.teamTarget)  || 2300;
   s.projectionMode = s.projectionMode || 'runrate';
   s.manualProjection = num(s.manualProjection) || 100;
@@ -351,8 +362,57 @@ function migrate(s){
   s.insurance.daily = s.insurance.daily || {};
   s.insurance.base  = s.insurance.base  || {};
   s.history = s.history || [];
+  s.holidays = s.holidays || {
+    "2026-11-01": "Sunday",
+    "2026-11-08": "Sunday / Chhoti Diwali",
+    "2026-11-09": "Diwali",
+    "2026-11-10": "Govardhan Puja",
+    "2026-11-11": "Bhai Dooj",
+    "2026-11-15": "Sunday",
+    "2026-11-22": "Sunday",
+    "2026-11-24": "Guru Nanak Jayanti",
+    "2026-11-29": "Sunday"
+  };
   s.people = (s.people || []).map(p => ({...p, target: num(p.target), baseL: num(p.baseL), baseC: num(p.baseC)}));
   return s;
+}
+
+/* ================= HOLIDAY HELPERS ================= */
+function isHoliday(date){
+  return Boolean(state.holidays && state.holidays[date]);
+}
+function toggleHoliday(date, reason){
+  if (!validDay(date)) { toast('Select a valid November 2026 date'); return; }
+  state.holidays = state.holidays || {};
+  if (state.holidays[date]) {
+    const oldReason = state.holidays[date];
+    delete state.holidays[date];
+    pushHistory('Holiday removed', date + ' (' + oldReason + ')');
+    toast('Holiday removed for ' + date);
+  } else {
+    state.holidays[date] = reason || 'Holiday';
+    pushHistory('Holiday added', date + ' (' + state.holidays[date] + ')');
+    toast('Holiday added: ' + state.holidays[date]);
+  }
+  state.workingDays = 30 - Object.keys(state.holidays).length;
+  persist(); render();
+}
+function fillSundays(){
+  state.holidays = state.holidays || {};
+  let count = 0;
+  for (let i = 1; i <= DAYS; i++){
+    if (new Date(2026, 10, i).getDay() === 0){
+      const k = dayKey(i);
+      if (!state.holidays[k]){
+        state.holidays[k] = 'Sunday';
+        count++;
+      }
+    }
+  }
+  state.workingDays = 30 - Object.keys(state.holidays).length;
+  pushHistory('Holidays updated', 'All Sundays marked as off');
+  persist(); render();
+  toast(count ? count + ' Sundays marked off' : 'Sundays already marked');
 }
 function loadState(){
   try {
@@ -460,18 +520,25 @@ function insSums(rs){
 function attendanceFor(id, date){
   const gl  = entry(id, date);
   const ins = insEntry(id, date);
-  return (gl.amount > 0 || ins.premium > 0) ? 'P' : 'A';
+  if (gl.amount > 0 || ins.premium > 0) return 'P';
+  if (isHoliday(date)) return 'H';
+  return 'A';
 }
 function attendanceSummary(id){
-  let present = 0, absent = 0;
+  let present = 0, absent = 0, holidays = 0;
   for (let i = 1; i <= DAYS; i++){
     const date = dayKey(i);
     if (date > state.asOf) break;
-    if (attendanceFor(id, date) === 'P') present++;
+    const st = attendanceFor(id, date);
+    if (st === 'P') present++;
+    else if (st === 'H') holidays++;
     else absent++;
   }
-  const total = present + absent;
-  return { present, absent, total, pct: total ? 100 * present / total : 0 };
+  const workingDaysElapsed = present + absent;
+  return {
+    present, absent, holidays, total: workingDaysElapsed,
+    pct: workingDaysElapsed ? 100 * present / workingDaysElapsed : (present ? 100 : 0)
+  };
 }
 function teamAttendance(){
   let present = 0, absent = 0;
@@ -498,12 +565,19 @@ function elapsed(){
   const date = Number(state.asOf.slice(-2));
   let d = 0;
   for (let i = 1; i <= date; i++){
-    if (new Date(2026,10,i).getDay() !== 0) d++;
+    const dt = dayKey(i);
+    if (!isHoliday(dt)) d++;
   }
   return d;
 }
 function remaining(){
-  return Math.max(0, num(state.workingDays) - elapsed());
+  const date = Number(state.asOf.slice(-2));
+  let r = 0;
+  for (let i = date + 1; i <= DAYS; i++){
+    const dt = dayKey(i);
+    if (!isHoliday(dt)) r++;
+  }
+  return r;
 }
 function projected(){
   const s = sums(), e = elapsed(), r = remaining();
@@ -1248,10 +1322,14 @@ function viewAttendance(){
   const mAtt = teamAttendance();
 
   let head = '<th style="min-width:150px">SO / Cluster</th>';
-  for (let i = 1; i <= todayDay; i++) head += '<th class="att-head">' + i + '</th>';
-  head += '<th style="text-align:center;min-width:38px">P</th>' +
-          '<th style="text-align:center;min-width:38px">A</th>' +
-          '<th style="text-align:center;min-width:50px">%</th>';
+  for (let i = 1; i <= todayDay; i++) {
+    const isHol = isHoliday(dayKey(i));
+    head += '<th class="att-head" style="' + (isHol ? 'color:#b45309;background:#fff6e5;' : '') + '">' + i + (isHol ? 'H' : '') + '</th>';
+  }
+  head += '<th style="text-align:center;min-width:34px">P</th>' +
+          '<th style="text-align:center;min-width:34px">A</th>' +
+          '<th style="text-align:center;min-width:34px">H</th>' +
+          '<th style="text-align:center;min-width:48px">%</th>';
 
   let body = '';
   people.forEach(p => {
@@ -1267,6 +1345,7 @@ function viewAttendance(){
       cells +
       '<td style="text-align:center"><b style="color:var(--green)">' + sum.present + '</b></td>' +
       '<td style="text-align:center"><b style="color:var(--red)">' + sum.absent + '</b></td>' +
+      '<td style="text-align:center"><b style="color:#b45309">' + sum.holidays + '</b></td>' +
       '<td style="text-align:center"><b>' + fmt(sum.pct,1) + '%</b></td>' +
     '</tr>';
   });
@@ -1283,7 +1362,7 @@ function viewAttendance(){
       const date = dayKey(d);
       const future = date > today;
       const st = future ? null : attendanceFor(dp.id, d);
-      const cls = future ? 'future' : (st === 'P' ? 'att-p' : 'att-a');
+      const cls = future ? 'future' : (st === 'P' ? 'att-p' : (st === 'H' ? 'att-h' : 'att-a'));
       const bg = future ? '' : (st === 'P' ? 'background:#def7eb;' : 'background:#ffe7ea;');
       cal += '<div class="calcell ' + cls + (date === today ? ' today' : '') + '" style="' + bg + '">' +
         '<b>' + d + '</b><span>' + (future ? '' : st) + '</span></div>';

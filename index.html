@@ -381,7 +381,7 @@ const INITIAL = [
   {id:"16",name:"Rishabh Dadha",             cluster:"Jodhpur",      target:225, code:"200531", baseL:0, baseC:0}
 ];
 
-const KEY     = 'gl_command_center_v6';
+const KEY     = 'gl_command_center_v7';
 const INS_TGT = 15000;
 
 const MONTH_NAMES = [
@@ -972,9 +972,24 @@ function filtered(){
 function setTab(t){ tab = t; render(); window.scrollTo({top:0, behavior:'smooth'}); }
 function setDate(date){
   if (!validDay(date)){ toast('Choose a valid date'); return; }
+  const oldYM = getYearMonth();
   state.asOf = date;
+  const newYM = getYearMonth();
+  if (newYM !== oldYM){
+    const maxDays = getDaysInMonth(newYM);
+    const holCount = Object.keys(state.holidays || {}).filter(d => d.startsWith(newYM)).length;
+    state.workingDays = Math.max(1, maxDays - holCount);
+  }
   pushHistory('Report date change', 'Report date = ' + date);
   persist(); render();
+}
+
+function shiftMonth(delta){
+  let y = getYear();
+  let m = getMonth() + delta;
+  if (m < 1){ m = 12; y--; }
+  else if (m > 12){ m = 1; y++; }
+  changeMonthYear(y, m);
 }
 function setFilter(type, value){
   if (type === 'cluster') filterCluster = value;
@@ -1222,7 +1237,7 @@ function toolbar(){
   });
 
   let yearOptions = '';
-  [2025, 2026, 2027, 2028].forEach(y => {
+  [2024, 2025, 2026, 2027, 2028, 2029, 2030, 2031, 2032, 2033, 2034, 2035].forEach(y => {
     yearOptions += '<option value="' + y + '" ' + (y === curY ? 'selected' : '') + '>' + y + '</option>';
   });
 
@@ -1233,7 +1248,7 @@ function toolbar(){
       '<div class="field"><label>Year</label>' +
         '<select onchange="changeMonthYear(this.value, ' + curM + ')">' + yearOptions + '</select></div>' +
       '<div class="field"><label>Report Date</label>' +
-        '<input type="date" min="' + ym + '-01" max="' + ym + '-' + String(totalDays).padStart(2,'0') + '" value="' + state.asOf + '" onchange="setDate(this.value)"></div>' +
+        '<input type="date" min="2024-01-01" max="2035-12-31" value="' + state.asOf + '" onchange="setDate(this.value)"></div>' +
       '<div class="field"><label>Cluster</label>' +
         '<select onchange="setFilter(\'cluster\',this.value)"><option>All</option>' +
         clusterList.map(c => '<option ' + (filterCluster === c ? 'selected' : '') + '>' + esc(c) + '</option>').join('') +
@@ -1636,7 +1651,11 @@ function viewCalendar(){
   const hList = Object.entries(state.holidays || {}).filter(([d]) => d.startsWith(ym)).sort();
 
   return '<div class="panel">' +
-    '<h2>📅 ' + MONTH_NAMES[getMonth()-1] + ' ' + getYear() + ' Heatmap & Working Days</h2>' +
+    '<div class="flex between" style="align-items:center;margin-bottom:12px">
+      <button class="btn light" onclick="shiftMonth(-1)">◀ Prev Month</button>
+      <h2 style="margin:0">📅 ' + MONTH_NAMES[getMonth()-1] + ' ' + getYear() + ' Heatmap</h2>
+      <button class="btn light" onclick="shiftMonth(1)">Next Month ▶</button>
+    </div>' +
     '<div class="note" style="margin-bottom:12px">Tap any date to jump report date. ' +
       'Dashed border = Holiday / Off-day. ' + (bestDay > 0 && vals[bestDay-1] > 0 ? 'Best day: <b>' + bestDay + ' ' + MONTH_NAMES[getMonth()-1].slice(0,3) + '</b> (₹' + fmt(vals[bestDay-1]) + ' L).' : '') + '</div>' +
     '<div class="cal">' + cells + '</div>' +
@@ -1649,7 +1668,7 @@ function viewCalendar(){
   '<div class="panel">' +
     '<h2>🗓️ Manual Holiday & Off-Day Calendar</h2>' +
     '<div class="formgrid">' +
-      '<div class="field"><label>Select Date</label><input type="date" id="calHolDate" min="' + ym + '-01" max="' + ym + '-' + String(totalDays).padStart(2,'0') + '" value="' + state.asOf + '"></div>' +
+      '<div class="field"><label>Select Date</label><input type="date" id="calHolDate" min="2024-01-01" max="2035-12-31" value="' + state.asOf + '"></div>' +
       '<div class="field"><label>Holiday Reason / Festival</label><input type="text" id="calHolReason" placeholder="e.g. Festival / Company Holiday"></div>' +
     '</div>' +
     '<div class="actions" style="margin-top:10px">' +
@@ -1967,14 +1986,29 @@ function viewControls(){
   const s = sums();
   const ym = getYearMonth();
   const totalDays = getDaysInMonth(ym);
+  const curY = getYear();
+  const curM = getMonth();
+  let mOpts = '';
+  MONTH_NAMES.forEach((m, idx) => {
+    mOpts += '<option value="' + (idx+1) + '" ' + (idx+1 === curM ? 'selected' : '') + '>' + m + '</option>';
+  });
+  let yOpts = '';
+  [2024, 2025, 2026, 2027, 2028, 2029, 2030, 2031, 2032, 2033, 2034, 2035].forEach(y => {
+    yOpts += '<option value="' + y + '" ' + (y === curY ? 'selected' : '') + '>' + y + '</option>';
+  });
+
   return '<div class="panel"><h2>⚙️ GL Controls & Configuration</h2>' +
-    '<div class="formgrid">' +
+    '<div class="formgrid" style="grid-template-columns:repeat(auto-fit,minmax(140px,1fr))">' +
+      '<div class="field"><label>Active Month</label>' +
+        '<select onchange="changeMonthYear(' + curY + ', this.value)">' + mOpts + '</select></div>' +
+      '<div class="field"><label>Active Year (Up to 2035)</label>' +
+        '<select onchange="changeMonthYear(this.value, ' + curM + ')">' + yOpts + '</select></div>' +
       '<div class="field"><label>Team Target (₹ Lakhs)</label>' +
         '<input type="number" min="0" value="' + state.teamTarget + '" onchange="setConfig(\'teamTarget\',this.value)"></div>' +
       '<div class="field"><label>Working Days (' + MONTH_NAMES[getMonth()-1] + ')</label>' +
         '<input type="number" min="1" max="' + totalDays + '" value="' + state.workingDays + '" onchange="setConfig(\'workingDays\',this.value)"></div>' +
-      '<div class="field"><label>Report Date</label>' +
-        '<input type="date" min="' + ym + '-01" max="' + ym + '-' + String(totalDays).padStart(2,'0') + '" value="' + state.asOf + '" onchange="setDate(this.value)"></div>' +
+      '<div class="field"><label>Report Date (Any Future Date)</label>' +
+        '<input type="date" min="2024-01-01" max="2035-12-31" value="' + state.asOf + '" onchange="setDate(this.value)"></div>' +
     '</div>' +
     '<div class="note" style="margin-top:12px">SO-wise targets total <b>₹' + fmt(s.target) + ' L</b>. ' +
       'Team target is <b>₹' + fmt(state.teamTarget) + ' L</b>. ' +

@@ -1248,44 +1248,71 @@ function viewCalendar(){
     const alpha = (0.07 + intensity * 0.68).toFixed(2);
     const future = date > state.asOf;
     const today = date === state.asOf;
-    const bg = future ? '' : 'background:rgba(59,116,196,' + alpha + ');';
-    cells += '<div class="calcell ' + (future ? 'future' : '') + ' ' + (today ? 'today' : '') + '"' +
-      ' style="' + bg + '" onclick="setDate(\'' + date + '\')" title="' + date + ' — ₹' + fmt(v) + ' L">' +
-      '<b>' + d + '</b><span>' + (v ? fmt(v,0) : '–') + '</span></div>';
+    const hol = isHoliday(date);
+    const holTitle = hol ? ' • Holiday: ' + state.holidays[date] : '';
+    const bg = future ? '' : (hol && !v ? 'background:#fefbf3;' : 'background:rgba(59,116,196,' + alpha + ');');
+    cells += '<div class="calcell ' + (future ? 'future' : '') + ' ' + (today ? 'today' : '') + (hol ? ' holiday' : '') + '"' +
+      ' style="' + bg + '" onclick="setDate('' + date + '')" title="' + date + holTitle + ' — ₹' + fmt(v) + ' L">' +
+      '<b>' + d + '</b><span>' + (hol && !v ? 'OFF' : (v ? fmt(v,0) : '–')) + '</span></div>';
   }
   const s = sums();
   const bestDay = vals.indexOf(Math.max(...vals)) + 1;
+  const hList = Object.entries(state.holidays || {}).sort();
+
   return '<div class="panel">' +
-    '<h2>📅 November Heatmap</h2>' +
-    '<div class="note" style="margin-bottom:12px">Tap any date to jump the report to that day. ' +
-      'Darker blue = higher disbursement. ' + (bestDay > 0 && vals[bestDay-1] > 0 ? 'Best day so far: <b>Nov ' + bestDay + '</b> (₹' + fmt(vals[bestDay-1]) + ' L).' : '') + '</div>' +
+    '<h2>📅 November Heatmap & Working Days</h2>' +
+    '<div class="note" style="margin-bottom:12px">Tap any date to jump report date. ' +
+      'Dashed border = Holiday / Off-day. ' + (bestDay > 0 && vals[bestDay-1] > 0 ? 'Best day: <b>Nov ' + bestDay + '</b> (₹' + fmt(vals[bestDay-1]) + ' L).' : '') + '</div>' +
     '<div class="cal">' + cells + '</div>' +
-    '<div class="actions"><span class="pill">MTD ₹' + fmt(s.mtdL) + ' L • ' + s.mtdC + ' cases</span>' +
-      '<span class="pill">Days with business: ' + vals.filter(v => v > 0).length + '</span></div>' +
+    '<div class="actions">' +
+      '<span class="pill">MTD ₹' + fmt(s.mtdL) + ' L • ' + s.mtdC + ' cases</span>' +
+      '<span class="pill">Working Days: ' + (30 - hList.length) + '</span>' +
+      '<span class="pill warn">Holidays: ' + hList.length + '</span>' +
+    '</div>' +
+  '</div>' +
+  '<div class="panel">' +
+    '<h2>🗓️ Manual Holiday & Off-Day Calendar</h2>' +
+    '<div class="formgrid">' +
+      '<div class="field"><label>Select Date</label><input type="date" id="calHolDate" min="2026-11-01" max="2026-11-30" value="' + state.asOf + '"></div>' +
+      '<div class="field"><label>Holiday Reason / Festival</label><input type="text" id="calHolReason" placeholder="e.g. Festival / Company Holiday"></div>' +
+    '</div>' +
+    '<div class="actions" style="margin-top:10px">' +
+      '<button class="btn gold" onclick="toggleHoliday($('calHolDate').value, $('calHolReason').value || 'Holiday')">Mark / Unmark Holiday</button>' +
+      '<button class="btn light" onclick="fillSundays()">⚡ Mark All Sundays Off</button>' +
+    '</div>' +
+    '<h3 style="margin-top:14px">Active Holidays (' + hList.length + ')</h3>' +
+    '<div class="flex" style="gap:6px">' +
+      (hList.length ? hList.map(([d, r]) =>
+        '<span class="pill warn" style="display:inline-flex;align-items:center;gap:4px">' +
+          d.slice(8) + ' Nov: ' + esc(r) +
+          '<b style="cursor:pointer;color:#a8283a;margin-left:4px" onclick="toggleHoliday('' + d + '')">✕</b></span>'
+      ).join('') : '<span class="muted">No holidays configured yet.</span>') +
+    '</div>' +
   '</div>' +
   '<div class="panel"><h2>📈 Daily Trend</h2>' + trendChart() + '</div>' +
   '<div class="panel"><h2>📆 Date-wise Totals</h2>' +
     '<div class="scroll"><table><thead><tr>' +
-      '<th>Date</th><th>Cases</th><th>Amount ₹L</th><th>Commitment ₹L</th><th>Variance ₹L</th><th></th>' +
+      '<th>Date</th><th>Status</th><th>Cases</th><th>Amount ₹L</th><th>Commitment ₹L</th><th>Variance ₹L</th><th></th>' +
     '</tr></thead><tbody>' +
     Array.from({length:DAYS}, (_, i) => {
       const date = dayKey(i+1);
       const d = dateTotals(date);
       const future = date > state.asOf;
+      const hol = isHoliday(date);
       return '<tr style="' + (future ? 'opacity:.4' : '') + '">' +
-        '<td>' + date + '</td>' +
+        '<td><b>' + date + '</b></td>' +
+        '<td>' + (hol ? '<span class="pill warn">' + esc(state.holidays[date]) + '</span>' : '<span class="pill good">Working</span>') + '</td>' +
         '<td>' + (future ? '—' : d.cases) + '</td>' +
         '<td>' + (future ? '—' : fmt(d.amount)) + '</td>' +
         '<td>' + (future ? '—' : fmt(d.commitAmount)) + '</td>' +
         '<td>' + (future ? '—' : fmt(d.amount - d.commitAmount)) + '</td>' +
-        '<td>' + (future ? '' : '<button class="btn ghost" onclick="setDate(\'' + date + '\');setTab(\'tracker\')">Edit</button>') + '</td>' +
+        '<td>' + (future ? '' : '<button class="btn ghost" onclick="setDate('' + date + '');setTab('tracker')">Edit</button>') + '</td>' +
       '</tr>';
     }).join('') +
     '</tbody></table></div>' +
   '</div>';
 }
 
-/* ================= VIEW: ALERTS ================= */
 function viewAlerts(){
   const rs = rows();
   const paceLine = 100 * elapsed() / Math.max(1, num(state.workingDays));

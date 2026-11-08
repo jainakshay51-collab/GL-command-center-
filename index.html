@@ -381,7 +381,7 @@ const INITIAL = [
   {id:"16",name:"Rishabh Dadha",             cluster:"Jodhpur",      target:225, code:"200531", baseL:0, baseC:0}
 ];
 
-const KEY     = 'gl_command_center_v7';
+const KEY     = 'gl_command_center_v8';
 const INS_TGT = 15000;
 
 const MONTH_NAMES = [
@@ -452,6 +452,7 @@ function freshState(){
     workingDays: 17,
     manualProjection: 100,
     projectionMode: "runrate",
+    loans: [],
     people: clone(INITIAL),
     daily: {
       "2026-11-03": {
@@ -522,6 +523,7 @@ function migrate(s){
   s.theme = s.theme || 'navy';
   s.workingDays = num(s.workingDays) || 17;
   s.teamTarget  = num(s.teamTarget)  || 2300;
+  s.loans = s.loans || [];
   s.projectionMode = s.projectionMode || 'runrate';
   s.manualProjection = num(s.manualProjection) || 100;
   s.daily = s.daily || {};
@@ -1263,6 +1265,217 @@ function toolbar(){
     '</div>' +
   '</div>';
 }
+
+
+/* ================= LOAN PUNCHING & BANK MIS ================= */
+function addManualLoan(form){
+  const bankName = form.bankName.value.trim();
+  const loanAcNo = form.loanAcNo.value.trim();
+  const loanAmount = num(form.loanAmount.value);
+  const loanDate = form.loanDate.value;
+  const soId = form.soId.value;
+
+  if (!bankName || !loanAcNo || !loanAmount || !loanDate || !soId){
+    toast('Please fill all loan punching fields');
+    return;
+  }
+  const so = state.people.find(x => x.id === soId);
+  const soName = so ? so.name : 'Unknown';
+
+  state.loans = state.loans || [];
+  state.loans.push({
+    id: 'loan_' + Date.now() + '_' + Math.floor(Math.random()*1000),
+    bankName, loanAcNo, loanAmount, loanDate, soId, soName,
+    status: 'Verified', source: 'Manual Punch'
+  });
+
+  pushHistory('Loan Punching', 'Bank: ' + bankName + ' • A/c: ' + loanAcNo + ' • ₹' + loanAmount + 'L • SO: ' + soName);
+  persist(); render();
+  toast('Loan punched and verified successfully');
+  form.reset();
+}
+
+function deleteLoan(id){
+  state.loans = state.loans || [];
+  const l = state.loans.find(x => x.id === id);
+  if (!l) return;
+  if (!confirm('Delete loan record for A/c ' + l.loanAcNo + '?')) return;
+  state.loans = state.loans.filter(x => x.id !== id);
+  pushHistory('Loan Deleted', 'A/c: ' + l.loanAcNo);
+  persist(); render();
+  toast('Loan record deleted');
+}
+
+function processBankMISUpload(input){
+  const file = input.files && input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e){
+    const text = e.target.result;
+    parseBankMISCSV(text);
+  };
+  reader.readAsText(file);
+  input.value = '';
+}
+
+function parseBankMISCSV(text){
+  const lines = text.split(/\r?\n/);
+  state.loans = state.loans || [];
+  let addedCount = 0;
+
+  // Expected CSV columns: Bank Name, Loan A/c No, Loan Amount (Lakhs), Loan Date (YYYY-MM-DD), SO Name
+  for (let i = 1; i < lines.length; i++){
+    const line = lines[i].trim();
+    if (!line) continue;
+    const parts = line.split(/,|\t/);
+    if (parts.length < 5) continue;
+
+    const bankName = parts[0].replace(/^"|"$/g, '').trim();
+    const loanAcNo = parts[1].replace(/^"|"$/g, '').trim();
+    const loanAmount = num(parts[2].replace(/^"|"$/g, '').trim());
+    const loanDate = parts[3].replace(/^"|"$/g, '').trim();
+    const rawSoName = parts[4].replace(/^"|"$/g, '').trim();
+
+    // Match SO Name fuzzy against state.people
+    let matchedSo = state.people.find(p => p.name.toLowerCase() === rawSoName.toLowerCase());
+    if (!matchedSo){
+      matchedSo = state.people.find(p => p.name.toLowerCase().includes(rawSoName.toLowerCase()) || rawSoName.toLowerCase().includes(p.name.toLowerCase()));
+    }
+    const soId = matchedSo ? matchedSo.id : '';
+    const soName = matchedSo ? matchedSo.name : rawSoName;
+    const status = matchedSo ? 'Auto-Verified' : 'Review Needed';
+
+    // Check duplicate by loanAcNo
+    const existing = state.loans.find(x => x.loanAcNo === loanAcNo);
+    if (!existing){
+      state.loans.push({
+        id: 'loan_recon_' + Date.now() + '_' + i,
+        bankName, loanAcNo, loanAmount, loanDate, soId, soName,
+        status, source: 'Bank MIS Upload'
+      });
+      addedCount++;
+    }
+  }
+
+  pushHistory('Bank MIS Import', 'Imported and auto-verified ' + addedCount + ' loan records from bank MIS');
+  persist(); render();
+  toast(addedCount + ' loan records reconciled successfully');
+}
+
+function viewLoans(){
+  state.loans = state.loans || [];
+  const totalAmt = state.loans.reduce((a,b) => a + b.loanAmount, 0);
+
+  return '<div class="panel"><h2>📝 Loan Data Punching</h2>' +
+    '<div class="note" style="margin-bottom:12px">Punch individual loan disbursement records manually. Required fields: Bank Name, Loan A/c No, Loan Amount, Loan Date, and Case Done By (SO Name).</div>' +
+    '<form onsubmit="event.preventDefault(); addManualLoan(this);" class="formgrid">' +
+      '<div class="field"><label>Bank Name</label><input type="text" name="bankName" placeholder="e.g. HDFC / SBI / Axis" required></div>' +
+      '<div class="field"><label>Loan A/c No.</label><input type="text" name="loanAcNo" placeholder="Account Number" required></div>' +
+      '<div class="field"><label>Loan Amount (₹ Lakhs)</label><input type="number" min="0" step="0.01" name="loanAmount" placeholder="e.g. 12.50" required></div>' +
+      '<div class="field"><label>Loan Date</label><input type="date" name="loanDate" value="' + state.asOf + '" required></div>' +
+      '<div class="field"><label>Case Done By (SO Name)</label><select name="soId" required>' +
+        '<option value="">Select Service Officer</option>' +
+        state.people.map(p => '<option value="' + p.id + '">' + esc(p.name) + ' (' + esc(p.cluster) + ')</option>').join('') +
+      '</select></div>' +
+    '</form>' +
+    '<div class="actions" style="margin-top:10px">' +
+      '<button class="btn gold" onclick="addManualLoan(this.form)">+ Punch & Verify Loan</button>' +
+    '</div>' +
+  '</div>' +
+  '<div class="panel"><div class="flex between"><h2>📋 Punched Loans Ledger</h2>' +
+    '<span class="pill good">Total Punched: ₹' + fmt(totalAmt) + ' L (' + state.loans.length + ' cases)</span></div>' +
+    '<div class="scroll"><table><thead><tr>' +
+      '<th>Bank Name</th><th>Loan A/c No</th><th>Loan Amount (₹L)</th><th>Loan Date</th><th>Case Done By (SO)</th><th>Status</th><th>Source</th><th></th>' +
+    '</tr></thead><tbody>' +
+    (state.loans.length ? state.loans.map(l =>
+      '<tr>' +
+        '<td><b>' + esc(l.bankName) + '</b></td>' +
+        '<td>' + esc(l.loanAcNo) + '</td>' +
+        '<td><b>' + fmt(l.loanAmount) + '</b></td>' +
+        '<td>' + esc(l.loanDate) + '</td>' +
+        '<td>' + esc(l.soName) + '</td>' +
+        '<td><span class="pill ' + (l.status === 'Verified' || l.status === 'Auto-Verified' ? 'good' : 'warn') + '">' + esc(l.status) + '</span></td>' +
+        '<td><span class="pill info">' + esc(l.source) + '</span></td>' +
+        '<td><button class="btn danger" onclick="deleteLoan(\'' + l.id + '\')">Delete</button></td>' +
+      '</tr>'
+    ).join('') : '<tr><td colspan="8" class="muted center">No loan records punched yet.</td></tr>') +
+    '</tbody></table></div>' +
+  '</div>';
+}
+
+function viewBankMis(){
+  state.loans = state.loans || [];
+  // Group by Bank Name
+  const bankMap = {};
+  state.loans.forEach(l => {
+    const b = l.bankName || 'Other';
+    bankMap[b] = bankMap[b] || { bank: b, count: 0, amount: 0 };
+    bankMap[b].count++;
+    bankMap[b].amount += l.loanAmount;
+  });
+  const bankSummary = Object.values(bankMap).sort((a,b) => b.amount - a.amount);
+  const totalAmt = state.loans.reduce((a,b) => a + b.loanAmount, 0);
+
+  return '<div class="panel"><h2>📊 Bank MIS & Portfolio Summary</h2>' +
+    '<div class="note" style="margin-bottom:12px">Consolidated Management Information System (MIS) breakdown of loan disbursements mapped by Partner Bank, Loan Account Number, Amount, Date, and SO Name.</div>' +
+    '<div class="grid3" style="margin-top:10px">' +
+      '<div class="kpi gold"><div class="kpi-body"><label>Total Bank MIS Volume</label><strong>₹' + fmt(totalAmt) + ' L</strong><small>' + state.loans.length + ' Total Loans</small></div></div>' +
+      '<div class="kpi green"><div class="kpi-body"><label>Partner Banks</label><strong>' + bankSummary.length + ' Banks</strong><small>Active Lenders</small></div></div>' +
+      '<div class="kpi blue"><div class="kpi-body"><label>Auto-Reconciled</label><strong>' + state.loans.filter(x=>x.status.includes('Verified')).length + ' Cases</strong><small>SO Tagged</small></div></div>' +
+    '</div>' +
+  '</div>' +
+  '<div class="panel"><h2>🏦 Bank-wise Distribution</h2>' +
+    '<div class="scroll"><table><thead><tr>' +
+      '<th>Bank Name</th><th>Total Cases</th><th>Disbursed Amount (₹L)</th><th>% Share</th>' +
+    '</tr></thead><tbody>' +
+    (bankSummary.length ? bankSummary.map(b =>
+      '<tr>' +
+        '<td><b>' + esc(b.bank) + '</b></td>' +
+        '<td>' + b.count + '</td>' +
+        '<td><b>₹' + fmt(b.amount) + ' L</b></td>' +
+        '<td>' + fmt(totalDays ? (100 * b.amount / Math.max(1, totalAmt)) : 0, 1) + '%</td>' +
+      '</tr>'
+    ).join('') : '<tr><td colspan="4" class="muted center">No bank MIS data available.</td></tr>') +
+    '</tbody></table></div>' +
+  '</div>' +
+  '<div class="panel"><h2>📋 Full Bank MIS Ledger</h2>' +
+    '<div class="scroll"><table><thead><tr>' +
+      '<th>Bank Name</th><th>Loan A/c No</th><th>Loan Amount (₹L)</th><th>Loan Date</th><th>Case Done By (SO Name)</th><th>Status</th>' +
+    '</tr></thead><tbody>' +
+    (state.loans.length ? state.loans.map(l =>
+      '<tr>' +
+        '<td><b>' + esc(l.bankName) + '</b></td>' +
+        '<td>' + esc(l.loanAcNo) + '</td>' +
+        '<td><b>' + fmt(l.loanAmount) + '</b></td>' +
+        '<td>' + esc(l.loanDate) + '</td>' +
+        '<td>' + esc(l.soName) + '</td>' +
+        '<td><span class="pill ' + (l.status.includes('Verified') ? 'good' : 'warn') + '">' + esc(l.status) + '</span></td>' +
+      '</tr>'
+    ).join('') : '<tr><td colspan="6" class="muted center">No records found.</td></tr>') +
+    '</tbody></table></div>' +
+  '</div>';
+}
+
+function viewRecon(){
+  return '<div class="panel"><h2>📂 Bank MIS Auto-Reconciliation & Upload</h2>' +
+    '<div class="note" style="margin-bottom:12px">Upload the official Bank MIS report (CSV format with columns: <b>Bank Name, Loan A/c No, Loan Amount (₹L), Loan Date, Case Done By (SO Name)</b>). The system will automatically ingest, match, and tag records to respective Service Officers.</div>' +
+    '<div class="formgrid">' +
+      '<div class="field"><label>Select Bank MIS CSV File</label>' +
+        '<input type="file" accept=".csv,text/csv" onchange="processBankMISUpload(this)"></div>' +
+    '</div>' +
+    '<div class="actions" style="margin-top:14px">' +
+      '<button class="btn gold" onclick="downloadSampleMISCSV()">⬇ Download Sample MIS CSV</button>' +
+      '<button class="btn danger" onclick="if(confirm(\'Clear all punched & imported loans?\')){state.loans=[];persist();render();toast(\'Loans cleared\');}">Clear All Loans</button>' +
+    '</div>' +
+  '</div>';
+}
+
+function downloadSampleMISCSV(){
+  const sample = "Bank Name,Loan A/c No,Loan Amount (₹L),Loan Date,Case Done By\nHDFC Bank,HDFC982341,12.50,2026-11-06,Abhishek Soni\nSBI,SBI451209,25.00,2026-11-06,Ravi Kumar\nAxis Bank,AXIS778192,8.40,2026-11-05,Bablu Dhaker";
+  download('Sample_Bank_MIS.csv', sample, 'text/csv;charset=utf-8');
+  toast('Sample CSV downloaded');
+}
+
 
 /* ================= VIEW: OVERVIEW ================= */
 function viewOverview(){
@@ -2241,6 +2454,9 @@ function copyInsuranceWhatsApp(){
 /* ================= RENDER ================= */
 const TABS = [
   ['overview',    '📊 Overview'],
+  ['loans',       '📝 Loan Punching'],
+  ['bankmis',     '📊 Bank MIS'],
+  ['recon',       '📂 MIS Auto-Recon'],
   ['tracker',     '⚡ SO Tracker'],
   ['deepdive',    '🔍 Deep Dive'],
   ['projection',  '🔮 Projection'],
@@ -2258,6 +2474,9 @@ const TABS = [
 
 const VIEWS = {
   overview: viewOverview,
+  loans: viewLoans,
+  bankmis: viewBankMis,
+  recon: viewRecon,
   tracker: viewTracker,
   deepdive: viewDeepDive,
   projection: viewProjection,

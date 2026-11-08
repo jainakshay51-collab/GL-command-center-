@@ -1252,7 +1252,7 @@ function viewCalendar(){
     const holTitle = hol ? ' • Holiday: ' + state.holidays[date] : '';
     const bg = future ? '' : (hol && !v ? 'background:#fefbf3;' : 'background:rgba(59,116,196,' + alpha + ');');
     cells += '<div class="calcell ' + (future ? 'future' : '') + ' ' + (today ? 'today' : '') + (hol ? ' holiday' : '') + '"' +
-      ' style="' + bg + '" onclick="setDate('' + date + '')" title="' + date + holTitle + ' — ₹' + fmt(v) + ' L">' +
+      ' style="' + bg + '" onclick="setDate(\'' + date + '\')" title="' + date + holTitle + ' — ₹' + fmt(v) + ' L">' +
       '<b>' + d + '</b><span>' + (hol && !v ? 'OFF' : (v ? fmt(v,0) : '–')) + '</span></div>';
   }
   const s = sums();
@@ -1277,7 +1277,7 @@ function viewCalendar(){
       '<div class="field"><label>Holiday Reason / Festival</label><input type="text" id="calHolReason" placeholder="e.g. Festival / Company Holiday"></div>' +
     '</div>' +
     '<div class="actions" style="margin-top:10px">' +
-      '<button class="btn gold" onclick="toggleHoliday($('calHolDate').value, $('calHolReason').value || 'Holiday')">Mark / Unmark Holiday</button>' +
+      '<button class="btn gold" onclick="toggleHoliday(document.getElementById(\'calHolDate\').value, document.getElementById(\'calHolReason\').value || \'Holiday\')">Mark / Unmark Holiday</button>' +
       '<button class="btn light" onclick="fillSundays()">⚡ Mark All Sundays Off</button>' +
     '</div>' +
     '<h3 style="margin-top:14px">Active Holidays (' + hList.length + ')</h3>' +
@@ -1285,7 +1285,7 @@ function viewCalendar(){
       (hList.length ? hList.map(([d, r]) =>
         '<span class="pill warn" style="display:inline-flex;align-items:center;gap:4px">' +
           d.slice(8) + ' Nov: ' + esc(r) +
-          '<b style="cursor:pointer;color:#a8283a;margin-left:4px" onclick="toggleHoliday('' + d + '')">✕</b></span>'
+          '<b style="cursor:pointer;color:#a8283a;margin-left:4px" onclick="toggleHoliday(\'' + d + '\')">✕</b></span>'
       ).join('') : '<span class="muted">No holidays configured yet.</span>') +
     '</div>' +
   '</div>' +
@@ -1306,7 +1306,7 @@ function viewCalendar(){
         '<td>' + (future ? '—' : fmt(d.amount)) + '</td>' +
         '<td>' + (future ? '—' : fmt(d.commitAmount)) + '</td>' +
         '<td>' + (future ? '—' : fmt(d.amount - d.commitAmount)) + '</td>' +
-        '<td>' + (future ? '' : '<button class="btn ghost" onclick="setDate('' + date + '');setTab('tracker')">Edit</button>') + '</td>' +
+        '<td>' + (future ? '' : '<button class="btn ghost" onclick="setDate(\'' + date + '\');setTab(\'tracker\')">Edit</button>') + '</td>' +
       '</tr>';
     }).join('') +
     '</tbody></table></div>' +

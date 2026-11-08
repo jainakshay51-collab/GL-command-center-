@@ -381,7 +381,7 @@ const INITIAL = [
   {id:"16",name:"Rishabh Dadha",             cluster:"Jodhpur",      target:225, code:"200531", baseL:0, baseC:0}
 ];
 
-const KEY     = 'gl_command_center_v8';
+const KEY     = 'gl_command_center_v9';
 const INS_TGT = 15000;
 
 const MONTH_NAMES = [
@@ -1477,6 +1477,96 @@ function downloadSampleMISCSV(){
 }
 
 
+
+/* ================= ADVANCED FEATURES: HEATMAP, WHATSAPP BROADCAST, AUDIT TRAIL ================= */
+
+function viewHeatmap(){
+  const rs = rows().sort((a,b) => b.pct - a.pct);
+  return '<div class="panel"><h2>🔥 Real-Time Cluster & SO Performance Heatmap</h2>' +
+    '<div class="note" style="margin-bottom:12px">Traffic-light matrix for quick field reviews. <b>Green</b> = >=100% (Achieved), <b>Amber</b> = 75-99% (On Track), <b>Yellow</b> = 50-74% (Moderate), <b>Red</b> = <50% (Needs Attention).</div>' +
+    '<div class="grid3" style="gap:10px">' +
+    rs.map(p => {
+      const pctVal = p.pct;
+      const bg = pctVal >= 100 ? 'background:#def7eb;border-color:#a7e8cd;color:#0b7449' :
+                 pctVal >= 75 ? 'background:#e4eefb;border-color:#b9d2f5;color:#255089' :
+                 pctVal >= 50 ? 'background:#fff8e9;border-color:#fce4a6;color:#b45309' :
+                 'background:#ffe7ea;border-color:#f8c4ca;color:#a62838';
+      const statusLbl = pctVal >= 100 ? '🟢 Achieved (>=100%)' :
+                        pctVal >= 75 ? '🔵 On Track (75-99%)' :
+                        pctVal >= 50 ? '🟡 Moderate (50-74%)' : '🔴 Needs Attention (<50%)';
+      return '<div class="panel" style="margin:0; ' + bg + ';box-shadow:none">' +
+        '<div style="font-size:13px;font-weight:850">' + esc(p.name) + '</div>' +
+        '<div class="muted" style="opacity:0.8">' + esc(p.cluster) + '</div>' +
+        '<div style="font-size:22px;font-weight:900;margin:6px 0">' + fmt(pctVal,1) + '%</div>' +
+        '<div style="font-size:11px">Target: ₹' + fmt(p.target) + ' L | MTD: ₹' + fmt(p.mtdL) + ' L</div>' +
+        '<div style="margin-top:6px;font-size:10.5px;font-weight:800">' + statusLbl + '</div>' +
+      '</div>';
+    }).join('') +
+    '</div>' +
+  '</div>';
+}
+
+function viewBroadcast(){
+  return '<div class="panel"><h2>📢 Automated WhatsApp Broadcast Generator</h2>' +
+    '<div class="note" style="margin-bottom:12px">Generate customized individual WhatsApp motivation snippets for every SO containing their live achievement and balance gap.</div>' +
+    '<div class="formgrid" style="margin-bottom:12px">' +
+      '<div class="field"><label>Select SO</label><select id="broadcastSoId">' +
+        state.people.map(p => '<option value="' + p.id + '">' + esc(p.name) + ' (' + esc(p.cluster) + ')</option>').join('') +
+      '</select></div>' +
+    '</div>' +
+    '<div class="actions" style="margin-bottom:12px">' +
+      '<button class="btn gold" onclick="generateBroadcastText()">Generate Broadcast Snippet</button>' +
+      '<button class="btn" onclick="sendSOWhatsApp()">📲 Send via WhatsApp</button>' +
+    '</div>' +
+    '<textarea id="broadcastTextArea" readonly placeholder="Click generate to create customized snippet…"></textarea>' +
+  '</div>';
+}
+
+function generateBroadcastText(){
+  const id = $('broadcastSoId').value;
+  const p = rows().find(x => x.id === id);
+  if (!p) return;
+  const dateStr = state.asOf.split('-').reverse().join('-');
+  const txt = '🌟 *MANIPAL FINTECH — PERFORMANCE UPDATE* 🌟\n' +
+    '📅 *Date:* ' + dateStr + '\n\n' +
+    'Dear *' + p.name + '* (' + p.cluster + '),\n' +
+    'Here is your current MTD Gold Loan performance update:\n\n' +
+    '🎯 *Target:* ₹' + fmt(p.target) + ' L\n' +
+    '🚀 *MTD Achieved:* ₹' + fmt(p.mtdL) + ' L (' + p.mtdC + ' Cases)\n' +
+    '📊 *Achievement %:* ' + fmt(p.pct,1) + '%\n' +
+    '📉 *Balance Gap:* ₹' + fmt(p.gap) + ' L\n' +
+    '⏱️ *Required DRR:* ₹' + fmt(p.reqDRR) + ' L/day\n\n' +
+    (p.pct >= 100 ? '🏆 Outstanding work! Keep up the winning momentum!' : '💪 Push hard in the coming days to close the gap and hit your milestone. You can do it!') + '\n\n' +
+    '_— Regional Head Sales, Rajasthan_';
+  $('broadcastTextArea').value = txt;
+  toast('Broadcast snippet generated');
+}
+
+function sendSOWhatsApp(){
+  const t = $('broadcastTextArea').value;
+  if (!t){ toast('Please generate snippet first'); return; }
+  window.open('https://wa.me/?text=' + encodeURIComponent(t), '_blank', 'noopener');
+}
+
+function viewAuditTrail(){
+  const h = state.history || [];
+  return '<div class="panel"><h2>🧾 Audit Trail & Activity Log</h2>' +
+    '<div class="note" style="margin-bottom:12px">Lightweight transparency dashboard recording all data modifications, FTD entries, MTD adjustments, and date changes in this session.</div>' +
+    '<div class="actions" style="margin-bottom:12px">' +
+      '<button class="btn light" onclick="downloadHistoryCsv()">⬇ Export Audit CSV</button>' +
+      '<button class="btn danger" onclick="clearHistory()">Clear Audit Log</button>' +
+    '</div>' +
+    (h.length
+      ? '<div class="scroll"><table><thead><tr><th>Timestamp</th><th>Action Category</th><th>Detailed Description</th></tr></thead><tbody>' +
+        h.slice().reverse().map(x =>
+          '<tr><td>' + esc(x.time) + '</td><td><b>' + esc(x.action) + '</b></td><td>' + esc(x.detail) + '</td></tr>').join('') +
+        '</tbody></table></div>' +
+      '<p class="muted" style="margin-top:8px">Total audit entries logged: ' + h.length + '</p>'
+      : '<p class="muted">No activity logged yet.</p>') +
+  '</div>';
+}
+
+
 /* ================= VIEW: OVERVIEW ================= */
 function viewOverview(){
   const s = sums();
@@ -2454,6 +2544,9 @@ function copyInsuranceWhatsApp(){
 /* ================= RENDER ================= */
 const TABS = [
   ['overview',    '📊 Overview'],
+  ['heatmap',     '🔥 Heatmap'],
+  ['broadcast',   '📢 WhatsApp Broadcast'],
+  ['audit',       '🧾 Audit Trail'],
   ['loans',       '📝 Loan Punching'],
   ['bankmis',     '📊 Bank MIS'],
   ['recon',       '📂 MIS Auto-Recon'],
@@ -2474,6 +2567,9 @@ const TABS = [
 
 const VIEWS = {
   overview: viewOverview,
+  heatmap: viewHeatmap,
+  broadcast: viewBroadcast,
+  audit: viewAuditTrail,
   loans: viewLoans,
   bankmis: viewBankMis,
   recon: viewRecon,

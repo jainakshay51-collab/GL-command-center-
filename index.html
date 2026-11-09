@@ -381,7 +381,7 @@ const INITIAL = [
   {id:"16",name:"Rishabh Dadha",             cluster:"Jodhpur",      target:225, code:"200531", baseL:0, baseC:0}
 ];
 
-const KEY     = 'gl_command_center_v9';
+const KEY     = 'gl_command_center_v12';
 const INS_TGT = 15000;
 
 const MONTH_NAMES = [
@@ -1205,7 +1205,7 @@ function showKpis(){
   const cards = [
     { t:'Team Target',        v: cr(target),                s: '₹' + fmt(target,0) + ' L',            c:'gold',  i:'🎯' },
     { t:'MTD Disbursement',   v: '₹' + fmt(s.mtdL) + ' L',  s: s.mtdC + ' cases',                     c:'green', i:'🚀' },
-    { t:'FTD Today',          v: '₹' + fmt(s.ftdL) + ' L',  s: s.ftdC + ' cases • ' + curDayNum + ' ' + curMonthName.slice(0,3), c:'blue', i:'⚡' },
+    { t:'FTD Today',          v: '₹' + fmt(s.ftdL) + ' L',  s: state.people.filter(p => { const d = entry(p.id, state.asOf); return d.amount > 0 || d.cases > 0; }).length + '/' + state.people.length + ' SOs active • ' + s.ftdC + ' cases', c:'blue', i:'⚡' },
     { t:'Achievement',        v: fmt(ach,1) + '%',          s: 'Expected pace ' + fmt(pace,1) + '%',  c:'gold',  i:'📊' },
     { t:'Balance Gap',        v: cr(gap),                   s: '₹' + fmt(gap) + ' L remaining',       c:'red',   i:'📉' },
     { t:'Required DRR',       v: '₹' + fmt(remaining() ? gap/remaining() : gap) + ' L', s: remaining() + ' working days left', c:'blue', i:'⏱' },

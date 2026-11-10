@@ -8,56 +8,59 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="GL Command">
 <title>GL Command Center • Advanced Business Intelligence</title>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
 <style>
 :root{
---navy:#0d1a2f;--navy2:#16304f;--navy3:#1f3f66;
---gold:#e8bc63;--gold2:#f5d68f;
---bg:#f2f6fc;--card:#ffffff;--line:#e3e9f2;
---ink:#16243a;--muted:#64748b;
---green:#0f9d63;--amber:#d9902b;--red:#d0454f;--blue:#3b74c4;
---header-bg:linear-gradient(135deg,#0d1a2f 0%,#16304f 55%,#1d3b60 100%);
---tab-active:linear-gradient(135deg,#12253f,#1c3a5e);
---btn-main:linear-gradient(135deg,#12253f,#1c3a5e);
+  --navy:#0d1a2f;--navy2:#16304f;--navy3:#1f3f66;
+  --gold:#e8bc63;--gold2:#f5d68f;
+  --bg:#f2f6fc;--card:#ffffff;--line:#e3e9f2;
+  --ink:#16243a;--muted:#64748b;
+  --green:#0f9d63;--amber:#d9902b;--red:#d0454f;--blue:#3b74c4;
+  --header-bg:linear-gradient(135deg,#0d1a2f 0%,#16304f 55%,#1d3b60 100%);
+  --tab-active:linear-gradient(135deg,#12253f,#1c3a5e);
+  --btn-main:linear-gradient(135deg,#12253f,#1c3a5e);
 }
 [data-theme="gold"]{
---navy:#2b1b04;--navy2:#4d3209;--navy3:#6d480f;
---gold:#d49a1d;--gold2:#fce18d;
---bg:#fbf7ed;--card:#ffffff;--line:#ebdcb8;
---ink:#281802;--muted:#7c694a;
---green:#118c54;--amber:#c47a17;--red:#c43b45;--blue:#3a69a8;
---header-bg:linear-gradient(135deg,#231401 0%,#4a3106 50%,#754f0c 100%);
---tab-active:linear-gradient(135deg,#382203,#5e3d09);
---btn-main:linear-gradient(135deg,#382203,#5e3d09);
+  --navy:#2b1b04;--navy2:#4d3209;--navy3:#6d480f;
+  --gold:#d49a1d;--gold2:#fce18d;
+  --bg:#fbf7ed;--card:#ffffff;--line:#ebdcb8;
+  --ink:#281802;--muted:#7c694a;
+  --green:#118c54;--amber:#c47a17;--red:#c43b45;--blue:#3a69a8;
+  --header-bg:linear-gradient(135deg,#231401 0%,#4a3106 50%,#754f0c 100%);
+  --tab-active:linear-gradient(135deg,#382203,#5e3d09);
+  --btn-main:linear-gradient(135deg,#382203,#5e3d09);
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;padding:0}
 body{
-background:
-radial-gradient(1200px 620px at 8% -12%,#e8f0fb 0%,transparent 62%),
-radial-gradient(900px 520px at 100% 0%,#fdf6e6 0%,transparent 58%),
-var(--bg);
-color:var(--ink);min-height:100vh;
-font:14px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,Ubuntu,sans-serif;
-transition:background-color .3s ease, color .3s ease;
+  background:
+    radial-gradient(1200px 620px at 8% -12%,#e8f0fb 0%,transparent 62%),
+    radial-gradient(900px 520px at 100% 0%,#fdf6e6 0%,transparent 58%),
+    var(--bg);
+  color:var(--ink);min-height:100vh;
+  font:14px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,Ubuntu,sans-serif;
+  transition:background-color .3s ease, color .3s ease;
 }
 [data-theme="gold"] body{
-background:
-radial-gradient(1200px 620px at 8% -12%,#fdf5df 0%,transparent 62%),
-radial-gradient(900px 520px at 100% 0%,#faecd0 0%,transparent 58%),
-var(--bg);
+  background:
+    radial-gradient(1200px 620px at 8% -12%,#fdf5df 0%,transparent 62%),
+    radial-gradient(900px 520px at 100% 0%,#faecd0 0%,transparent 58%),
+    var(--bg);
 }
 button,input,select,textarea{font:inherit;color:inherit}
 button{cursor:pointer}
-​header{
-background:var(--header-bg);
-color:#fff;padding:14px 16px 12px;position:sticky;top:0;z-index:30;
-box-shadow:0 6px 26px rgba(10,22,40,.28);
-border-bottom:1px solid rgba(232,188,99,.28);
-transition:background .3s ease;
+
+header{
+  background:var(--header-bg);
+  color:#fff;padding:14px 16px 12px;position:sticky;top:0;z-index:30;
+  box-shadow:0 6px 26px rgba(10,22,40,.28);
+  border-bottom:1px solid rgba(232,188,99,.28);
+  transition:background .3s ease;
 }
 [data-theme="gold"] header{
-border-bottom:1.5px solid rgba(245,214,143,.55);
-box-shadow:0 8px 30px rgba(70,45,6,.32);
+  border-bottom:1.5px solid rgba(245,214,143,.55);
+  box-shadow:0 8px 30px rgba(70,45,6,.32);
 }
 .topline{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;max-width:1440px;margin:0 auto}
 .brand{font-size:10px;letter-spacing:2.4px;color:var(--gold);font-weight:800;text-transform:uppercase}
@@ -65,38 +68,43 @@ box-shadow:0 8px 30px rgba(70,45,6,.32);
 .sub{font-size:11px;color:#c8d5e6}
 [data-theme="gold"] .sub{color:#f5dfaf}
 .header-actions{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
-​.tag{
-background:rgba(232,188,99,.14);color:#ffdf98;border:1px solid rgba(232,188,99,.45);
-padding:5px 9px;border-radius:999px;font-size:10px;font-weight:800;white-space:nowrap;
-display:flex;align-items:center;gap:6px;
+
+.tag{
+  background:rgba(232,188,99,.14);color:#ffdf98;border:1px solid rgba(232,188,99,.45);
+  padding:5px 9px;border-radius:999px;font-size:10px;font-weight:800;white-space:nowrap;
+  display:flex;align-items:center;gap:6px;
 }
 .dot{width:6px;height:6px;border-radius:50%;background:#4ade80;box-shadow:0 0 8px #4ade80;animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
-​.theme-btn{
-background:rgba(255,255,255,.14);border:1px solid rgba(232,188,99,.55);
-color:#ffdf98;padding:5px 10px;border-radius:999px;font-size:10.5px;font-weight:750;
-display:inline-flex;align-items:center;gap:4px;cursor:pointer;transition:all .15s ease;
+
+.theme-btn{
+  background:rgba(255,255,255,.14);border:1px solid rgba(232,188,99,.55);
+  color:#ffdf98;padding:5px 10px;border-radius:999px;font-size:10.5px;font-weight:750;
+  display:inline-flex;align-items:center;gap:4px;cursor:pointer;transition:all .15s ease;
 }
 .theme-btn:hover{background:rgba(255,255,255,.24);transform:scale(1.03)}
 .coin-btn{
-background:linear-gradient(135deg,#e0ae4a,#f0cd7d);color:#1a2740;border:0;
-padding:5px 9px;border-radius:999px;font-size:10.5px;font-weight:800;
-display:inline-flex;align-items:center;gap:4px;cursor:pointer;
-box-shadow:0 3px 10px rgba(224,174,74,.35);transition:all .15s ease;
+  background:linear-gradient(135deg,#e0ae4a,#f0cd7d);color:#1a2740;border:0;
+  padding:5px 9px;border-radius:999px;font-size:10.5px;font-weight:800;
+  display:inline-flex;align-items:center;gap:4px;cursor:pointer;
+  box-shadow:0 3px 10px rgba(224,174,74,.35);transition:all .15s ease;
 }
 .coin-btn:hover{transform:scale(1.04)}
-​#coinCanvas{
-position:fixed;top:0;left:0;width:100vw;height:100vh;
-pointer-events:none;z-index:999999;transition:opacity 1.5s ease;
-display:none;
+
+#coinCanvas{
+  position:fixed;top:0;left:0;width:100vw;height:100vh;
+  pointer-events:none;z-index:999999;transition:opacity 1.5s ease;
+  display:none;
 }
-​.wrap{max-width:1440px;margin:0 auto;padding:12px 12px 100px}
-​.kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+
+.wrap{max-width:1440px;margin:0 auto;padding:12px 12px 100px}
+
+.kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
 .kpi{
-background:var(--card);border:1px solid var(--line);border-radius:15px;
-padding:12px 12px 11px;display:flex;gap:10px;align-items:flex-start;
-box-shadow:0 3px 14px rgba(20,39,71,.05);position:relative;overflow:hidden;
-transition:transform .16s ease, box-shadow .16s ease;
+  background:var(--card);border:1px solid var(--line);border-radius:15px;
+  padding:12px 12px 11px;display:flex;gap:10px;align-items:flex-start;
+  box-shadow:0 3px 14px rgba(20,39,71,.05);position:relative;overflow:hidden;
+  transition:transform .16s ease, box-shadow .16s ease;
 }
 .kpi:hover{transform:translateY(-1px);box-shadow:0 8px 22px rgba(20,39,71,.09)}
 .kpi::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--blue)}
@@ -105,8 +113,8 @@ transition:transform .16s ease, box-shadow .16s ease;
 .kpi.red::before{background:var(--red)}
 .kpi.blue::before{background:var(--blue)}
 .kpi-icon{
-width:32px;height:32px;border-radius:10px;display:grid;place-items:center;font-size:15px;
-background:#eef3fa;flex:0 0 auto;
+  width:32px;height:32px;border-radius:10px;display:grid;place-items:center;font-size:15px;
+  background:#eef3fa;flex:0 0 auto;
 }
 [data-theme="gold"] .kpi-icon{background:#fdf2d9}
 .kpi.gold .kpi-icon{background:#fdf4e0}
@@ -116,23 +124,25 @@ background:#eef3fa;flex:0 0 auto;
 .kpi label{font-size:10.5px;color:var(--muted);display:block;font-weight:700;letter-spacing:.2px}
 .kpi strong{font-size:18px;display:block;margin:3px 0 1px;font-weight:850;letter-spacing:-.4px;line-height:1.15}
 .kpi small{font-size:10px;color:var(--muted);display:block}
-​.tabs{
-display:flex;gap:7px;overflow-x:auto;padding:13px 2px 11px;
-scrollbar-width:none;position:sticky;top:84px;z-index:19;
-background:linear-gradient(var(--bg) 72%,rgba(242,246,252,0));
+
+.tabs{
+  display:flex;gap:7px;overflow-x:auto;padding:13px 2px 11px;
+  scrollbar-width:none;position:sticky;top:84px;z-index:19;
+  background:linear-gradient(var(--bg) 72%,rgba(242,246,252,0));
 }
 .tabs::-webkit-scrollbar{display:none}
 .tab{
-border:1px solid #d8e1ee;background:#fff;color:#33465f;
-padding:9px 13px;border-radius:11px;white-space:nowrap;font-size:12px;font-weight:750;
-transition:all .15s ease;box-shadow:0 2px 6px rgba(20,39,71,.04);
+  border:1px solid #d8e1ee;background:#fff;color:#33465f;
+  padding:9px 13px;border-radius:11px;white-space:nowrap;font-size:12px;font-weight:750;
+  transition:all .15s ease;box-shadow:0 2px 6px rgba(20,39,71,.04);
 }
 [data-theme="gold"] .tab{border-color:#e4d2a9;background:#fff;color:#452f08}
 .tab:hover{border-color:#b9c8dd}
 .tab.active{background:var(--tab-active);color:#ffdd97;border-color:#12253f;box-shadow:0 4px 14px rgba(18,37,63,.3)}
-​.panel{
-background:var(--card);border:1px solid var(--line);border-radius:16px;
-padding:14px;margin-bottom:12px;box-shadow:0 3px 16px rgba(20,39,71,.05);
+
+.panel{
+  background:var(--card);border:1px solid var(--line);border-radius:16px;
+  padding:14px;margin-bottom:12px;box-shadow:0 3px 16px rgba(20,39,71,.05);
 }
 .panel h2{margin:0 0 12px;font-size:15px;font-weight:820;display:flex;align-items:center;gap:7px;letter-spacing:-.2px}
 .panel h3{margin:16px 0 8px;font-size:13px;font-weight:800;color:#2b3f5c}
@@ -142,21 +152,23 @@ padding:14px;margin-bottom:12px;box-shadow:0 3px 16px rgba(20,39,71,.05);
 .between{justify-content:space-between}
 .grid2{display:grid;grid-template-columns:1fr;gap:12px}
 .grid3{display:grid;grid-template-columns:1fr;gap:12px}
-​.field{display:flex;flex-direction:column;gap:4px;min-width:0}
+
+.field{display:flex;flex-direction:column;gap:4px;min-width:0}
 .field label{font-size:10.5px;color:var(--muted);font-weight:750;letter-spacing:.2px}
 .field input,.field select,input.edit,select.edit{
-background:#fff;border:1px solid #cbd7e5;border-radius:9px;padding:9px 10px;
-min-width:0;width:100%;transition:border-color .15s, box-shadow .15s;
+  background:#fff;border:1px solid #cbd7e5;border-radius:9px;padding:9px 10px;
+  min-width:0;width:100%;transition:border-color .15s, box-shadow .15s;
 }
 [data-theme="gold"] .field input,[data-theme="gold"] .field select{border-color:#ded0b0}
 .field input:focus,.field select:focus,input.edit:focus,select.edit:focus{
-outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(232,188,99,.22)
+  outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(232,188,99,.22)
 }
 .formgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-​.btn{
-background:var(--btn-main);border:0;color:#fff;border-radius:10px;
-padding:9px 14px;font-size:12px;font-weight:780;transition:all .15s ease;
-box-shadow:0 3px 10px rgba(18,37,63,.22);white-space:nowrap;
+
+.btn{
+  background:var(--btn-main);border:0;color:#fff;border-radius:10px;
+  padding:9px 14px;font-size:12px;font-weight:780;transition:all .15s ease;
+  box-shadow:0 3px 10px rgba(18,37,63,.22);white-space:nowrap;
 }
 .btn:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(18,37,63,.3)}
 .btn:active{transform:translateY(0)}
@@ -168,14 +180,15 @@ box-shadow:0 3px 10px rgba(18,37,63,.22);white-space:nowrap;
 .btn.ghost{background:transparent;color:#3b74c4;box-shadow:none;padding:6px 4px}
 [data-theme="gold"] .btn.ghost{color:#a67315}
 .btn:disabled{opacity:.45;pointer-events:none}
-​.scroll{overflow:auto;border:1px solid var(--line);border-radius:12px;background:#fff}
+
+.scroll{overflow:auto;border:1px solid var(--line);border-radius:12px;background:#fff}
 .scroll::-webkit-scrollbar{height:8px;width:8px}
 .scroll::-webkit-scrollbar-thumb{background:#c9d6e7;border-radius:8px}
 table{border-collapse:separate;border-spacing:0;width:100%;min-width:820px;font-size:12px}
 th{
-background:#eef3fa;color:#33506f;position:sticky;top:0;white-space:nowrap;text-align:left;
-font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;
-padding:10px;border-bottom:1px solid #dde6f1;z-index:2;
+  background:#eef3fa;color:#33506f;position:sticky;top:0;white-space:nowrap;text-align:left;
+  font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;
+  padding:10px;border-bottom:1px solid #dde6f1;z-index:2;
 }
 [data-theme="gold"] th{background:#faeed2;color:#452d05;border-bottom-color:#e6d3a8}
 th:first-child{border-radius:11px 0 0 0}
@@ -187,7 +200,8 @@ tbody tr:hover{background:#f8fbff}
 td.num{text-align:right;font-variant-numeric:tabular-nums}
 td input{width:88px;min-width:70px;padding:7px 8px;border:1px solid #cfdae8;border-radius:7px;font-size:12px;text-align:right;background:#fff}
 td input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 2px rgba(232,188,99,.22)}
-​.pill{padding:4px 8px;border-radius:999px;font-size:10px;font-weight:800;background:#eef3fa;color:#3a5273;display:inline-block;white-space:nowrap}
+
+.pill{padding:4px 8px;border-radius:999px;font-size:10px;font-weight:800;background:#eef3fa;color:#3a5273;display:inline-block;white-space:nowrap}
 [data-theme="gold"] .pill{background:#f7edd3;color:#4a3206}
 .pill.bad{background:#ffe7ea;color:#a62838}
 .pill.warn{background:#fff3dd;color:#8f6413}
@@ -203,21 +217,24 @@ td input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 2px rgba(2
 .listrow:last-child{border:0;padding-bottom:0}
 .progressmeta{display:flex;justify-content:space-between;gap:8px;font-size:12px;margin-bottom:7px;align-items:baseline}
 .progressmeta b{font-weight:800}
-​.note{background:#fff8e9;border:1px solid #f2e0b5;border-radius:11px;padding:10px 11px;font-size:11.5px;color:#7d5b16;line-height:1.55}
+
+.note{background:#fff8e9;border:1px solid #f2e0b5;border-radius:11px;padding:10px 11px;font-size:11.5px;color:#7d5b16;line-height:1.55}
 .alert{border-left:3px solid var(--red);padding:9px 11px;background:#fff6f7;border-radius:8px;margin-bottom:7px;font-size:12px}
 .alert:last-child{margin-bottom:0}
 .statline{font-size:12px;line-height:1.85}
 .statline b{font-weight:800}
 .actions{display:flex;flex-wrap:wrap;gap:7px;margin:11px 0 0}
-​.chartbox{width:100%;overflow:hidden}
+
+.chartbox{width:100%;overflow:hidden}
 svg.chart{width:100%;height:auto;display:block}
 .spark{display:block}
-​.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
 .calhead{font-size:9.5px;font-weight:800;color:var(--muted);text-align:center;padding:3px 0;text-transform:uppercase;letter-spacing:.5px}
 .calcell{
-aspect-ratio:1/1;border-radius:9px;border:1px solid #e6edf6;background:#fff;
-display:flex;flex-direction:column;align-items:center;justify-content:center;
-font-size:10px;cursor:pointer;transition:transform .12s, box-shadow .12s;padding:2px;
+  aspect-ratio:1/1;border-radius:9px;border:1px solid #e6edf6;background:#fff;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  font-size:10px;cursor:pointer;transition:transform .12s, box-shadow .12s;padding:2px;
 }
 [data-theme="gold"] .calcell{border-color:#ebd8af}
 .calcell:hover{transform:scale(1.06);box-shadow:0 4px 12px rgba(20,39,71,.14);z-index:2}
@@ -228,7 +245,8 @@ font-size:10px;cursor:pointer;transition:transform .12s, box-shadow .12s;padding
 .calcell.today{outline:2px solid var(--gold);outline-offset:-2px;box-shadow:0 0 0 3px rgba(232,188,99,.25)}
 .calcell.holiday{border:1.5px dashed #e0ae4a!important;background:#fefbf3}
 .calcell.holiday span{color:#b45309;font-weight:750}
-​/* ATTENDANCE */
+
+/* ATTENDANCE */
 .att-summary-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}
 .att-stat{background:#f8fafc;border:1px solid var(--line);border-radius:11px;padding:11px 8px;text-align:center}
 [data-theme="gold"] .att-stat{background:#faf3e3;border-color:#ead5ab}
@@ -237,30 +255,33 @@ font-size:10px;cursor:pointer;transition:transform .12s, box-shadow .12s;padding
 .att-stat.p b{color:var(--green)}
 .att-stat.a b{color:var(--red)}
 .att-stat.h b{color:var(--amber)}
-​.att-table td.att-p,.att-table td.att-a,.att-table td.att-h{
-text-align:center;font-weight:800;font-size:10px;padding:5px 2px;
-border-right:1px solid #f0f4fa;
+
+.att-table td.att-p,.att-table td.att-a,.att-table td.att-h{
+  text-align:center;font-weight:800;font-size:10px;padding:5px 2px;
+  border-right:1px solid #f0f4fa;
 }
 .att-table td.att-p{background:#def7eb;color:#0b7449}
 .att-table td.att-a{background:#ffe7ea;color:#a62838}
 .att-table td.att-h{background:#fff8e9;color:#b45309}
 .att-table th.att-head{text-align:center;padding:6px 2px;font-size:9px;min-width:24px;border-right:1px solid #e4ecf5}
 .att-table th:first-child,.att-table td:first-child{
-position:sticky;left:0;background:#fff;z-index:3;
-box-shadow:2px 0 5px rgba(15,30,54,.05);
+  position:sticky;left:0;background:#fff;z-index:3;
+  box-shadow:2px 0 5px rgba(15,30,54,.05);
 }
 .att-table thead th:first-child{background:#eef3fa;z-index:4}
 [data-theme="gold"] .att-table thead th:first-child{background:#faeed2}
-​.calcell.att-p{background:#def7eb!important;border-color:#a7e8cd}
+
+.calcell.att-p{background:#def7eb!important;border-color:#a7e8cd}
 .calcell.att-p b,.calcell.att-p span{color:#0b7449}
 .calcell.att-a{background:#ffe7ea!important;border-color:#f8c4ca}
 .calcell.att-a b,.calcell.att-a span{color:#a62838}
 .calcell.att-h{background:#fff8e9!important;border-color:#fce4a6}
 .calcell.att-h b,.calcell.att-h span{color:#b45309}
-​.hide{display:none!important}
+
+.hide{display:none!important}
 textarea{
-width:100%;min-height:250px;border:1px solid var(--line);border-radius:11px;padding:11px;
-resize:vertical;font:11.5px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace;background:#fbfcfe;
+  width:100%;min-height:250px;border:1px solid var(--line);border-radius:11px;padding:11px;
+  resize:vertical;font:11.5px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace;background:#fbfcfe;
 }
 .mobilecards{display:grid;grid-template-columns:1fr;gap:10px}
 .socard{border:1px solid var(--line);border-radius:12px;padding:12px;background:#fff}
@@ -269,528 +290,2381 @@ resize:vertical;font:11.5px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace;back
 .gauge{width:100%;max-width:200px;height:auto;display:block;margin:0 auto}
 .center{text-align:center}
 .big{font-size:26px;font-weight:850;letter-spacing:-.8px;line-height:1.1}
-​#toast{
-position:fixed;left:50%;bottom:26px;transform:translate(-50%,20px);
-background:#12253f;color:#fff;padding:11px 20px;border-radius:999px;font-size:12.5px;font-weight:700;
-opacity:0;pointer-events:none;transition:all .28s cubic-bezier(.4,0,.2,1);z-index:9999;
-box-shadow:0 8px 26px rgba(10,22,40,.34);max-width:90vw;text-align:center;
+
+#toast{
+  position:fixed;left:50%;bottom:26px;transform:translate(-50%,20px);
+  background:#12253f;color:#fff;padding:11px 20px;border-radius:999px;font-size:12.5px;font-weight:700;
+  opacity:0;pointer-events:none;transition:all .28s cubic-bezier(.4,0,.2,1);z-index:9999;
+  box-shadow:0 8px 26px rgba(10,22,40,.34);max-width:90vw;text-align:center;
 }
 [data-theme="gold"] #toast{background:#452e07;color:#fff1c9;box-shadow:0 8px 26px rgba(45,28,4,.45)}
 #toast.show{opacity:1;transform:translate(-50%,0)}
-​@media(min-width:720px){
-.kpis{grid-template-columns:repeat(4,minmax(0,1fr))}
-.grid2{grid-template-columns:1fr 1fr}
-.grid3{grid-template-columns:repeat(3,1fr)}
-.formgrid{grid-template-columns:repeat(5,minmax(0,1fr))}
-.mobilecards{grid-template-columns:repeat(2,1fr)}
-.wrap{padding:18px 20px 70px}
-.headline{font-size:23px}
-.tabs{top:88px}
-.kpi strong{font-size:19px}
+
+@media(min-width:720px){
+  .kpis{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .grid2{grid-template-columns:1fr 1fr}
+  .grid3{grid-template-columns:repeat(3,1fr)}
+  .formgrid{grid-template-columns:repeat(5,minmax(0,1fr))}
+  .mobilecards{grid-template-columns:repeat(2,1fr)}
+  .wrap{padding:18px 20px 70px}
+  .headline{font-size:23px}
+  .tabs{top:88px}
+  .kpi strong{font-size:19px}
 }
 @media(max-width:400px){
-.kpi strong{font-size:16px}
-.headline{font-size:17px}
-.tab{padding:8px 11px;font-size:11px}
-.att-stat b{font-size:18px}
+  .kpi strong{font-size:16px}
+  .headline{font-size:17px}
+  .tab{padding:8px 11px;font-size:11px}
+  .att-stat b{font-size:18px}
 }
 @media print{
-header,.tabs,.actions,#toast,#coinCanvas{display:none!important}
-body{background:#fff}
-.panel{box-shadow:none;border:1px solid #ddd;break-inside:avoid}
-.wrap{padding:0}
+  header,.tabs,.actions,#toast,#coinCanvas{display:none!important}
+  body{background:#fff}
+  .panel{box-shadow:none;border:1px solid #ddd;break-inside:avoid}
+  .wrap{padding:0}
 }
 </style>
 </head>
 <body>
-​<canvas id="coinCanvas"></canvas>
-​<header>
-<div class="topline">
-<div>
-<div class="brand">Manipal • Rajasthan</div>
-<div class="headline">GL Business Command Center</div>
-<div class="sub" id="headerSubtitle">November 2026 • SO-wise Performance Intelligence</div>
-</div>
-<div class="header-actions">
-<button class="coin-btn" onclick="startCoinRain(30)" title="Play 30-Sec Gold Coin Rain">🪙 Coins</button>
-<button class="theme-btn" id="themeToggleBtn" onclick="toggleTheme()">👑 Gold Theme</button>
-<div class="tag"><span class="dot"></span> LIVE</div>
-</div>
-</div>
+
+<canvas id="coinCanvas"></canvas>
+
+<header>
+  <div class="topline">
+    <div>
+      <div class="brand">Manipal • Rajasthan</div>
+      <div class="headline">GL Business Command Center</div>
+      <div class="sub" id="headerSubtitle">November 2026 • SO-wise Performance Intelligence</div>
+    </div>
+    <div class="header-actions">
+      <button class="coin-btn" onclick="startCoinRain(30)" title="Play 30-Sec Gold Coin Rain">🪙 Coins</button>
+      <button class="theme-btn" id="themeToggleBtn" onclick="toggleTheme()">👑 Gold Theme</button>
+      <div class="tag"><span class="dot"></span> LIVE</div>
+    </div>
+  </div>
 </header>
-​<main class="wrap">
-<section class="kpis" id="kpis"></section>
-<nav class="tabs" id="tabs"></nav>
-<div id="view"></div>
-<div class="foot">
-Data is stored locally in this browser. Export a JSON backup regularly.
-Insurance cross-sell is tracked separately from GL and never added to GL achievement.
-Attendance is auto-calculated from GL + Insurance entries with Holiday protection.
-</div>
+
+<main class="wrap">
+  <section class="kpis" id="kpis"></section>
+  <nav class="tabs" id="tabs"></nav>
+  <div id="view"></div>
+  <div class="foot">
+    Data is stored locally in this browser. Export a JSON backup regularly.
+    Insurance cross-sell is tracked separately from GL and never added to GL achievement.
+    Attendance is auto-calculated from GL + Insurance entries with Holiday protection.
+  </div>
 </main>
-​<input id="fileImport" type="file" accept="application/json,.json" class="hide">
+
+<input id="fileImport" type="file" accept="application/json,.json" class="hide">
 <div id="toast"></div>
-​<script>
+
+<script>
 'use strict';
-​const INITIAL = [
-{id:"1", name:"Abhishek Soni",             cluster:"Jodhpur",      target:70,  code:"202607", baseL:0, baseC:0},
-{id:"2", name:"Adityaraj Singh Sisodiya",  cluster:"Ajmer",        target:125, code:"202237", baseL:0, baseC:0},
-{id:"3", name:"Arpit Pancholi",            cluster:"Udaipur",      target:100, code:"203134", baseL:0, baseC:0},
-{id:"4", name:"Avinash Trivedi",           cluster:"Jodhpur",      target:100, code:"202551", baseL:0, baseC:-1},
-{id:"5", name:"Bablu Dhaker",              cluster:"Chittorgarh",  target:100, code:"203082", baseL:9.19, baseC:2},
-{id:"6", name:"Deepak Singh Rathore",      cluster:"Bikaner",      target:225, code:"200235", baseL:0, baseC:0},
-{id:"7", name:"Dimple Nagoura",            cluster:"Jodhpur",      target:225, code:"201206", baseL:0, baseC:0},
-{id:"8", name:"Firoz Khan",                cluster:"Nagaur",       target:225, code:"200047", baseL:0, baseC:0},
-{id:"9", name:"Gourav Prajapat",           cluster:"Jaipur",       target:200, code:"202994", baseL:43.36, baseC:1},
-{id:"10",name:"Indarajeet Bishnoi",        cluster:"Jodhpur",      target:225, code:"201846", baseL:0, baseC:0},
-{id:"11",name:"Kuldeep",                   cluster:"Jaipur",       target:50,  code:"203094", baseL:0, baseC:0},
-{id:"12",name:"Maan Kanwar",               cluster:"Jodhpur",      target:200, code:"201915", baseL:0, baseC:0},
-{id:"13",name:"Ram Kumar Yadav",           cluster:"Jaipur",       target:50,  code:"203116", baseL:0, baseC:0},
-{id:"14",name:"Ravi Kumar",                cluster:"Jaipur",       target:130, code:"202835", baseL:30.5, baseC:1},
-{id:"15",name:"Rinku Kumar Saini",         cluster:"Jaipur",       target:50,  code:"203095", baseL:0, baseC:0},
-{id:"16",name:"Rishabh Dadha",             cluster:"Jodhpur",      target:225, code:"200531", baseL:0, baseC:0}
+
+/* ================= PRE-LOADED DATA CONSTANTS ================= */
+const INITIAL = [
+  {id:"1", name:"Abhishek Soni",             cluster:"Jodhpur",      target:70,  code:"202607", baseL:0, baseC:0},
+  {id:"2", name:"Adityaraj Singh Sisodiya",  cluster:"Ajmer",        target:125, code:"202237", baseL:0, baseC:0},
+  {id:"3", name:"Arpit Pancholi",            cluster:"Udaipur",      target:100, code:"203134", baseL:0, baseC:0},
+  {id:"4", name:"Avinash Trivedi",           cluster:"Jodhpur",      target:100, code:"202551", baseL:0, baseC:-1},
+  {id:"5", name:"Bablu Dhaker",              cluster:"Chittorgarh",  target:100, code:"203082", baseL:9.19, baseC:2},
+  {id:"6", name:"Deepak Singh Rathore",      cluster:"Bikaner",      target:225, code:"200235", baseL:0, baseC:0},
+  {id:"7", name:"Dimple Nagoura",            cluster:"Jodhpur",      target:225, code:"201206", baseL:0, baseC:0},
+  {id:"8", name:"Firoz Khan",                cluster:"Nagaur",       target:225, code:"200047", baseL:0, baseC:0},
+  {id:"9", name:"Gourav Prajapat",           cluster:"Jaipur",       target:200, code:"202994", baseL:43.36, baseC:1},
+  {id:"10",name:"Indarajeet Bishnoi",        cluster:"Jodhpur",      target:225, code:"201846", baseL:0, baseC:0},
+  {id:"11",name:"Kuldeep",                   cluster:"Jaipur",       target:50,  code:"203094", baseL:0, baseC:0},
+  {id:"12",name:"Maan Kanwar",               cluster:"Jodhpur",      target:200, code:"201915", baseL:0, baseC:0},
+  {id:"13",name:"Ram Kumar Yadav",           cluster:"Jaipur",       target:50,  code:"203116", baseL:0, baseC:0},
+  {id:"14",name:"Ravi Kumar",                cluster:"Jaipur",       target:130, code:"202835", baseL:30.5, baseC:1},
+  {id:"15",name:"Rinku Kumar Saini",         cluster:"Jaipur",       target:50,  code:"203095", baseL:0, baseC:0},
+  {id:"16",name:"Rishabh Dadha",             cluster:"Jodhpur",      target:225, code:"200531", baseL:0, baseC:0}
 ];
-​const KEY     = 'gl_command_center_v13';
+
+const KEY     = 'gl_command_center_v13';
 const INS_TGT = 15000;
-​const MONTH_NAMES = [
-'January','February','March','April','May','June',
-'July','August','September','October','November','December'
+
+const MONTH_NAMES = [
+  'January','February','March','April','May','June',
+  'July','August','September','October','November','December'
 ];
-​function getYearMonth(){
-return (state && state.asOf ? state.asOf.slice(0,7) : '2026-11');
+
+/* ================= DYNAMIC DATE HELPERS ================= */
+function getYearMonth(){
+  return (state && state.asOf ? state.asOf.slice(0,7) : '2026-11');
 }
-function getYear(){ return Number(getYearMonth().slice(0,4)); }
-function getMonth(){ return Number(getYearMonth().slice(5,7)); }
+function getYear(){
+  return Number(getYearMonth().slice(0,4));
+}
+function getMonth(){
+  return Number(getYearMonth().slice(5,7));
+}
 function getDaysInMonth(ym){
-ym = ym || getYearMonth();
-const parts = ym.split('-').map(Number);
-return new Date(parts[0], parts[1], 0).getDate();
+  ym = ym || getYearMonth();
+  const parts = ym.split('-').map(Number);
+  return new Date(parts[0], parts[1], 0).getDate();
 }
 function getFirstDayOfWeek(ym){
-ym = ym || getYearMonth();
-const parts = ym.split('-').map(Number);
-return new Date(parts[0], parts[1] - 1, 1).getDay();
+  ym = ym || getYearMonth();
+  const parts = ym.split('-').map(Number);
+  return new Date(parts[0], parts[1] - 1, 1).getDay();
 }
 function dayKey(d, ym){
-ym = ym || getYearMonth();
-return ym + '-' + String(d).padStart(2,'0');
+  ym = ym || getYearMonth();
+  return ym + '-' + String(d).padStart(2,'0');
 }
 function validDay(s){
-if (!/^\d{4}-\d{2}-\d{2}$/.test(String(s))) return false;
-const parts = s.split('-').map(Number);
-const y = parts[0], m = parts[1], d = parts[2];
-if (m < 1 || m > 12 || d < 1) return false;
-const maxD = new Date(y, m, 0).getDate();
-return d <= maxD;
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(String(s))) return false;
+  const parts = s.split('-').map(Number);
+  const y = parts[0], m = parts[1], d = parts[2];
+  if (m < 1 || m > 12 || d < 1) return false;
+  const maxD = new Date(y, m, 0).getDate();
+  return d <= maxD;
 }
-​const $      = id => document.getElementById(id);
+
+/* ================= UTILITIES ================= */
+const $      = id => document.getElementById(id);
 const clone  = o  => JSON.parse(JSON.stringify(o));
 const num    = v  => { const n = Number(v); return isFinite(n) && n > 0 ? n : 0; };
 const fmt    = (v,d=2) => (Number(v)||0).toLocaleString('en-IN',{minimumFractionDigits:d,maximumFractionDigits:d});
 const cr     = v => '₹' + fmt(num(v)/100) + ' Cr';
-const esc    = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&','<':'<','>':'>','"':'"',"'":'''}[c]));
+const esc    = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function pct(a,b){ return b ? (100*a/b) : 0; }
 function clamp(v,a,b){ return Math.min(b, Math.max(a, v)); }
-​let toastTimer = null;
+
+let toastTimer = null;
 function toast(msg){
-const t = $('toast');
-if (!t) return;
-t.textContent = msg;
-t.classList.add('show');
-clearTimeout(toastTimer);
-toastTimer = setTimeout(()=>t.classList.remove('show'), 2300);
+  const t = $('toast');
+  if (!t) return;
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>t.classList.remove('show'), 2300);
 }
-​function freshState(){
-return {
-version: 13,
-asOf: "2026-11-06",
-theme: "navy",
-teamTarget: 2300,
-workingDays: 17,
-manualProjection: 100,
-projectionMode: "runrate",
-loans: [],
-people: clone(INITIAL),
-daily: {
-"2026-11-03": {"2": {"cases": 1, "amount": 9.95}, "4": {"cases": 1, "amount": 10.5}, "6": {"cases": 1, "amount": 26}},
-"2026-11-04": {"3": {"cases": 1, "amount": 7}, "6": {"cases": 1, "amount": 65}},
-"2026-11-05": {"3": {"cases": 1, "amount": 52}, "6": {"cases": 1, "amount": 17}, "12": {"cases": 1, "amount": 33}},
-"2026-11-06": {"4": {"cases": 1, "amount": 2}, "5": {"cases": 1, "amount": 12.39}, "6": {"cases": 1, "amount": 4}, "12": {"cases": 1, "amount": 26}, "14": {"cases": 2, "amount": 29}}
-},
-commitments: {},
-insurance: { daily: {}, base: {} },
-history: [],
-holidays: {"2026-11-01": "Sunday", "2026-11-08": "Sunday", "2026-11-15": "Sunday", "2026-11-22": "Sunday", "2026-11-29": "Sunday"}
-};
+
+/* ================= STATE ================= */
+function freshState(){
+  return {
+    version: 6,
+    asOf: "2026-11-06",
+    theme: "navy",
+    teamTarget: 2300,
+    workingDays: 17,
+    manualProjection: 100,
+    projectionMode: "runrate",
+    loans: [],
+    people: clone(INITIAL),
+    daily: {
+      "2026-11-03": {
+        "2": {"cases": 1, "amount": 9.95},
+        "4": {"cases": 1, "amount": 10.5},
+        "6": {"cases": 1, "amount": 26},
+        "7": {"cases": 1, "amount": 11},
+        "8": {"cases": 1, "amount": 10},
+        "10": {"cases": 1, "amount": 13},
+        "14": {"cases": 0, "amount": 0}
+      },
+      "2026-11-04": {
+        "3": {"cases": 1, "amount": 7},
+        "6": {"cases": 1, "amount": 65}
+      },
+      "2026-11-05": {
+        "3": {"cases": 1, "amount": 52},
+        "6": {"cases": 1, "amount": 17},
+        "12": {"cases": 1, "amount": 33}
+      },
+      "2026-11-06": {
+        "4": {"cases": 1, "amount": 2},
+        "5": {"cases": 1, "amount": 12.39},
+        "6": {"cases": 1, "amount": 4},
+        "11": {"cases": 1, "amount": 5.53},
+        "12": {"cases": 1, "amount": 26},
+        "14": {"cases": 2, "amount": 29},
+        "15": {"cases": 1, "amount": 7.49}
+      }
+    },
+    commitments: {},
+    insurance: {
+      daily: {},
+      base: {
+        "10": {"policies": 1, "premium": 1499},
+        "13": {"policies": 1, "premium": 13428}
+      }
+    },
+    history: [
+      {"time": "7/11/2026, 6:31:27 am", "action": "Report date change", "detail": "Report date = 2026-11-06"},
+      {"time": "7/11/2026, 6:35:40 am", "action": "FTD entry", "detail": "Bablu Dhaker • cases = 1 • 2026-11-06"},
+      {"time": "7/11/2026, 6:35:45 am", "action": "FTD entry", "detail": "Bablu Dhaker • amount = 12.39 • 2026-11-06"},
+      {"time": "7/11/2026, 6:35:51 am", "action": "FTD entry", "detail": "Deepak Singh Rathore • cases = 1 • 2026-11-06"},
+      {"time": "7/11/2026, 6:35:54 am", "action": "FTD entry", "detail": "Deepak Singh Rathore • amount = 4 • 2026-11-06"},
+      {"time": "7/11/2026, 6:38:07 am", "action": "FTD entry", "detail": "Rinku Kumar Saini • amount = 7.49 • 2026-11-06"},
+      {"time": "7/11/2026, 6:38:57 am", "action": "FTD entry", "detail": "Avinash Trivedi • amount = 2 • 2026-11-06"},
+      {"time": "7/11/2026, 6:41:06 am", "action": "FTD entry", "detail": "Ravi Kumar • amount = 29 • 2026-11-06"},
+      {"time": "7/11/2026, 6:42:24 am", "action": "FTD entry", "detail": "Maan Kanwar • amount = 26 • 2026-11-06"},
+      {"time": "7/11/2026, 12:19:52 pm", "action": "FTD entry", "detail": "Kuldeep • amount = 5.53 • 2026-11-06"}
+    ],
+    holidays: {
+      "2026-11-01": "Sunday",
+      "2026-11-08": "Sunday / Chhoti Diwali",
+      "2026-11-09": "Diwali",
+      "2026-11-10": "Govardhan Puja",
+      "2026-11-11": "Bhai Dooj",
+      "2026-11-15": "Sunday",
+      "2026-11-22": "Sunday",
+      "2026-11-24": "Guru Nanak Jayanti",
+      "2026-11-29": "Sunday"
+    }
+  };
 }
-​function migrate(s){
-s.version = 13;
-s.asOf = validDay(s.asOf) ? s.asOf : '2026-11-06';
-s.theme = s.theme || 'navy';
-s.workingDays = num(s.workingDays) || 17;
-s.teamTarget  = num(s.teamTarget)  || 2300;
-s.loans = s.loans || [];
-s.projectionMode = s.projectionMode || 'runrate';
-s.manualProjection = num(s.manualProjection) || 100;
-s.daily = s.daily || {};
-s.commitments = s.commitments || {};
-s.insurance = s.insurance || {daily:{}, base:{}};
-s.history = s.history || [];
-s.holidays = s.holidays || {"2026-11-01": "Sunday", "2026-11-08": "Sunday", "2026-11-15": "Sunday", "2026-11-22": "Sunday", "2026-11-29": "Sunday"};
-s.people = (s.people || []).map(p => ({...p, target: num(p.target), baseL: num(p.baseL), baseC: num(p.baseC)}));
-return s;
+
+function migrate(s){
+  s.version = 6;
+  s.asOf = validDay(s.asOf) ? s.asOf : '2026-11-06';
+  s.theme = s.theme || 'navy';
+  s.workingDays = num(s.workingDays) || 17;
+  s.teamTarget  = num(s.teamTarget)  || 2300;
+  s.loans = s.loans || [];
+  s.projectionMode = s.projectionMode || 'runrate';
+  s.manualProjection = num(s.manualProjection) || 100;
+  s.daily = s.daily || {};
+  s.commitments = s.commitments || {};
+  s.insurance = s.insurance || {};
+  s.insurance.daily = s.insurance.daily || {};
+  s.insurance.base  = s.insurance.base  || {};
+  s.history = s.history || [];
+  s.holidays = s.holidays || {
+    "2026-11-01": "Sunday",
+    "2026-11-08": "Sunday / Chhoti Diwali",
+    "2026-11-09": "Diwali",
+    "2026-11-10": "Govardhan Puja",
+    "2026-11-11": "Bhai Dooj",
+    "2026-11-15": "Sunday",
+    "2026-11-22": "Sunday",
+    "2026-11-24": "Guru Nanak Jayanti",
+    "2026-11-29": "Sunday"
+  };
+  s.people = (s.people || []).map(p => ({...p, target: num(p.target), baseL: num(p.baseL), baseC: num(p.baseC)}));
+  return s;
 }
-​function loadState(){
-try {
-const raw = JSON.parse(localStorage.getItem(KEY));
-if (raw && Array.isArray(raw.people) && raw.daily) return migrate(raw);
-} catch(e){}
-return freshState();
+
+function loadState(){
+  try {
+    const raw = JSON.parse(localStorage.getItem(KEY));
+    if (raw && Array.isArray(raw.people) && raw.daily && raw.commitments) return migrate(raw);
+  } catch(e){}
+  return freshState();
 }
 let state = loadState();
-​let tab = 'overview';
+
+let tab = 'overview';
 let filterCluster = 'All';
 let filterText = '';
 let filterStatus = 'All';
 let sortBy = 'rank';
 let deepId = null;
 let reportId = 'all';
-​function persist(){
-try { localStorage.setItem(KEY, JSON.stringify(state)); }
-catch(e){ toast('Storage full — please export a backup'); }
+
+function persist(){
+  try { localStorage.setItem(KEY, JSON.stringify(state)); }
+  catch(e){ toast('Storage full — please export a backup'); }
 }
 function pushHistory(action, detail){
-state.history.push({time: new Date().toLocaleString('en-IN'), action: action, detail: String(detail)});
-if (state.history.length > 400) state.history = state.history.slice(-400);
+  state.history.push({time: new Date().toLocaleString('en-IN'), action: action, detail: String(detail)});
+  if (state.history.length > 400) state.history = state.history.slice(-400);
 }
-​function applyTheme(){
-const isGold = (state && state.theme === 'gold');
-if (isGold){
-document.documentElement.setAttribute('data-theme', 'gold');
-const btn = $('themeToggleBtn');
-if (btn) btn.innerHTML = '🔷 Navy Theme';
-} else {
-document.documentElement.removeAttribute('data-theme');
-const btn = $('themeToggleBtn');
-if (btn) btn.innerHTML = '👑 Gold Theme';
+
+/* ================= THEME CONTROLLER ================= */
+function applyTheme(){
+  const isGold = (state && state.theme === 'gold');
+  if (isGold){
+    document.documentElement.setAttribute('data-theme', 'gold');
+    const btn = $('themeToggleBtn');
+    if (btn) btn.innerHTML = '🔷 Navy Theme';
+  } else {
+    document.documentElement.removeAttribute('data-theme');
+    const btn = $('themeToggleBtn');
+    if (btn) btn.innerHTML = '👑 Gold Theme';
+  }
 }
-}
+
 function toggleTheme(){
-state.theme = (state.theme === 'gold' ? 'navy' : 'gold');
-applyTheme();
-persist();
-toast(state.theme === 'gold' ? '👑 Luxury Gold Theme activated' : '🔷 Royal Navy Theme activated');
+  state.theme = (state.theme === 'gold' ? 'navy' : 'gold');
+  applyTheme();
+  pushHistory('Theme Changed', 'Switched to ' + state.theme + ' theme');
+  persist();
+  toast(state.theme === 'gold' ? '👑 Luxury Gold Theme activated' : '🔷 Royal Navy Theme activated');
+  if (state.theme === 'gold') startCoinRain(15);
 }
-​let coinAnimId = null;
+
+/* ================= 30-SEC GOLD COIN RAIN ENGINE ================= */
+let coinAnimId = null;
 let coinStopTimer = null;
 let coins = [];
-​function startCoinRain(durationSeconds = 30){
-const canvas = $('coinCanvas');
-if (!canvas) return;
-const ctx = canvas.getContext('2d');
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-canvas.style.opacity = '1';
-canvas.style.display = 'block';
-​coins = [];
-const maxCoins = Math.min(65, Math.floor(window.innerWidth / 16));
-for (let i = 0; i < maxCoins; i++){ coins.push(createCoin(canvas, true)); }
-const endTime = Date.now() + durationSeconds * 1000;
-if (coinAnimId) cancelAnimationFrame(coinAnimId);
-clearTimeout(coinStopTimer);
-​function loop(){
-ctx.clearRect(0, 0, canvas.width, canvas.height);
-const isSpawning = Date.now() < endTime;
-for (let i = 0; i < coins.length; i++){
-const c = coins[i];
-c.y += c.speedY; c.x += Math.sin(c.wobble) * 1.2; c.wobble += 0.05; c.spin += c.spinSpeed;
-ctx.save(); ctx.translate(c.x, c.y); const scaleX = Math.cos(c.spin); ctx.scale(scaleX, 1);
-const grad = ctx.createRadialGradient(-c.r * 0.3, -c.r * 0.3, c.r * 0.1, 0, 0, c.r);
-grad.addColorStop(0, '#fff4cc'); grad.addColorStop(0.35, '#ffd700'); grad.addColorStop(0.85, '#d49a1d'); grad.addColorStop(1, '#8c5e07');
-ctx.beginPath(); ctx.arc(0, 0, c.r, 0, Math.PI * 2); ctx.fillStyle = grad; ctx.fill();
-ctx.lineWidth = Math.max(1.2, c.r * 0.12); ctx.strokeStyle = '#fff0a6'; ctx.stroke();
-if (Math.abs(scaleX) > 0.35 && c.r > 10){
-ctx.fillStyle = '#6b4703'; ctx.font = 'bold ' + Math.floor(c.r * 1.05) + 'px system-ui, sans-serif';
-ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('₹', 0, 1);
+
+function startCoinRain(durationSeconds = 30){
+  const canvas = $('coinCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  canvas.style.opacity = '1';
+  canvas.style.display = 'block';
+
+  coins = [];
+  const maxCoins = Math.min(65, Math.floor(window.innerWidth / 16));
+  for (let i = 0; i < maxCoins; i++){
+    coins.push(createCoin(canvas, true));
+  }
+
+  const endTime = Date.now() + durationSeconds * 1000;
+  if (coinAnimId) cancelAnimationFrame(coinAnimId);
+  clearTimeout(coinStopTimer);
+
+  function loop(){
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const isSpawning = Date.now() < endTime;
+
+    for (let i = 0; i < coins.length; i++){
+      const c = coins[i];
+      c.y += c.speedY;
+      c.x += Math.sin(c.wobble) * 1.2;
+      c.wobble += 0.05;
+      c.spin += c.spinSpeed;
+
+      ctx.save();
+      ctx.translate(c.x, c.y);
+      const scaleX = Math.cos(c.spin);
+      ctx.scale(scaleX, 1);
+
+      // Metallic Radial Gold Gradient
+      const grad = ctx.createRadialGradient(-c.r * 0.3, -c.r * 0.3, c.r * 0.1, 0, 0, c.r);
+      grad.addColorStop(0, '#fff4cc');
+      grad.addColorStop(0.35, '#ffd700');
+      grad.addColorStop(0.85, '#d49a1d');
+      grad.addColorStop(1, '#8c5e07');
+
+      ctx.beginPath();
+      ctx.arc(0, 0, c.r, 0, Math.PI * 2);
+      ctx.fillStyle = grad;
+      ctx.fill();
+
+      // Golden Edge Rim
+      ctx.lineWidth = Math.max(1.2, c.r * 0.12);
+      ctx.strokeStyle = '#fff0a6';
+      ctx.stroke();
+
+      // Rupee Symbol on coin
+      if (Math.abs(scaleX) > 0.35 && c.r > 10){
+        ctx.fillStyle = '#6b4703';
+        ctx.font = 'bold ' + Math.floor(c.r * 1.05) + 'px system-ui, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('₹', 0, 1);
+      }
+      ctx.restore();
+
+      // Recycling
+      if (c.y > canvas.height + c.r + 20){
+        if (isSpawning){
+          coins[i] = createCoin(canvas, false);
+        } else {
+          coins.splice(i, 1);
+          i--;
+        }
+      }
+    }
+
+    if (coins.length > 0){
+      coinAnimId = requestAnimationFrame(loop);
+    } else {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      canvas.style.opacity = '0';
+      setTimeout(() => { if (!coins.length) canvas.style.display = 'none'; }, 1500);
+    }
+  }
+
+  coinAnimId = requestAnimationFrame(loop);
+
+  coinStopTimer = setTimeout(() => {
+    canvas.style.opacity = '0.5';
+  }, Math.max(1000, (durationSeconds - 2) * 1000));
 }
-ctx.restore();
-if (c.y > canvas.height + c.r + 20){
-if (isSpawning){ coins[i] = createCoin(canvas, false); } else { coins.splice(i, 1); i--; }
-}
-}
-if (coins.length > 0){ coinAnimId = requestAnimationFrame(loop); }
-else { ctx.clearRect(0, 0, canvas.width, canvas.height); canvas.style.opacity = '0'; setTimeout(() => { canvas.style.display = 'none'; }, 1500); }
-}
-coinAnimId = requestAnimationFrame(loop);
-coinStopTimer = setTimeout(() => { canvas.style.opacity = '0.5'; }, (durationSeconds - 2) * 1000);
-}
+
 function createCoin(canvas, initialSpread = false){
-const r = Math.random() * 9 + 13;
-return {
-x: Math.random() * canvas.width,
-y: initialSpread ? Math.random() * -canvas.height : -r - Math.random() * 80,
-r: r, speedY: Math.random() * 2.8 + 2.2, spin: Math.random() * Math.PI, spinSpeed: Math.random() * 0.08 + 0.04, wobble: Math.random() * Math.PI * 2
-};
+  const r = Math.random() * 9 + 13;
+  return {
+    x: Math.random() * canvas.width,
+    y: initialSpread ? Math.random() * -canvas.height : -r - Math.random() * 80,
+    r: r,
+    speedY: Math.random() * 2.8 + 2.2,
+    spin: Math.random() * Math.PI,
+    spinSpeed: Math.random() * 0.08 + 0.04,
+    wobble: Math.random() * Math.PI * 2
+  };
 }
-​function entry(id, date){
-const d = state.daily[date];
-const r = d && d[id];
-return r ? { cases: num(r.cases), amount: num(r.amount) } : { cases:0, amount:0 };
+
+/* ================= MONTH / YEAR SWITCHER ================= */
+function changeMonthYear(year, month){
+  const newYM = year + '-' + String(month).padStart(2, '0');
+  const maxDays = getDaysInMonth(newYM);
+  let curDay = parseInt(state.asOf.slice(8), 10) || 1;
+  if (curDay > maxDays) curDay = maxDays;
+  state.asOf = newYM + '-' + String(curDay).padStart(2, '0');
+  
+  // Recalculate working days for the newly selected month
+  const holCount = Object.keys(state.holidays || {}).filter(d => d.startsWith(newYM)).length;
+  state.workingDays = maxDays - holCount;
+
+  pushHistory('Period Change', 'Switched to ' + MONTH_NAMES[month - 1] + ' ' + year);
+  persist();
+  render();
+}
+
+/* ================= HOLIDAY HELPERS ================= */
+function isHoliday(date){
+  return Boolean(state.holidays && state.holidays[date]);
+}
+function toggleHoliday(date, reason){
+  if (!validDay(date)) { toast('Select a valid date'); return; }
+  state.holidays = state.holidays || {};
+  if (state.holidays[date]) {
+    const oldReason = state.holidays[date];
+    delete state.holidays[date];
+    pushHistory('Holiday removed', date + ' (' + oldReason + ')');
+    toast('Holiday removed for ' + date);
+  } else {
+    state.holidays[date] = reason || 'Holiday';
+    pushHistory('Holiday added', date + ' (' + state.holidays[date] + ')');
+    toast('Holiday added: ' + state.holidays[date]);
+  }
+  const ym = getYearMonth();
+  const holCount = Object.keys(state.holidays).filter(d => d.startsWith(ym)).length;
+  state.workingDays = getDaysInMonth(ym) - holCount;
+  persist(); render();
+}
+function fillSundays(){
+  state.holidays = state.holidays || {};
+  const ym = getYearMonth();
+  const maxDays = getDaysInMonth(ym);
+  const parts = ym.split('-').map(Number);
+  let count = 0;
+  for (let i = 1; i <= maxDays; i++){
+    if (new Date(parts[0], parts[1] - 1, i).getDay() === 0){
+      const k = dayKey(i, ym);
+      if (!state.holidays[k]){
+        state.holidays[k] = 'Sunday';
+        count++;
+      }
+    }
+  }
+  const holCount = Object.keys(state.holidays).filter(d => d.startsWith(ym)).length;
+  state.workingDays = maxDays - holCount;
+  pushHistory('Holidays updated', 'All Sundays marked off for ' + ym);
+  persist(); render();
+  toast(count ? count + ' Sundays marked off' : 'Sundays already marked');
+}
+
+/* ================= DATA ACCESS ================= */
+function entry(id, date){
+  const d = state.daily[date];
+  const r = d && d[id];
+  return r ? { cases: num(r.cases), amount: num(r.amount) } : { cases:0, amount:0 };
 }
 function commitEntry(id, date){
-const d = state.commitments[date];
-const r = d && d[id];
-return r ? { cases: num(r.cases), amount: num(r.amount) } : { cases:0, amount:0 };
+  const d = state.commitments[date];
+  const r = d && d[id];
+  return r ? { cases: num(r.cases), amount: num(r.amount) } : { cases:0, amount:0 };
 }
 function insEntry(id, date){
-const d = state.insurance.daily[date];
-const r = d && d[id];
-return r ? { policies: num(r.policies), premium: num(r.premium) } : { policies:0, premium:0 };
+  const d = state.insurance.daily[date];
+  const r = d && d[id];
+  return r ? { policies: num(r.policies), premium: num(r.premium) } : { policies:0, premium:0 };
 }
-​function systemPunchedSummary(soId, ym){
-ym = ym || getYearMonth();
-const loans = state.loans || [];
-const matched = loans.filter(l => l.soId === soId && l.loanDate && l.loanDate.startsWith(ym));
-const amount = matched.reduce((acc, l) => acc + l.loanAmount, 0);
-const cases = matched.length;
-return { amount, cases };
-}
-​function teamSystemPunchedSummary(ym){
-ym = ym || getYearMonth();
-const loans = state.loans || [];
-const matched = loans.filter(l => l.loanDate && l.loanDate.startsWith(ym));
-const amount = matched.reduce((acc, l) => acc + l.loanAmount, 0);
-const cases = matched.length;
-return { amount, cases };
-}
-​function calc(p){
-const today = entry(p.id, state.asOf);
-let amount = num(p.baseL), cases = num(p.baseC);
-const totalDays = getDaysInMonth();
-for (let i = 1; i <= totalDays; i++){
-const date = dayKey(i);
-if (date > state.asOf) break;
-const x = entry(p.id, date);
-amount += x.amount; cases += x.cases;
-}
-const target = num(p.target);
-const gap = Math.max(0, target - amount);
-const rem = remaining();
-const ym = getYearMonth();
-const sys = systemPunchedSummary(p.id, ym);
-return {
-...p, ftdL: today.amount, ftdC: today.cases, mtdL: amount, mtdC: cases,
-sysAmount: sys.amount, sysCases: sys.cases,
-gap: gap, pct: target ? 100 * amount / target : 0,
-reqDRR: rem ? gap / rem : gap, commit: commitEntry(p.id, state.asOf)
-};
+
+function calc(p){
+  const today = entry(p.id, state.asOf);
+  let amount = num(p.baseL), cases = num(p.baseC);
+  const totalDays = getDaysInMonth();
+  for (let i = 1; i <= totalDays; i++){
+    const date = dayKey(i);
+    if (date > state.asOf) break;
+    const x = entry(p.id, date);
+    amount += x.amount;
+    cases  += x.cases;
+  }
+  const target = num(p.target);
+  const gap = Math.max(0, target - amount);
+  const rem = remaining();
+  return {
+    ...p, ftdL: today.amount, ftdC: today.cases, mtdL: amount, mtdC: cases,
+    gap: gap, pct: target ? 100 * amount / target : 0,
+    reqDRR: rem ? gap / rem : gap, commit: commitEntry(p.id, state.asOf)
+  };
 }
 function rows(){ return state.people.map(calc); }
 function sums(rs){
-rs = rs || rows();
-return rs.reduce((a,p) => {
-a.target  += num(p.target); a.ftdL += p.ftdL; a.ftdC += p.ftdC;
-a.mtdL += p.mtdL; a.mtdC += p.mtdC;
-a.sysAmount += p.sysAmount; a.sysCases += p.sysCases;
-return a;
-}, { target:0, ftdL:0, ftdC:0, mtdL:0, mtdC:0, sysAmount:0, sysCases:0 });
+  rs = rs || rows();
+  return rs.reduce((a,p) => {
+    a.target  += num(p.target); a.ftdL += p.ftdL; a.ftdC += p.ftdC;
+    a.mtdL += p.mtdL; a.mtdC += p.mtdC;
+    a.commitL += num(p.commit.amount); a.commitC += num(p.commit.cases);
+    return a;
+  }, { target:0, ftdL:0, ftdC:0, mtdL:0, mtdC:0, commitL:0, commitC:0 });
 }
-​function attendanceFor(id, date){
-const gl = entry(id, date);
-const ins = insEntry(id, date);
-if (gl.amount > 0 || ins.premium > 0) return 'P';
-if (isHoliday(date)) return 'H';
-return 'A';
+
+function insCalc(p){
+  const today = insEntry(p.id, state.asOf);
+  const base  = state.insurance.base[p.id] || { policies:0, premium:0 };
+  let premium  = num(base.premium), policies = num(base.policies);
+  const totalDays = getDaysInMonth();
+  for (let i = 1; i <= totalDays; i++){
+    const date = dayKey(i);
+    if (date > state.asOf) break;
+    const x = insEntry(p.id, date);
+    premium  += x.premium;
+    policies += x.policies;
+  }
+  return {
+    ...p, insFtdPremium: today.premium, insFtdPolicies: today.policies,
+    insMtdPremium: premium, insMtdPolicies: policies,
+    insTarget: INS_TGT, insGap: Math.max(0, INS_TGT - premium),
+    insPct: pct(premium, INS_TGT)
+  };
+}
+function insuranceRows(){ return state.people.map(insCalc); }
+function insSums(rs){
+  rs = rs || insuranceRows();
+  return rs.reduce((a,p) => {
+    a.ftdPremium  += p.insFtdPremium; a.ftdPolicies += p.insFtdPolicies;
+    a.mtdPremium  += p.insMtdPremium; a.mtdPolicies += p.insMtdPolicies;
+    a.target += INS_TGT; a.gap += p.insGap;
+    return a;
+  }, { ftdPremium:0, ftdPolicies:0, mtdPremium:0, mtdPolicies:0, target:0, gap:0 });
+}
+
+/* ================= ATTENDANCE (AUTO) ================= */
+function attendanceFor(id, date){
+  const gl  = entry(id, date);
+  const ins = insEntry(id, date);
+  if (gl.amount > 0 || ins.premium > 0) return 'P';
+  if (isHoliday(date)) return 'H';
+  return 'A';
 }
 function attendanceSummary(id){
-let present = 0, absent = 0, holidays = 0;
-const totalDays = getDaysInMonth();
-for (let i = 1; i <= totalDays; i++){
-const date = dayKey(i);
-if (date > state.asOf) break;
-const st = attendanceFor(id, date);
-if (st === 'P') present++; else if (st === 'H') holidays++; else absent++;
+  let present = 0, absent = 0, holidays = 0;
+  const totalDays = getDaysInMonth();
+  for (let i = 1; i <= totalDays; i++){
+    const date = dayKey(i);
+    if (date > state.asOf) break;
+    const st = attendanceFor(id, date);
+    if (st === 'P') present++;
+    else if (st === 'H') holidays++;
+    else absent++;
+  }
+  const workingDaysElapsed = present + absent;
+  return {
+    present, absent, holidays, total: workingDaysElapsed,
+    pct: workingDaysElapsed ? 100 * present / workingDaysElapsed : (present ? 100 : 0)
+  };
 }
-const workingDaysElapsed = present + absent;
-return { present, absent, holidays, total: workingDaysElapsed, pct: workingDaysElapsed ? 100 * present / workingDaysElapsed : (present ? 100 : 0) };
+function teamAttendance(){
+  let present = 0, absent = 0, holidays = 0;
+  state.people.forEach(p => {
+    const s = attendanceSummary(p.id);
+    present += s.present;
+    absent  += s.absent;
+    holidays += s.holidays;
+  });
+  const total = present + absent;
+  return { present, absent, holidays, total, pct: total ? 100 * present / total : 0 };
 }
 function todayAttendance(){
-let present = 0, absent = 0, holidays = 0;
-state.people.forEach(p => {
-const st = attendanceFor(p.id, state.asOf);
-if (st === 'P') present++; else if (st === 'H') holidays++; else absent++;
-});
-return { present, absent, holidays };
+  let present = 0, absent = 0, holidays = 0;
+  state.people.forEach(p => {
+    const st = attendanceFor(p.id, state.asOf);
+    if (st === 'P') present++;
+    else if (st === 'H') holidays++;
+    else absent++;
+  });
+  const total = present + absent;
+  return { present, absent, holidays, total, pct: total ? 100 * present / total : (present ? 100 : 0) };
 }
-function isHoliday(date){ return Boolean(state.holidays && state.holidays[date]); }
+
+/* ================= TIME HELPERS ================= */
 function elapsed(){
-const curDay = Number(state.asOf.slice(-2));
-let d = 0;
-for (let i = 1; i <= curDay; i++){ if (!isHoliday(dayKey(i))) d++; }
-return d;
+  const curDay = Number(state.asOf.slice(-2));
+  let d = 0;
+  for (let i = 1; i <= curDay; i++){
+    const dt = dayKey(i);
+    if (!isHoliday(dt)) d++;
+  }
+  return d;
 }
 function remaining(){
-const totalDays = getDaysInMonth(), curDay = Number(state.asOf.slice(-2));
-let r = 0;
-for (let i = curDay + 1; i <= totalDays; i++){ if (!isHoliday(dayKey(i))) r++; }
-return r;
+  const totalDays = getDaysInMonth();
+  const curDay = Number(state.asOf.slice(-2));
+  let r = 0;
+  for (let i = curDay + 1; i <= totalDays; i++){
+    const dt = dayKey(i);
+    if (!isHoliday(dt)) r++;
+  }
+  return r;
 }
 function projected(){
-const s = sums(), e = elapsed(), r = remaining();
-return e ? s.mtdL / e * (e + r) : s.mtdL;
+  const s = sums(), e = elapsed(), r = remaining();
+  if (state.projectionMode === 'manual') return num(s.mtdL) * num(state.manualProjection) / 100;
+  if (state.projectionMode === 'required') return num(state.teamTarget);
+  if (state.projectionMode === 'recent'){
+    const last = [];
+    const ym = getYearMonth();
+    const parts = ym.split('-').map(Number);
+    for (let i = Number(state.asOf.slice(-2)); i >= 1 && last.length < 3; i--){
+      const date = dayKey(i);
+      if (new Date(parts[0], parts[1] - 1, i).getDay() === 0 || isHoliday(date)) continue;
+      last.push(dateTotals(date).amount);
+    }
+    const avg = last.length ? last.reduce((a,b)=>a+b,0)/last.length : 0;
+    return s.mtdL + avg * r;
+  }
+  return e ? s.mtdL / e * (e + r) : s.mtdL;
 }
 function dateTotals(date){
-const s = { cases:0, amount:0 };
-state.people.forEach(p => { const d = entry(p.id, date); s.cases += d.cases; s.amount += d.amount; });
-return s;
+  const s = { cases:0, amount:0, commitCases:0, commitAmount:0 };
+  state.people.forEach(p => {
+    const d = entry(p.id, date), c = commitEntry(p.id, date);
+    s.cases += d.cases; s.amount += d.amount;
+    s.commitCases += c.cases; s.commitAmount += c.amount;
+  });
+  return s;
 }
 function clusters(){
-const o = {};
-rows().forEach(p => {
-const k = p.cluster || 'Unassigned';
-const v = o[k] || (o[k] = { cluster:k, target:0, mtdL:0, count:0 });
-v.target += num(p.target); v.mtdL += p.mtdL; v.count++;
-});
-return Object.values(o).sort((a,b) => b.mtdL - a.mtdL);
+  const o = {};
+  rows().forEach(p => {
+    const k = p.cluster || 'Unassigned';
+    const v = o[k] || (o[k] = { cluster:k, target:0, ftdL:0, ftdC:0, mtdL:0, mtdC:0, count:0 });
+    v.target += num(p.target); v.ftdL += p.ftdL; v.ftdC += p.ftdC;
+    v.mtdL += p.mtdL; v.mtdC += p.mtdC; v.count++;
+  });
+  return Object.values(o).sort((a,b) => b.mtdL - a.mtdL);
 }
-​function showKpis(){
-const s = sums();
-const target = num(state.teamTarget);
-const gap = Math.max(0, target - s.mtdL);
-const pace = state.workingDays ? 100 * elapsed() / num(state.workingDays) : 0;
-const ach = target ? 100 * s.mtdL / target : 0;
-const proj = projected();
-const att = todayAttendance();
-const activeFtdCount = state.people.filter(p => { const d = entry(p.id, state.asOf); return d.amount > 0 || d.cases > 0; }).length;
-​const curMonthName = MONTH_NAMES[getMonth() - 1];
-const subtitle = $('headerSubtitle');
-if (subtitle) subtitle.textContent = curMonthName + ' ' + getYear() + ' • SO-wise Performance Intelligence';
-​const cards = [
-{ t:'Team Target', v: cr(target), s: '₹' + fmt(target,0) + ' L', c:'gold', i:'🎯' },
-{ t:'MTD Disbursement', v: '₹' + fmt(s.mtdL) + ' L', s: s.mtdC + ' cases', c:'green', i:'🚀' },
-{ t:'FTD Today', v: '₹' + fmt(s.ftdL) + ' L', s: activeFtdCount + '/' + state.people.length + ' SOs active • ' + s.ftdC + ' cases', c:'blue', i:'⚡' },
-{ t:'Achievement', v: fmt(ach,1) + '%', s: 'Expected pace ' + fmt(pace,1) + '%', c:'gold', i:'📊' },
-{ t:'Balance Gap', v: cr(gap), s: '₹' + fmt(gap) + ' L remaining', c:'red', i:'📉' },
-{ t:'Required DRR', v: '₹' + fmt(remaining() ? gap/remaining() : gap) + ' L', s: remaining() + ' days left', c:'blue', i:'⏱' },
-{ t:'Projected Close', v: cr(proj), s: proj >= target ? 'On track' : 'Short by ' + cr(target - proj), c: proj >= target ? 'green' : 'red', i:'🔮' },
-{ t:'Attendance Today', v: att.present + '/' + (att.present + att.absent), s: fmt(pct(att.present, att.present+att.absent),1) + '% present', c:'green', i:'📋' }
-];
-​$('kpis').innerHTML = cards.map(c =>
-'<div class="kpi ' + c.c + '"><div class="kpi-icon">' + c.i + '</div><div class="kpi-body"><label>' + c.t + '</label><strong>' + c.v + '</strong><small>' + c.s + '</small></div></div>'
-).join('');
+function status(p){
+  if (p.mtdL === 0) return 'Zero';
+  if (p.pct < 50) return 'Below 50%';
+  if (p.pct >= 100) return 'Achieved';
+  return 'Active';
 }
-​function toolbar(){
-const ym = getYearMonth(), curY = getYear(), curM = getMonth();
-const clusterList = [...new Set(state.people.map(x => x.cluster))].sort();
-let mOpts = '', yOpts = '';
-MONTH_NAMES.forEach((m, idx) => { mOpts += '<option value="' + (idx+1) + '" ' + (idx+1 === curM ? 'selected' : '') + '>' + m + '</option>'; });
-[2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035].forEach(y => { yOpts += '<option value="' + y + '" ' + (y === curY ? 'selected' : '') + '>' + y + '</option>'; });
-​return '<div class="panel"><div class="formgrid" style="grid-template-columns:repeat(auto-fit,minmax(140px,1fr))">' +
-'<div class="field"><label>Month</label><select onchange="changeMonthYear(' + curY + ', this.value)">' + mOpts + '</select></div>' +
-'<div class="field"><label>Year</label><select onchange="changeMonthYear(this.value, ' + curM + ')">' + yOpts + '</select></div>' +
-'<div class="field"><label>Report Date</label><input type="date" min="2024-01-01" max="2035-12-31" value="' + state.asOf + '" onchange="setDate(this.value)"></div>' +
-'<div class="field"><label>Cluster</label><select onchange="setFilter(\'cluster\',this.value)"><option>All</option>' +
-clusterList.map(c => '<option ' + (filterCluster === c ? 'selected' : '') + '>' + esc(c) + '</option>').join('') + '</select></div>' +
-'<div class="field"><label>Search SO</label><input data-search="so" value="' + esc(filterText) + '" placeholder="Type name…" oninput="setFilter(\'text\',this.value)"></div>' +
-'</div></div>';
+function filtered(){
+  let rs = rows().filter(p =>
+    (filterCluster === 'All' || p.cluster === filterCluster) &&
+    p.name.toLowerCase().includes(filterText.toLowerCase()) &&
+    (filterStatus === 'All' || status(p) === filterStatus)
+  );
+  const sorters = {
+    rank: (a,b) => b.pct - a.pct || b.mtdL - a.mtdL,
+    mtd:  (a,b) => b.mtdL - a.mtdL,
+    ftd:  (a,b) => b.ftdL - a.ftdL,
+    gap:  (a,b) => b.gap - a.gap,
+    name: (a,b) => a.name.localeCompare(b.name)
+  };
+  return rs.sort(sorters[sortBy] || sorters.rank);
 }
-​function changeMonthYear(year, month){
-const newYM = year + '-' + String(month).padStart(2, '0');
-const maxDays = getDaysInMonth(newYM);
-let curDay = parseInt(state.asOf.slice(8), 10) || 1;
-if (curDay > maxDays) curDay = maxDays;
-state.asOf = newYM + '-' + String(curDay).padStart(2, '0');
-const holCount = Object.keys(state.holidays || {}).filter(d => d.startsWith(newYM)).length;
-state.workingDays = maxDays - holCount;
-persist(); render();
-}
-function setDate(d){ if(validDay(d)){ state.asOf = d; persist(); render(); } else toast('Invalid date'); }
+
+/* ================= MUTATORS ================= */
 function setTab(t){ tab = t; render(); window.scrollTo({top:0, behavior:'smooth'}); }
-function setFilter(k,v){ if(k==='cluster') filterCluster=v; if(k==='text') filterText=v; render(); }
-​/* VIEWS */
+function setDate(date){
+  if (!validDay(date)){ toast('Choose a valid date'); return; }
+  const oldYM = getYearMonth();
+  state.asOf = date;
+  const newYM = getYearMonth();
+  if (newYM !== oldYM){
+    const maxDays = getDaysInMonth(newYM);
+    const holCount = Object.keys(state.holidays || {}).filter(d => d.startsWith(newYM)).length;
+    state.workingDays = Math.max(1, maxDays - holCount);
+  }
+  pushHistory('Report date change', 'Report date = ' + date);
+  persist(); render();
+}
+
+function shiftMonth(delta){
+  let y = getYear();
+  let m = getMonth() + delta;
+  if (m < 1){ m = 12; y--; }
+  else if (m > 12){ m = 1; y++; }
+  changeMonthYear(y, m);
+}
+function setFilter(type, value){
+  if (type === 'cluster') filterCluster = value;
+  if (type === 'text')    filterText = value;
+  if (type === 'status')  filterStatus = value;
+  const active = document.activeElement;
+  const pos = active && active.selectionStart;
+  render();
+  if (type === 'text'){
+    const inp = document.querySelector('input[data-search="so"]');
+    if (inp){ inp.focus(); try { inp.setSelectionRange(pos,pos); } catch(e){} }
+  }
+}
+function setSort(v){ sortBy = v; render(); }
+function setConfig(k, v){
+  state[k] = ['workingDays','manualProjection','teamTarget'].includes(k) ? num(v) : v;
+  pushHistory('Control update', k + ' = ' + state[k]);
+  persist(); render();
+}
+function editPerson(id, k, v){
+  const p = state.people.find(x => x.id === id);
+  if (!p) return;
+  p[k] = (k === 'target') ? num(v) : v;
+  pushHistory('SO update', p.name + ' • ' + k + ' = ' + p[k]);
+  persist(); render();
+}
+function editDaily(id, k, v){
+  state.daily[state.asOf] = state.daily[state.asOf] || {};
+  state.daily[state.asOf][id] = state.daily[state.asOf][id] || { cases:0, amount:0 };
+  state.daily[state.asOf][id][k] = num(v);
+  const p = state.people.find(x => x.id === id);
+  pushHistory('FTD entry', (p ? p.name : id) + ' • ' + k + ' = ' + num(v) + ' • ' + state.asOf);
+  persist(); render();
+}
+function editMTD(id, k, v){
+  const p = state.people.find(x => x.id === id);
+  if (!p) return;
+  let total = 0;
+  const totalDays = getDaysInMonth();
+  for (let i = 1; i <= totalDays; i++){
+    const date = dayKey(i);
+    if (date > state.asOf) break;
+    total += num(entry(id, date)[k]);
+  }
+  p[k === 'cases' ? 'baseC' : 'baseL'] = num(v) - total;
+  pushHistory('MTD adjustment', p.name + ' • ' + k + ' = ' + num(v));
+  persist(); render();
+}
+function editCommit(id, k, v){
+  state.commitments[state.asOf] = state.commitments[state.asOf] || {};
+  state.commitments[state.asOf][id] = state.commitments[state.asOf][id] || { cases:0, amount:0 };
+  state.commitments[state.asOf][id][k] = num(v);
+  const p = state.people.find(x => x.id === id);
+  pushHistory('Commitment entry', (p ? p.name : id) + ' • ' + k + ' = ' + num(v) + ' • ' + state.asOf);
+  persist(); render();
+}
+function editInsuranceDaily(id, k, v){
+  state.insurance.daily[state.asOf] = state.insurance.daily[state.asOf] || {};
+  state.insurance.daily[state.asOf][id] = state.insurance.daily[state.asOf][id] || { policies:0, premium:0 };
+  state.insurance.daily[state.asOf][id][k] = num(v);
+  const p = state.people.find(x => x.id === id);
+  pushHistory('Insurance FTD', (p ? p.name : id) + ' • ' + k + ' = ' + num(v) + ' • ' + state.asOf);
+  persist(); render();
+}
+function editInsuranceMTD(id, k, v){
+  let total = 0;
+  const totalDays = getDaysInMonth();
+  for (let i = 1; i <= totalDays; i++){
+    const date = dayKey(i);
+    if (date > state.asOf) break;
+    total += num(insEntry(id, date)[k]);
+  }
+  state.insurance.base[id] = state.insurance.base[id] || { policies:0, premium:0 };
+  state.insurance.base[id][k] = num(v) - total;
+  const p = state.people.find(x => x.id === id);
+  pushHistory('Insurance MTD adjust', (p ? p.name : id) + ' • ' + k + ' = ' + num(v));
+  persist(); render();
+}
+function addSO(){
+  const name = prompt('New SO name');
+  if (!name || !name.trim()) return;
+  state.people.push({id: 'so' + Date.now(), name: name.trim(), cluster:'Unassigned', target:0, code:'', baseL:0, baseC:0});
+  pushHistory('SO added', name.trim());
+  persist(); render(); toast('SO added');
+}
+function removeSO(id){
+  const p = state.people.find(x => x.id === id);
+  if (!p) return;
+  if (!confirm('Delete ' + p.name + ' and all their data from reports?\nExport a backup first.')) return;
+  state.people = state.people.filter(x => x.id !== id);
+  pushHistory('SO removed', p.name);
+  persist(); render(); toast('SO removed');
+}
+function clearHistory(){
+  if (!confirm('Clear change history only? GL data will remain unchanged.')) return;
+  state.history = []; persist(); render(); toast('History cleared');
+}
+function resetAll(){
+  if (!confirm('Reset ALL data to original 16 SOs and preloaded achievements?\nThis cannot be undone without a backup.')) return;
+  state = freshState(); persist(); render(); toast('All data reset');
+}
+
+/* ================= VISUALS ================= */
+function progressBar(value, tone){
+  const v = clamp(value, 0, 100);
+  const toneClass = tone || (v >= 100 ? 'green' : v >= 75 ? 'blue' : v >= 50 ? 'gold' : 'red');
+  return '<div class="bar"><div class="fill ' + toneClass + '" style="width:' + v + '%"></div></div>';
+}
+function gaugeSVG(actual, pace){
+  const R = 54, CX = 80, CY = 84;
+  const L = Math.PI * R;
+  const a = clamp(actual, 0, 100);
+  const len = L * a / 100;
+  const ang = Math.PI * (1 - clamp(pace, 0, 100) / 100);
+  const mx = CX + R * Math.cos(ang);
+  const my = CY - R * Math.sin(ang);
+  return '<svg viewBox="0 0 160 100" class="gauge" aria-hidden="true">' +
+    '<defs><linearGradient id="gg" x1="0" y1="0" x2="1" y2="0">' +
+    '<stop offset="0" stop-color="#4b7cc4"/><stop offset=".6" stop-color="#7aa6e0"/>' +
+    '<stop offset="1" stop-color="#e8bc63"/></linearGradient></defs>' +
+    '<path d="M ' + (CX-R) + ' ' + CY + ' A ' + R + ' ' + R + ' 0 0 1 ' + (CX+R) + ' ' + CY + '"' +
+    ' fill="none" stroke="#e8eef7" stroke-width="14" stroke-linecap="round"/>' +
+    '<path d="M ' + (CX-R) + ' ' + CY + ' A ' + R + ' ' + R + ' 0 0 1 ' + (CX+R) + ' ' + CY + '"' +
+    ' fill="none" stroke="url(#gg)" stroke-width="14" stroke-linecap="round"' +
+    ' stroke-dasharray="' + len.toFixed(2) + ' ' + L.toFixed(2) + '"/>' +
+    '<circle cx="' + mx.toFixed(2) + '" cy="' + my.toFixed(2) + '" r="4.5" fill="#0d1a2f" stroke="#fff" stroke-width="2"/>' +
+    '<text x="' + CX + '" y="' + (CY-14) + '" text-anchor="middle" font-size="20" font-weight="800" fill="#16243a">' +
+      fmt(actual,1) + '%</text>' +
+    '<text x="' + CX + '" y="' + (CY+2) + '" text-anchor="middle" font-size="8.5" font-weight="700" fill="#64748b">ACHIEVED</text>' +
+    '</svg>';
+}
+function trendChart(){
+  const totalDays = getDaysInMonth();
+  const vals = Array.from({length:totalDays}, (_,i) => dateTotals(dayKey(i+1)).amount);
+  const W = 600, H = 175, PL = 26, PR = 10, PT = 12, PB = 22;
+  const max = Math.max(1, ...vals);
+  const innerW = W - PL - PR, innerH = H - PT - PB;
+  const bw = innerW / totalDays;
+  const barW = Math.max(2, bw * 0.62);
+  const paceL = num(state.teamTarget) / Math.max(1, num(state.workingDays));
+
+  let bars = '';
+  vals.forEach((v, i) => {
+    const h = (v / max) * innerH;
+    const x = PL + i * bw + (bw - barW) / 2;
+    const y = PT + innerH - h;
+    const isFuture = dayKey(i+1) > state.asOf;
+    const fill = isFuture ? '#eef3fa' : (v > 0 ? 'url(#barg)' : '#eef3fa');
+    bars += '<rect x="' + x.toFixed(1) + '" y="' + y.toFixed(1) + '" width="' + barW.toFixed(1) +
+            '" height="' + Math.max(v ? 2 : 1, h).toFixed(1) + '" rx="2" fill="' + fill + '"/>';
+  });
+  const paceY = PT + innerH - (Math.min(paceL, max) / max) * innerH;
+  let labels = '';
+  [1,5,10,15,20,25,totalDays].forEach(d => {
+    if (d <= totalDays){
+      const x = PL + (d - 0.5) * bw;
+      labels += '<text x="' + x.toFixed(1) + '" y="' + (H-6) + '" text-anchor="middle" font-size="9" fill="#8a9ab0">' + d + '</text>';
+    }
+  });
+  const yTop  = '<text x="' + (PL-5) + '" y="' + (PT+6) + '" text-anchor="end" font-size="8.5" fill="#8a9ab0">' + fmt(max,0) + '</text>';
+  const yZero = '<text x="' + (PL-5) + '" y="' + (PT+innerH) + '" text-anchor="end" font-size="8.5" fill="#8a9ab0">0</text>';
+  return '<div class="chartbox"><svg class="chart" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="xMidYMid meet">' +
+    '<defs><linearGradient id="barg" x1="0" y1="0" x2="0" y2="1">' +
+    '<stop offset="0" stop-color="#e8bc63"/><stop offset="1" stop-color="#7ea9e2"/></linearGradient></defs>' +
+    '<line x1="' + PL + '" y1="' + paceY.toFixed(1) + '" x2="' + (W-PR) + '" y2="' + paceY.toFixed(1) +
+      '" stroke="#d0454f" stroke-width="1.2" stroke-dasharray="4 3" opacity=".7"/>' +
+    '<text x="' + (W-PR) + '" y="' + (paceY-4).toFixed(1) + '" text-anchor="end" font-size="8.5" font-weight="700" fill="#d0454f">' +
+      'Pace ₹' + fmt(paceL,1) + ' L</text>' +
+    bars + yTop + yZero + labels +
+    '<line x1="' + PL + '" y1="' + (PT+innerH) + '" x2="' + (W-PR) + '" y2="' + (PT+innerH) + '" stroke="#dbe4f0" stroke-width="1"/>' +
+    '</svg></div>' +
+    '<div class="muted" style="margin-top:6px">Daily GL disbursement in ₹ Lakhs. Dashed line = required daily pace.</div>';
+}
+function sparkline(id, w, h){
+  w = w || 84; h = h || 24;
+  const vals = []; let cum = 0;
+  const totalDays = getDaysInMonth();
+  for (let i = 1; i <= totalDays; i++){
+    const d = dayKey(i);
+    if (d > state.asOf) break;
+    cum += num(entry(id, d).amount);
+    vals.push(cum);
+  }
+  if (vals.length < 2) return '<svg width="' + w + '" height="' + h + '"></svg>';
+  const max = Math.max(1, ...vals);
+  const pts = vals.map((v,i) =>
+    ((i / (vals.length - 1)) * (w - 2) + 1).toFixed(1) + ',' + (h - 2 - (v / max) * (h - 4)).toFixed(1)
+  ).join(' ');
+  return '<svg width="' + w + '" height="' + h + '" class="spark" aria-hidden="true">' +
+    '<polyline points="' + pts + '" fill="none" stroke="#3b74c4" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"/>' +
+    '</svg>';
+}
+
+/* ================= KPI STRIP ================= */
+function showKpis(){
+  const s = sums();
+  const target = num(state.teamTarget);
+  const gap = Math.max(0, target - s.mtdL);
+  const pace = state.workingDays ? 100 * elapsed() / num(state.workingDays) : 0;
+  const ach = target ? 100 * s.mtdL / target : 0;
+  const proj = projected();
+  const att = todayAttendance();
+
+  const curMonthName = MONTH_NAMES[getMonth() - 1];
+  const curDayNum = state.asOf.slice(8);
+  const subtitle = $('headerSubtitle');
+  if (subtitle) {
+    subtitle.textContent = curMonthName + ' ' + getYear() + ' • SO-wise Performance Intelligence';
+  }
+
+  const cards = [
+    { t:'Team Target',        v: cr(target),                s: '₹' + fmt(target,0) + ' L',            c:'gold',  i:'🎯' },
+    { t:'MTD Disbursement',   v: '₹' + fmt(s.mtdL) + ' L',  s: s.mtdC + ' cases',                     c:'green', i:'🚀' },
+    { t:'FTD Today',          v: '₹' + fmt(s.ftdL) + ' L',  s: state.people.filter(p => { const d = entry(p.id, state.asOf); return d.amount > 0 || d.cases > 0; }).length + '/' + state.people.length + ' SOs active • ' + s.ftdC + ' cases', c:'blue', i:'⚡' },
+    { t:'Achievement',        v: fmt(ach,1) + '%',          s: 'Expected pace ' + fmt(pace,1) + '%',  c:'gold',  i:'📊' },
+    { t:'Balance Gap',        v: cr(gap),                   s: '₹' + fmt(gap) + ' L remaining',       c:'red',   i:'📉' },
+    { t:'Required DRR',       v: '₹' + fmt(remaining() ? gap/remaining() : gap) + ' L', s: remaining() + ' working days left', c:'blue', i:'⏱' },
+    { t:'Projected Close',    v: cr(proj),                  s: proj >= target ? 'On track' : 'Short by ' + cr(target - proj), c: proj >= target ? 'green' : 'red', i:'🔮' },
+    { t:'Attendance Today',   v: att.present + '/' + (att.present + att.absent), s: fmt(att.pct,1) + '% present' + (att.holidays ? ' (' + att.holidays + ' on Off)' : ''), c:'green', i:'📋' }
+  ];
+
+  $('kpis').innerHTML = cards.map(c =>
+    '<div class="kpi ' + c.c + '">' +
+      '<div class="kpi-icon">' + c.i + '</div>' +
+      '<div class="kpi-body">' +
+        '<label>' + c.t + '</label>' +
+        '<strong>' + c.v + '</strong>' +
+        '<small>' + c.s + '</small>' +
+      '</div>' +
+    '</div>'
+  ).join('');
+}
+
+/* ================= TOOLBAR ================= */
+function toolbar(){
+  const ym = getYearMonth();
+  const curY = getYear();
+  const curM = getMonth();
+  const totalDays = getDaysInMonth(ym);
+  const clusterList = [...new Set(state.people.map(x => x.cluster))].sort();
+
+  let monthOptions = '';
+  MONTH_NAMES.forEach((m, idx) => {
+    monthOptions += '<option value="' + (idx+1) + '" ' + (idx+1 === curM ? 'selected' : '') + '>' + m + '</option>';
+  });
+
+  let yearOptions = '';
+  [2024, 2025, 2026, 2027, 2028, 2029, 2030, 2031, 2032, 2033, 2034, 2035].forEach(y => {
+    yearOptions += '<option value="' + y + '" ' + (y === curY ? 'selected' : '') + '>' + y + '</option>';
+  });
+
+  return '<div class="panel">' +
+    '<div class="formgrid" style="grid-template-columns:repeat(auto-fit,minmax(140px,1fr))">' +
+      '<div class="field"><label>Month</label>' +
+        '<select onchange="changeMonthYear(' + curY + ', this.value)">' + monthOptions + '</select></div>' +
+      '<div class="field"><label>Year</label>' +
+        '<select onchange="changeMonthYear(this.value, ' + curM + ')">' + yearOptions + '</select></div>' +
+      '<div class="field"><label>Report Date</label>' +
+        '<input type="date" min="2024-01-01" max="2035-12-31" value="' + state.asOf + '" onchange="setDate(this.value)"></div>' +
+      '<div class="field"><label>Cluster</label>' +
+        '<select onchange="setFilter(\'cluster\',this.value)"><option>All</option>' +
+        clusterList.map(c => '<option ' + (filterCluster === c ? 'selected' : '') + '>' + esc(c) + '</option>').join('') +
+        '</select></div>' +
+      '<div class="field"><label>Search SO</label>' +
+        '<input data-search="so" value="' + esc(filterText) + '" placeholder="Type name…" oninput="setFilter(\'text\',this.value)"></div>' +
+      '<div class="field"><label>Status</label>' +
+        '<select onchange="setFilter(\'status\',this.value)">' +
+        ['All','Zero','Below 50%','Active','Achieved'].map(x =>
+          '<option ' + (filterStatus === x ? 'selected' : '') + '>' + x + '</option>').join('') +
+        '</select></div>' +
+    '</div>' +
+  '</div>';
+}
+
+
+/* ================= LOAN PUNCHING & BANK MIS ================= */
+function addManualLoan(form){
+  const bankName = form.bankName.value.trim();
+  const loanAcNo = form.loanAcNo.value.trim();
+  const loanAmount = num(form.loanAmount.value);
+  const loanDate = form.loanDate.value;
+  const soId = form.soId.value;
+
+  if (!bankName || !loanAcNo || !loanAmount || !loanDate || !soId){
+    toast('Please fill all loan punching fields');
+    return;
+  }
+  const so = state.people.find(x => x.id === soId);
+  const soName = so ? so.name : 'Unknown';
+
+  state.loans = state.loans || [];
+  state.loans.push({
+    id: 'loan_' + Date.now() + '_' + Math.floor(Math.random()*1000),
+    bankName, loanAcNo, loanAmount, loanDate, soId, soName,
+    status: 'Verified', source: 'Manual Punch'
+  });
+
+  pushHistory('Loan Punching', 'Bank: ' + bankName + ' • A/c: ' + loanAcNo + ' • ₹' + loanAmount + 'L • SO: ' + soName);
+  persist(); render();
+  toast('Loan punched and verified successfully');
+  form.reset();
+}
+
+function deleteLoan(id){
+  state.loans = state.loans || [];
+  const l = state.loans.find(x => x.id === id);
+  if (!l) return;
+  if (!confirm('Delete loan record for A/c ' + l.loanAcNo + '?')) return;
+  state.loans = state.loans.filter(x => x.id !== id);
+  pushHistory('Loan Deleted', 'A/c: ' + l.loanAcNo);
+  persist(); render();
+  toast('Loan record deleted');
+}
+
+function processBankMISUpload(input){
+  const file = input.files && input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e){
+    const text = e.target.result;
+    parseBankMISCSV(text);
+  };
+  reader.readAsText(file);
+  input.value = '';
+}
+
+function parseBankMISCSV(text){
+  const lines = text.split(/\r?\n/);
+  state.loans = state.loans || [];
+  let addedCount = 0;
+
+  // Expected CSV columns: Bank Name, Loan A/c No, Loan Amount (Lakhs), Loan Date (YYYY-MM-DD), SO Name
+  for (let i = 1; i < lines.length; i++){
+    const line = lines[i].trim();
+    if (!line) continue;
+    const parts = line.split(/,|\t/);
+    if (parts.length < 5) continue;
+
+    const bankName = parts[0].replace(/^"|"$/g, '').trim();
+    const loanAcNo = parts[1].replace(/^"|"$/g, '').trim();
+    const loanAmount = num(parts[2].replace(/^"|"$/g, '').trim());
+    const loanDate = parts[3].replace(/^"|"$/g, '').trim();
+    const rawSoName = parts[4].replace(/^"|"$/g, '').trim();
+
+    // Match SO Name fuzzy against state.people
+    let matchedSo = state.people.find(p => p.name.toLowerCase() === rawSoName.toLowerCase());
+    if (!matchedSo){
+      matchedSo = state.people.find(p => p.name.toLowerCase().includes(rawSoName.toLowerCase()) || rawSoName.toLowerCase().includes(p.name.toLowerCase()));
+    }
+    const soId = matchedSo ? matchedSo.id : '';
+    const soName = matchedSo ? matchedSo.name : rawSoName;
+    const status = matchedSo ? 'Auto-Verified' : 'Review Needed';
+
+    // Check duplicate by loanAcNo
+    const existing = state.loans.find(x => x.loanAcNo === loanAcNo);
+    if (!existing){
+      state.loans.push({
+        id: 'loan_recon_' + Date.now() + '_' + i,
+        bankName, loanAcNo, loanAmount, loanDate, soId, soName,
+        status, source: 'Bank MIS Upload'
+      });
+      addedCount++;
+    }
+  }
+
+  pushHistory('Bank MIS Import', 'Imported and auto-verified ' + addedCount + ' loan records from bank MIS');
+  persist(); render();
+  toast(addedCount + ' loan records reconciled successfully');
+}
+
+function viewLoans(){
+  state.loans = state.loans || [];
+  const totalAmt = state.loans.reduce((a,b) => a + b.loanAmount, 0);
+
+  return '<div class="panel"><h2>📝 Loan Data Punching</h2>' +
+    '<div class="note" style="margin-bottom:12px">Punch individual loan disbursement records manually. Required fields: Bank Name, Loan A/c No, Loan Amount, Loan Date, and Case Done By (SO Name).</div>' +
+    '<form onsubmit="event.preventDefault(); addManualLoan(this);" class="formgrid">' +
+      '<div class="field"><label>Bank Name</label><input type="text" name="bankName" placeholder="e.g. HDFC / SBI / Axis" required></div>' +
+      '<div class="field"><label>Loan A/c No.</label><input type="text" name="loanAcNo" placeholder="Account Number" required></div>' +
+      '<div class="field"><label>Loan Amount (₹ Lakhs)</label><input type="number" min="0" step="0.01" name="loanAmount" placeholder="e.g. 12.50" required></div>' +
+      '<div class="field"><label>Loan Date</label><input type="date" name="loanDate" value="' + state.asOf + '" required></div>' +
+      '<div class="field"><label>Case Done By (SO Name)</label><select name="soId" required>' +
+        '<option value="">Select Service Officer</option>' +
+        state.people.map(p => '<option value="' + p.id + '">' + esc(p.name) + ' (' + esc(p.cluster) + ')</option>').join('') +
+      '</select></div>' +
+    '</form>' +
+    '<div class="actions" style="margin-top:10px">' +
+      '<button class="btn gold" onclick="addManualLoan(this.form)">+ Punch & Verify Loan</button>' +
+    '</div>' +
+  '</div>' +
+  '<div class="panel"><div class="flex between"><h2>📋 Punched Loans Ledger</h2>' +
+    '<span class="pill good">Total Punched: ₹' + fmt(totalAmt) + ' L (' + state.loans.length + ' cases)</span></div>' +
+    '<div class="scroll"><table><thead><tr>' +
+      '<th>Bank Name</th><th>Loan A/c No</th><th>Loan Amount (₹L)</th><th>Loan Date</th><th>Case Done By (SO)</th><th>Status</th><th>Source</th><th></th>' +
+    '</tr></thead><tbody>' +
+    (state.loans.length ? state.loans.map(l =>
+      '<tr>' +
+        '<td><b>' + esc(l.bankName) + '</b></td>' +
+        '<td>' + esc(l.loanAcNo) + '</td>' +
+        '<td><b>' + fmt(l.loanAmount) + '</b></td>' +
+        '<td>' + esc(l.loanDate) + '</td>' +
+        '<td>' + esc(l.soName) + '</td>' +
+        '<td><span class="pill ' + (l.status === 'Verified' || l.status === 'Auto-Verified' ? 'good' : 'warn') + '">' + esc(l.status) + '</span></td>' +
+        '<td><span class="pill info">' + esc(l.source) + '</span></td>' +
+        '<td><button class="btn danger" onclick="deleteLoan(\'' + l.id + '\')">Delete</button></td>' +
+      '</tr>'
+    ).join('') : '<tr><td colspan="8" class="muted center">No loan records punched yet.</td></tr>') +
+    '</tbody></table></div>' +
+  '</div>';
+}
+
+function viewBankMis(){
+  state.loans = state.loans || [];
+  // Group by Bank Name
+  const bankMap = {};
+  state.loans.forEach(l => {
+    const b = l.bankName || 'Other';
+    bankMap[b] = bankMap[b] || { bank: b, count: 0, amount: 0 };
+    bankMap[b].count++;
+    bankMap[b].amount += l.loanAmount;
+  });
+  const bankSummary = Object.values(bankMap).sort((a,b) => b.amount - a.amount);
+  const totalAmt = state.loans.reduce((a,b) => a + b.loanAmount, 0);
+
+  return '<div class="panel"><h2>📊 Bank MIS & Portfolio Summary</h2>' +
+    '<div class="note" style="margin-bottom:12px">Consolidated Management Information System (MIS) breakdown of loan disbursements mapped by Partner Bank, Loan Account Number, Amount, Date, and SO Name.</div>' +
+    '<div class="grid3" style="margin-top:10px">' +
+      '<div class="kpi gold"><div class="kpi-body"><label>Total Bank MIS Volume</label><strong>₹' + fmt(totalAmt) + ' L</strong><small>' + state.loans.length + ' Total Loans</small></div></div>' +
+      '<div class="kpi green"><div class="kpi-body"><label>Partner Banks</label><strong>' + bankSummary.length + ' Banks</strong><small>Active Lenders</small></div></div>' +
+      '<div class="kpi blue"><div class="kpi-body"><label>Auto-Reconciled</label><strong>' + state.loans.filter(x=>x.status.includes('Verified')).length + ' Cases</strong><small>SO Tagged</small></div></div>' +
+    '</div>' +
+  '</div>' +
+  '<div class="panel"><h2>🏦 Bank-wise Distribution</h2>' +
+    '<div class="scroll"><table><thead><tr>' +
+      '<th>Bank Name</th><th>Total Cases</th><th>Disbursed Amount (₹L)</th><th>% Share</th>' +
+    '</tr></thead><tbody>' +
+    (bankSummary.length ? bankSummary.map(b =>
+      '<tr>' +
+        '<td><b>' + esc(b.bank) + '</b></td>' +
+        '<td>' + b.count + '</td>' +
+        '<td><b>₹' + fmt(b.amount) + ' L</b></td>' +
+        '<td>' + fmt(totalDays ? (100 * b.amount / Math.max(1, totalAmt)) : 0, 1) + '%</td>' +
+      '</tr>'
+    ).join('') : '<tr><td colspan="4" class="muted center">No bank MIS data available.</td></tr>') +
+    '</tbody></table></div>' +
+  '</div>' +
+  '<div class="panel"><h2>📋 Full Bank MIS Ledger</h2>' +
+    '<div class="scroll"><table><thead><tr>' +
+      '<th>Bank Name</th><th>Loan A/c No</th><th>Loan Amount (₹L)</th><th>Loan Date</th><th>Case Done By (SO Name)</th><th>Status</th>' +
+    '</tr></thead><tbody>' +
+    (state.loans.length ? state.loans.map(l =>
+      '<tr>' +
+        '<td><b>' + esc(l.bankName) + '</b></td>' +
+        '<td>' + esc(l.loanAcNo) + '</td>' +
+        '<td><b>' + fmt(l.loanAmount) + '</b></td>' +
+        '<td>' + esc(l.loanDate) + '</td>' +
+        '<td>' + esc(l.soName) + '</td>' +
+        '<td><span class="pill ' + (l.status.includes('Verified') ? 'good' : 'warn') + '">' + esc(l.status) + '</span></td>' +
+      '</tr>'
+    ).join('') : '<tr><td colspan="6" class="muted center">No records found.</td></tr>') +
+    '</tbody></table></div>' +
+  '</div>';
+}
+
+function viewRecon(){
+  return '<div class="panel"><h2>📂 Bank MIS Auto-Reconciliation & Upload</h2>' +
+    '<div class="note" style="margin-bottom:12px">Upload the official Bank MIS report (CSV format with columns: <b>Bank Name, Loan A/c No, Loan Amount (₹L), Loan Date, Case Done By (SO Name)</b>). The system will automatically ingest, match, and tag records to respective Service Officers.</div>' +
+    '<div class="formgrid">' +
+      '<div class="field"><label>Select Bank MIS CSV File</label>' +
+        '<input type="file" accept=".csv,text/csv" onchange="processBankMISUpload(this)"></div>' +
+    '</div>' +
+    '<div class="actions" style="margin-top:14px">' +
+      '<button class="btn gold" onclick="downloadSampleMISCSV()">⬇ Download Sample MIS CSV</button>' +
+      '<button class="btn danger" onclick="if(confirm(\'Clear all punched & imported loans?\')){state.loans=[];persist();render();toast(\'Loans cleared\');}">Clear All Loans</button>' +
+    '</div>' +
+  '</div>';
+}
+
+function downloadSampleMISCSV(){
+  const sample = "Bank Name,Loan A/c No,Loan Amount (₹L),Loan Date,Case Done By\nHDFC Bank,HDFC982341,12.50,2026-11-06,Abhishek Soni\nSBI,SBI451209,25.00,2026-11-06,Ravi Kumar\nAxis Bank,AXIS778192,8.40,2026-11-05,Bablu Dhaker";
+  download('Sample_Bank_MIS.csv', sample, 'text/csv;charset=utf-8');
+  toast('Sample CSV downloaded');
+}
+
+
+
+/* ================= ADVANCED FEATURES: HEATMAP, WHATSAPP BROADCAST, AUDIT TRAIL ================= */
+
+function viewHeatmap(){
+  const rs = rows().sort((a,b) => b.pct - a.pct);
+  return '<div class="panel"><h2>🔥 Real-Time Cluster & SO Performance Heatmap</h2>' +
+    '<div class="note" style="margin-bottom:12px">Traffic-light matrix for quick field reviews. <b>Green</b> = >=100% (Achieved), <b>Amber</b> = 75-99% (On Track), <b>Yellow</b> = 50-74% (Moderate), <b>Red</b> = <50% (Needs Attention).</div>' +
+    '<div class="grid3" style="gap:10px">' +
+    rs.map(p => {
+      const pctVal = p.pct;
+      const bg = pctVal >= 100 ? 'background:#def7eb;border-color:#a7e8cd;color:#0b7449' :
+                 pctVal >= 75 ? 'background:#e4eefb;border-color:#b9d2f5;color:#255089' :
+                 pctVal >= 50 ? 'background:#fff8e9;border-color:#fce4a6;color:#b45309' :
+                 'background:#ffe7ea;border-color:#f8c4ca;color:#a62838';
+      const statusLbl = pctVal >= 100 ? '🟢 Achieved (>=100%)' :
+                        pctVal >= 75 ? '🔵 On Track (75-99%)' :
+                        pctVal >= 50 ? '🟡 Moderate (50-74%)' : '🔴 Needs Attention (<50%)';
+      return '<div class="panel" style="margin:0; ' + bg + ';box-shadow:none">' +
+        '<div style="font-size:13px;font-weight:850">' + esc(p.name) + '</div>' +
+        '<div class="muted" style="opacity:0.8">' + esc(p.cluster) + '</div>' +
+        '<div style="font-size:22px;font-weight:900;margin:6px 0">' + fmt(pctVal,1) + '%</div>' +
+        '<div style="font-size:11px">Target: ₹' + fmt(p.target) + ' L | MTD: ₹' + fmt(p.mtdL) + ' L</div>' +
+        '<div style="margin-top:6px;font-size:10.5px;font-weight:800">' + statusLbl + '</div>' +
+      '</div>';
+    }).join('') +
+    '</div>' +
+  '</div>';
+}
+
+function viewBroadcast(){
+  return '<div class="panel"><h2>📢 Automated WhatsApp Broadcast Generator</h2>' +
+    '<div class="note" style="margin-bottom:12px">Generate customized individual WhatsApp motivation snippets for every SO containing their live achievement and balance gap.</div>' +
+    '<div class="formgrid" style="margin-bottom:12px">' +
+      '<div class="field"><label>Select SO</label><select id="broadcastSoId">' +
+        state.people.map(p => '<option value="' + p.id + '">' + esc(p.name) + ' (' + esc(p.cluster) + ')</option>').join('') +
+      '</select></div>' +
+    '</div>' +
+    '<div class="actions" style="margin-bottom:12px">' +
+      '<button class="btn gold" onclick="generateBroadcastText()">Generate Broadcast Snippet</button>' +
+      '<button class="btn" onclick="sendSOWhatsApp()">📲 Send via WhatsApp</button>' +
+    '</div>' +
+    '<textarea id="broadcastTextArea" readonly placeholder="Click generate to create customized snippet…"></textarea>' +
+  '</div>';
+}
+
+function generateBroadcastText(){
+  const id = $('broadcastSoId').value;
+  const p = rows().find(x => x.id === id);
+  if (!p) return;
+  const dateStr = state.asOf.split('-').reverse().join('-');
+  const txt = '🌟 *MANIPAL FINTECH — PERFORMANCE UPDATE* 🌟\n' +
+    '📅 *Date:* ' + dateStr + '\n\n' +
+    'Dear *' + p.name + '* (' + p.cluster + '),\n' +
+    'Here is your current MTD Gold Loan performance update:\n\n' +
+    '🎯 *Target:* ₹' + fmt(p.target) + ' L\n' +
+    '🚀 *MTD Achieved:* ₹' + fmt(p.mtdL) + ' L (' + p.mtdC + ' Cases)\n' +
+    '📊 *Achievement %:* ' + fmt(p.pct,1) + '%\n' +
+    '📉 *Balance Gap:* ₹' + fmt(p.gap) + ' L\n' +
+    '⏱️ *Required DRR:* ₹' + fmt(p.reqDRR) + ' L/day\n\n' +
+    (p.pct >= 100 ? '🏆 Outstanding work! Keep up the winning momentum!' : '💪 Push hard in the coming days to close the gap and hit your milestone. You can do it!') + '\n\n' +
+    '_— Regional Head Sales, Rajasthan_';
+  $('broadcastTextArea').value = txt;
+  toast('Broadcast snippet generated');
+}
+
+function sendSOWhatsApp(){
+  const t = $('broadcastTextArea').value;
+  if (!t){ toast('Please generate snippet first'); return; }
+  window.open('https://wa.me/?text=' + encodeURIComponent(t), '_blank', 'noopener');
+}
+
+function viewAuditTrail(){
+  const h = state.history || [];
+  return '<div class="panel"><h2>🧾 Audit Trail & Activity Log</h2>' +
+    '<div class="note" style="margin-bottom:12px">Lightweight transparency dashboard recording all data modifications, FTD entries, MTD adjustments, and date changes in this session.</div>' +
+    '<div class="actions" style="margin-bottom:12px">' +
+      '<button class="btn light" onclick="downloadHistoryCsv()">⬇ Export Audit CSV</button>' +
+      '<button class="btn danger" onclick="clearHistory()">Clear Audit Log</button>' +
+    '</div>' +
+    (h.length
+      ? '<div class="scroll"><table><thead><tr><th>Timestamp</th><th>Action Category</th><th>Detailed Description</th></tr></thead><tbody>' +
+        h.slice().reverse().map(x =>
+          '<tr><td>' + esc(x.time) + '</td><td><b>' + esc(x.action) + '</b></td><td>' + esc(x.detail) + '</td></tr>').join('') +
+        '</tbody></table></div>' +
+      '<p class="muted" style="margin-top:8px">Total audit entries logged: ' + h.length + '</p>'
+      : '<p class="muted">No activity logged yet.</p>') +
+  '</div>';
+}
+
+
+/* ================= VIEW: OVERVIEW ================= */
 function viewOverview(){
-const s = sums(); const target = num(state.teamTarget); const ach = target ? 100 * s.mtdL / target : 0;
-return toolbar() +
-'<div class="panel"><h2>🎯 Overview Summary</h2><p class="statline">Total MTD: <b>₹' + fmt(s.mtdL) + ' L</b> (' + s.mtdC + ' cases)
-System Punched MTD: <b>₹' + fmt(s.sysAmount) + ' L</b> (' + s.sysCases + ' cases)</p></div>';
+  const s = sums();
+  const target = num(state.teamTarget);
+  const ach = target ? 100 * s.mtdL / target : 0;
+  const pace = 100 * elapsed() / Math.max(1, num(state.workingDays));
+  const ranked = rows().sort((a,b) => b.pct - a.pct);
+  const zeros = ranked.filter(p => p.mtdL === 0).length;
+  const behind = rows().filter(p => p.commit.amount > p.ftdL).length;
+  const proj = projected();
+  const attToday = todayAttendance();
+  const attTeam = teamAttendance();
+
+  return toolbar() +
+    '<div class="grid2">' +
+      '<div class="panel"><h2>🎯 Pace Gauge</h2>' +
+        '<div class="center">' + gaugeSVG(ach, pace) + '</div>' +
+        '<div class="progressmeta" style="margin-top:10px"><span>Actual</span><b>' + fmt(ach,1) + '%</b></div>' +
+        progressBar(ach) +
+        '<p class="statline" style="margin-top:12px">' +
+          (ach >= pace ? '✅ On or above expected pace' :
+            '⚠️ Behind expected pace by <b>' + fmt(pace - ach,1) + '</b> points') +
+          '<br>SO target allocation: <b>' + cr(s.target) + '</b>' +
+          '<br>Unallocated team target: <b>' + cr(Math.max(0, target - s.target)) + '</b>' +
+          '<br>Elapsed working days: <b>' + elapsed() + '</b> of ' + num(state.workingDays) +
+        '</p>' +
+      '</div>' +
+      '<div class="panel"><h2>🔮 Smart Projection</h2>' +
+        '<p class="statline">' +
+          'Current MTD: <b>' + cr(s.mtdL) + '</b><br>' +
+          'Expected Month-End: <b>' + cr(proj) + '</b><br>' +
+          'Required DRR: <b>₹' + fmt(remaining() ? Math.max(0,target - s.mtdL)/remaining() : 0) + ' L</b><br>' +
+          'Projection status: <b style="color:' + (proj >= target ? 'var(--green)' : 'var(--red)') + '">' +
+            (proj >= target ? 'On target' : 'Short by ' + cr(target - proj)) + '</b>' +
+        '</p>' +
+        '<div class="actions"><button class="btn light" onclick="setTab(\'projection\')">Open Projection →</button></div>' +
+      '</div>' +
+    '</div>' +
+    '<div class="panel"><h2>📈 Daily Disbursement Trend</h2>' + trendChart() + '</div>' +
+    '<div class="grid2">' +
+      '<div class="panel"><h2>🏆 Top 5 — Achievement</h2>' +
+        ranked.slice(0,5).map((p,i) =>
+          '<div class="listrow">' +
+            '<div class="progressmeta"><span>' + (i+1) + '. ' + esc(p.name) + '</span><b>' + fmt(p.pct,1) + '%</b></div>' +
+            progressBar(p.pct) +
+          '</div>').join('') +
+      '</div>' +
+      '<div class="panel"><h2>🚨 Alerts Snapshot</h2>' +
+        '<div class="alert">' + zeros + ' SOs with zero MTD disbursement</div>' +
+        '<div class="alert">' + rows().filter(p => p.ftdL === 0).length + ' SOs with zero FTD today</div>' +
+        '<div class="alert">' + behind + ' SOs below morning commitment</div>' +
+        '<div class="actions"><button class="btn light" onclick="setTab(\'alerts\')">View all alerts →</button></div>' +
+      '</div>' +
+    '</div>' +
+    '<div class="panel"><h2>📋 Today\'s Attendance Snapshot</h2>' +
+      '<div class="att-summary-row">' +
+        '<div class="att-stat p"><b>' + attToday.present + '</b><span>Present Today</span></div>' +
+        '<div class="att-stat a"><b>' + attToday.absent + '</b><span>Absent Today</span></div>' +
+        '<div class="att-stat h"><b>' + attToday.holidays + '</b><span>On Holiday</span></div>' +
+      '</div>' +
+      '<div class="att-summary-row">' +
+        '<div class="att-stat p"><b>' + attTeam.present + '</b><span>MTD Present</span></div>' +
+        '<div class="att-stat a"><b>' + attTeam.absent + '</b><span>MTD Absent</span></div>' +
+        '<div class="att-stat"><b>' + fmt(attTeam.pct,1) + '%</b><span>MTD Rate</span></div>' +
+      '</div>' +
+      '<div class="actions"><button class="btn light" onclick="setTab(\'attendance\')">Open Attendance →</button></div>' +
+    '</div>' +
+    '<div class="panel"><h2>🏢 Cluster Snapshot</h2>' + clusterBars() + '</div>';
 }
-​function addManualLoan(form){
-const bankName = form.bankName.value.trim();
-const loanAcNo = form.loanAcNo.value.trim();
-const loanAmount = num(form.loanAmount.value);
-const loanDate = form.loanDate.value;
-const soId = form.soId.value;
-if (!bankName || !loanAcNo || !loanAmount || !loanDate || !soId){ toast('Fill all fields'); return; }
-const so = state.people.find(x => x.id === soId);
-state.loans.push({ id: 'l_' + Date.now(), bankName, loanAcNo, loanAmount, loanDate, soId, soName: so ? so.name : 'Unknown', status: 'Verified', source: 'Manual' });
-persist(); render(); toast('Loan punched successfully'); form.reset();
+
+function clusterBars(){
+  const cs = clusters();
+  if (!cs.length) return '<p class="muted">No clusters yet.</p>';
+  return cs.map(c => {
+    const p = pct(c.mtdL, c.target);
+    return '<div class="listrow">' +
+      '<div class="progressmeta"><b>' + esc(c.cluster) + '</b>' +
+        '<span>₹' + fmt(c.mtdL) + ' / ' + fmt(c.target) + ' L (' + fmt(p,1) + '%)</span></div>' +
+      progressBar(p) +
+    '</div>';
+  }).join('');
 }
-​function viewLoans(){
-state.loans = state.loans || [];
-return '<div class="panel"><h2>📝 Loan Data Punching</h2>' +
-'<form onsubmit="event.preventDefault(); addManualLoan(this);" class="formgrid">' +
-'<div class="field"><label>Bank Name</label><input type="text" name="bankName" placeholder="HDFC / SBI" required></div>' +
-'<div class="field"><label>Loan A/c No.</label><input type="text" name="loanAcNo" placeholder="Account No" required></div>' +
-'<div class="field"><label>Amount (₹L)</label><input type="number" step="0.01" name="loanAmount" placeholder="12.50" required></div>' +
-'<div class="field"><label>Date</label><input type="date" name="loanDate" value="' + state.asOf + '" required></div>' +
-'<div class="field"><label>SO Name</label><select name="soId" required><option value="">Select SO</option>' +
-state.people.map(p => '<option value="' + p.id + '">' + esc(p.name) + '</option>').join('') + '</select></div>' +
-'</form>' +
-'<div class="actions" style="margin-top:10px"><button class="btn gold" onclick="addManualLoan(this.form)">+ Punch Loan</button></div>' +
-'</div>' +
-'<div class="panel"><h2>📋 Punched Loans</h2><div class="scroll"><table><thead><tr><th>Bank</th><th>A/c No</th><th>Amount</th><th>Date</th><th>SO Name</th><th></th></tr></thead><tbody>' +
-(state.loans.length ? state.loans.map(l => '<tr><td><b>' + esc(l.bankName) + '</b></td><td>' + esc(l.loanAcNo) + '</td><td>₹' + fmt(l.loanAmount) + 'L</td><td>' + esc(l.loanDate) + '</td><td>' + esc(l.soName) + '</td><td><button class="btn danger" onclick="state.loans=state.loans.filter(x=>x.id!==\'' + l.id + '\');persist();render();">Delete</button></td></tr>').join('') : '<tr><td colspan="6" class="muted center">No loans punched.</td></tr>') +
-'</tbody></table></div></div>';
+
+/* ================= VIEW: TRACKER ================= */
+
+function systemPunchedSummary(soId, ym){
+  ym = ym || getYearMonth();
+  const loans = state.loans || [];
+  const matched = loans.filter(l => l.soId === soId && l.loanDate && l.loanDate.startsWith(ym));
+  const amount = matched.reduce((acc, l) => acc + l.loanAmount, 0);
+  const cases = matched.length;
+  return { amount, cases, count: matched.length };
 }
-​function viewTracker(){
-const list = rows();
-const ym = getYearMonth();
-return toolbar() +
-'<div class="panel"><h2>⚡ SO Tracker & System Punching Reconciliation</h2>' +
-'<div class="scroll"><table><thead><tr>' +
-'<th>SO / Cluster</th><th>Target ₹L</th><th>FTD ₹L</th><th>Reporting MTD ₹L</th><th>System Punched ₹L</th><th>Variance / Gap</th><th>Ach %</th>' +
-'</tr></thead><tbody>' +
-list.map(p => {
-const diff = p.mtdL - p.sysAmount;
-const statusPill = Math.abs(diff) < 0.01 ? '<span class="pill good">Matched (0)</span>' : '<span class="pill bad">Diff: ₹' + fmt(diff) + 'L</span>';
-return '<tr>' +
-'<td><b>' + esc(p.name) + '</b><div class="muted">' + esc(p.cluster) + '</div></td>' +
-'<td>' + fmt(p.target) + '</td>' +
-'<td>' + fmt(p.ftdL) + '</td>' +
-'<td><b>₹' + fmt(p.mtdL) + ' L</b><div class="muted">' + p.mtdC + ' cases</div></td>' +
-'<td><b>₹' + fmt(p.sysAmount) + ' L</b><div class="muted">' + p.sysCases + ' cases in system</div></td>' +
-'<td>' + statusPill + '</td>' +
-'<td><b>' + fmt(p.pct,1) + '%</b></td>' +
-'</tr>';
-}).join('') +
-'</tbody></table></div></div>';
+
+function teamSystemPunchedSummary(ym){
+  ym = ym || getYearMonth();
+  const loans = state.loans || [];
+  const matched = loans.filter(l => l.loanDate && l.loanDate.startsWith(ym));
+  const amount = matched.reduce((acc, l) => acc + l.loanAmount, 0);
+  const cases = matched.length;
+  return { amount, cases };
 }
-​function viewHeatmap(){
-return '<div class="panel"><h2>🔥 Performance Heatmap</h2><div class="grid3">' +
-rows().map(p => '<div class="panel" style="margin:0;background:' + (p.pct>=100?'#def7eb':'#fef3fd') + '"><b>' + esc(p.name) + '</b>
-' + fmt(p.pct,1) + '% achieved</div>').join('') +
-'</div></div>';
+
+
+function viewTracker(){
+  const list = filtered();
+  const s = sums(list);
+  const ym = getYearMonth();
+  const sysSum = teamSystemPunchedSummary(ym);
+  const varAmt = s.mtdL - sysSum.amount;
+
+  const sortSel = '<div class="field" style="max-width:180px;margin-bottom:12px">' +
+    '<label>Sort by</label><select onchange="setSort(this.value)">' +
+    [['rank','Achievement %'],['mtd','MTD Disbursement'],['ftd','FTD Today'],['gap','Gap to Target'],['name','Name A–Z']]
+      .map(o => '<option value="' + o[0] + '" ' + (sortBy === o[0] ? 'selected' : '') + '>' + o[1] + '</option>').join('') +
+    '</select></div>';
+
+  return toolbar() +
+    '<div class="panel">' +
+      '<div class="flex between"><h2>⚡ SO Performance Tracker & System Reconciliation • ' + state.asOf + '</h2>' +
+        '<span class="pill info">' + list.length + ' SO</span></div>' +
+      '<div class="note" style="margin-bottom:12px"><b>Reconciliation Summary (' + MONTH_NAMES[getMonth()-1] + '):</b> Reporting MTD = <b>₹' + fmt(s.mtdL) + ' L</b> | System Punched MIS = <b>₹' + fmt(sysSum.amount) + ' L</b> (' + sysSum.cases + ' cases) | Variance = <b style="color:' + (Math.abs(varAmt)<0.01 ? 'var(--green)' : 'var(--red)') + '">₹' + fmt(varAmt) + ' L</b></div>' +
+      sortSel +
+      '<div class="scroll"><table><thead><tr>' +
+        '<th>SO / Cluster</th><th>Target ₹L</th><th>FTD Cases</th><th>FTD ₹L</th>' +
+        '<th>Reporting MTD ₹L</th><th>System Punched ₹L</th><th>Variance ₹L</th><th>Ach %</th><th>Gap ₹L</th><th>Req DRR</th><th>Trend</th>' +
+      '</tr></thead><tbody>' +
+      list.map(p => {
+        const sysP = systemPunchedSummary(p.id, ym);
+        const diff = p.mtdL - sysP.amount;
+        const diffBadge = Math.abs(diff) < 0.01 ? '<span class="pill good">Match (0)</span>' : '<span class="pill bad">Diff: ₹' + fmt(diff) + 'L</span>';
+        return '<tr>' +
+          '<td><b>' + esc(p.name) + '</b><div class="muted">' + esc(p.cluster) + '</div></td>' +
+          '<td><input type="number" min="0" step="0.01" value="' + p.target + '" onchange="editPerson(\'' + p.id + '\',\'target\',this.value)"></td>' +
+          '<td><input type="number" min="0" step="1" value="' + p.ftdC + '" onchange="editDaily(\'' + p.id + '\',\'cases\',this.value)"></td>' +
+          '<td><input type="number" min="0" step="0.01" value="' + p.ftdL + '" onchange="editDaily(\'' + p.id + '\',\'amount\',this.value)"></td>' +
+          '<td><b>' + fmt(p.mtdL) + '</b></td>' +
+          '<td><b>₹' + fmt(sysP.amount) + ' L</b><div class="muted">' + sysP.cases + ' cases punched</div></td>' +
+          '<td>' + diffBadge + '</td>' +
+          '<td><b>' + fmt(p.pct,1) + '%</b></td>' +
+          '<td>' + fmt(p.gap) + '</td>' +
+          '<td>' + fmt(p.reqDRR) + '</td>' +
+          '<td>' + sparkline(p.id) + '</td>' +
+        '</tr>';
+      }).join('') +
+      '</tbody></table></div>' +
+      '<div class="actions">' +
+        '<span class="pill">Filtered total reporting: ₹' + fmt(s.mtdL) + ' L • ' + s.mtdC + ' cases</span>' +
+        '<button class="btn gold" onclick="setTab(\'loans\')">+ Punch Loan in System →</button>' +
+        '<button class="btn light" onclick="setTab(\'deepdive\')">SO Deep Dive →</button>' +
+      '</div>' +
+    '</div>' +
+    '<div class="panel"><h2>📱 Quick Mobile Entry</h2>' +
+      '<div class="mobilecards">' +
+      list.map(p =>
+        '<div class="socard">' +
+          '<h4>' + esc(p.name) + '</h4>' +
+          '<div class="muted">' + esc(p.cluster) + ' • Target ₹' + fmt(p.target) + ' L • ' + fmt(p.pct,1) + '%</div>' +
+          '<div class="formgrid" style="margin-top:10px">' +
+            '<div class="field"><label>FTD Cases</label><input type="number" min="0" step="1" value="' + p.ftdC + '" onchange="editDaily(\'' + p.id + '\',\'cases\',this.value)"></div>' +
+            '<div class="field"><label>FTD ₹L</label><input type="number" min="0" step="0.01" value="' + p.ftdL + '" onchange="editDaily(\'' + p.id + '\',\'amount\',this.value)"></div>' +
+            '<div class="field"><label>MTD Cases</label><input type="number" min="0" step="1" value="' + p.mtdC + '" onchange="editMTD(\'' + p.id + '\',\'cases\',this.value)"></div>' +
+            '<div class="field"><label>MTD ₹L</label><input type="number" min="0" step="0.01" value="' + fmt(p.mtdL) + '" onchange="editMTD(\'' + p.id + '\',\'amount\',this.value)"></div>' +
+          '</div>' +
+        '</div>'
+      ).join('') +
+      '</div>' +
+    '</div>';
 }
-​function viewSupport(){
-return '<div class="panel"><h2>🆘 Support & Helpdesk</h2><p>Contact Tech Support: <b>+91-9828XXXXXX</b> or email <b>support@glcommand.internal</b></p></div>';
+
+function viewDeepDive(){
+  if (!deepId || !state.people.some(p => p.id === deepId)) deepId = state.people[0] && state.people[0].id;
+  const p = rows().find(x => x.id === deepId);
+  if (!p) return '<div class="panel"><p class="muted">No SO available.</p></div>';
+  const sel = '<div class="field" style="max-width:260px;margin-bottom:12px"><label>Select SO</label>' +
+    '<select onchange="deepId=this.value;render()">' +
+    state.people.map(x => '<option value="' + x.id + '" ' + (x.id === deepId ? 'selected' : '') + '>' + esc(x.name) + '</option>').join('') +
+    '</select></div>';
+  const e = elapsed(), r = remaining();
+  const projectedEnd = e ? p.mtdL / e * (e + r) : p.mtdL;
+  const willAchieve = projectedEnd >= p.target;
+  const att = attendanceSummary(p.id);
+  const totalDays = getDaysInMonth();
+
+  return '<div class="panel">' + sel +
+    '<h2>🔍 ' + esc(p.name) + '</h2>' +
+    '<div class="muted">' + esc(p.cluster) + ' • Employee code ' + esc(p.code || '—') + '</div>' +
+    '<div class="grid3" style="margin-top:14px">' +
+      '<div class="kpi gold"><div class="kpi-body"><label>Target</label><strong>₹' + fmt(p.target) + ' L</strong><small>' + cr(p.target) + '</small></div></div>' +
+      '<div class="kpi green"><div class="kpi-body"><label>MTD Achieved</label><strong>₹' + fmt(p.mtdL) + ' L</strong><small>' + p.mtdC + ' cases</small></div></div>' +
+      '<div class="kpi blue"><div class="kpi-body"><label>FTD Today</label><strong>₹' + fmt(p.ftdL) + ' L</strong><small>' + p.ftdC + ' cases</small></div></div>' +
+      '<div class="kpi red"><div class="kpi-body"><label>Gap</label><strong>₹' + fmt(p.gap) + ' L</strong><small>' + fmt(p.pct,1) + '% achieved</small></div></div>' +
+      '<div class="kpi blue"><div class="kpi-body"><label>Required DRR</label><strong>₹' + fmt(p.reqDRR) + ' L</strong><small>' + r + ' days left</small></div></div>' +
+      '<div class="kpi ' + (willAchieve ? 'green' : 'red') + '"><div class="kpi-body"><label>Projected Close</label><strong>₹' + fmt(projectedEnd) + ' L</strong><small>' + (willAchieve ? 'Will achieve' : 'Will miss') + '</small></div></div>' +
+    '</div>' +
+    '<div class="att-summary-row" style="margin-top:14px">' +
+      '<div class="att-stat p"><b>' + att.present + '</b><span>Present Days</span></div>' +
+      '<div class="att-stat a"><b>' + att.absent + '</b><span>Absent Days</span></div>' +
+      '<div class="att-stat h"><b>' + att.holidays + '</b><span>Holidays/Off</span></div>' +
+    '</div>' +
+    '<h3>Daily Trend</h3>' + personChart(p.id) +
+    '<h3>Daily Entries</h3>' +
+    '<div class="scroll"><table><thead><tr><th>Date</th><th>Attendance</th><th>Cases</th><th>Amount ₹L</th><th>Commitment ₹L</th><th>Variance ₹L</th></tr></thead><tbody>' +
+    Array.from({length:totalDays}, (_, i) => {
+      const d = dayKey(i+1);
+      const x = entry(p.id, d);
+      const c = commitEntry(p.id, d);
+      const future = d > state.asOf;
+      const st = future ? '' : attendanceFor(p.id, d);
+      const stBadge = (st === 'P') ? '<span class="pill good">P</span>' : ((st === 'H') ? '<span class="pill warn">H</span>' : '<span class="pill bad">A</span>');
+      return '<tr style="' + (future ? 'opacity:.4' : '') + '">' +
+        '<td>' + d + '</td>' +
+        '<td>' + (future ? '—' : stBadge) + '</td>' +
+        '<td>' + (future ? '—' : x.cases) + '</td>' +
+        '<td>' + (future ? '—' : fmt(x.amount)) + '</td>' +
+        '<td>' + (future ? '—' : fmt(c.amount)) + '</td>' +
+        '<td>' + (future ? '—' : fmt(x.amount - c.amount)) + '</td>' +
+      '</tr>';
+    }).join('') +
+    '</tbody></table></div>' +
+  '</div>';
 }
-​const TABS = [
-['overview', '📊 Overview'],
-['tracker', '⚡ SO Tracker & Recon'],
-['loans', '📝 Loan Punching'],
-['heatmap', '🔥 Heatmap'],
-['support', '🆘 Support']
+
+function personChart(id){
+  const vals = [], cum = [];
+  let c = 0;
+  const totalDays = getDaysInMonth();
+  for (let i = 1; i <= totalDays; i++){
+    const d = dayKey(i);
+    if (d > state.asOf) break;
+    const a = num(entry(id, d).amount);
+    vals.push(a); c += a; cum.push(c);
+  }
+  if (!vals.length) return '<p class="muted">No data yet for this SO.</p>';
+  const W = 600, H = 175, PL = 30, PR = 12, PT = 14, PB = 20;
+  const max = Math.max(1, ...vals);
+  const innerW = W - PL - PR, innerH = H - PT - PB;
+  const bw = innerW / totalDays;
+  const barW = Math.max(2, bw * 0.6);
+  let bars = '';
+  vals.forEach((v, i) => {
+    const h = (v / max) * innerH;
+    const x = PL + i * bw + (bw - barW) / 2;
+    const y = PT + innerH - h;
+    bars += '<rect x="' + x.toFixed(1) + '" y="' + y.toFixed(1) + '" width="' + barW.toFixed(1) +
+            '" height="' + Math.max(v ? 2 : 1, h).toFixed(1) + '" rx="2" fill="url(#pg)"/>';
+  });
+  const maxCum = Math.max(1, ...cum);
+  const pts = cum.map((v, i) => {
+    const x = PL + i * bw + bw/2;
+    const y = PT + innerH - (v / maxCum) * innerH;
+    return x.toFixed(1) + ',' + y.toFixed(1);
+  }).join(' ');
+  return '<div class="chartbox"><svg class="chart" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="xMidYMid meet">' +
+    '<defs><linearGradient id="pg" x1="0" y1="0" x2="0" y2="1">' +
+    '<stop offset="0" stop-color="#7ea9e2"/><stop offset="#c9dcf5"/></linearGradient></defs>' +
+    bars +
+    '<polyline points="' + pts + '" fill="none" stroke="#e8bc63" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>' +
+    '<line x1="' + PL + '" y1="' + (PT+innerH) + '" x2="' + (W-PR) + '" y2="' + (PT+innerH) + '" stroke="#dbe4f0"/>' +
+    '</svg></div>' +
+    '<div class="muted" style="margin-top:6px">Bars = daily disbursement (₹L). Gold line = cumulative MTD.</div>';
+}
+
+/* ================= VIEW: PROJECTION ================= */
+function viewProjection(){
+  const s = sums();
+  const target = num(state.teamTarget);
+  const r = remaining();
+  const proj = projected();
+  const ym = getYearMonth();
+  const totalDays = getDaysInMonth(ym);
+
+  return '<div class="panel"><h2>🔮 Smart Month-End Projection</h2>' +
+    '<div class="formgrid">' +
+      '<div class="field"><label>Working Days (' + MONTH_NAMES[getMonth()-1] + ')</label>' +
+        '<input type="number" min="1" max="' + totalDays + '" value="' + state.workingDays + '" onchange="setConfig(\'workingDays\',this.value)"></div>' +
+      '<div class="field"><label>Projection Logic</label>' +
+        '<select onchange="setConfig(\'projectionMode\',this.value)">' +
+          '<option value="runrate" ' + (state.projectionMode === 'runrate' ? 'selected' : '') + '>Current run-rate</option>' +
+          '<option value="recent" '  + (state.projectionMode === 'recent' ? 'selected' : '')  + '>Recent 3-day average</option>' +
+          '<option value="manual" '  + (state.projectionMode === 'manual' ? 'selected' : '')  + '>Manual % of MTD</option>' +
+          '<option value="required" ' + (state.projectionMode === 'required' ? 'selected' : '') + '>Target required</option>' +
+        '</select></div>' +
+      '<div class="field"><label>Manual Projection %</label>' +
+        '<input type="number" min="0" step="1" value="' + state.manualProjection + '" onchange="setConfig(\'manualProjection\',this.value)"></div>' +
+      '<div class="field"><label>Team Target (₹L)</label>' +
+        '<input type="number" min="0" step="1" value="' + state.teamTarget + '" onchange="setConfig(\'teamTarget\',this.value)"></div>' +
+    '</div>' +
+    '<p class="statline" style="margin-top:12px">' +
+      'Elapsed working days: <b>' + elapsed() + '</b> • Remaining: <b>' + r + '</b><br>' +
+      'MTD: <b>' + cr(s.mtdL) + '</b> • Forecast: <b>' + cr(proj) + '</b><br>' +
+      'Gap to target: <b>' + cr(Math.max(0, target - proj)) + '</b>' +
+    '</p>' +
+    '<div class="note">Working-day count excludes holidays and configured off-days. ' +
+      '"Recent 3-day average" uses the last three working days with business data.</div>' +
+  '</div>' +
+  '<div class="panel"><h2>SO-wise Projection & Required DRR</h2>' +
+    '<div class="scroll"><table><thead><tr>' +
+      '<th>SO</th><th>Target ₹L</th><th>MTD ₹L</th><th>Gap ₹L</th>' +
+      '<th>Req DRR</th><th>Projected End</th><th>Will Achieve?</th>' +
+    '</tr></thead><tbody>' +
+    rows().sort((a,b) => b.gap - a.gap).map(p => {
+      const pe = state.projectionMode === 'manual'
+        ? p.mtdL * num(state.manualProjection) / 100
+        : state.projectionMode === 'required'
+          ? p.target
+          : elapsed() ? p.mtdL / elapsed() * (elapsed() + r) : p.mtdL;
+      const ok = pe >= p.target;
+      return '<tr>' +
+        '<td><b>' + esc(p.name) + '</b><div class="muted">' + esc(p.cluster) + '</div></td>' +
+        '<td>' + fmt(p.target) + '</td>' +
+        '<td>' + fmt(p.mtdL) + '</td>' +
+        '<td>' + fmt(p.gap) + '</td>' +
+        '<td>' + fmt(p.reqDRR) + '</td>' +
+        '<td>' + fmt(pe) + '</td>' +
+        '<td><span class="pill ' + (ok ? 'good' : 'bad') + '">' + (ok ? 'YES' : 'NO') + '</span></td>' +
+      '</tr>';
+    }).join('') +
+    '</tbody></table></div>' +
+  '</div>';
+}
+
+/* ================= VIEW: LEADERBOARD ================= */
+function viewLeaderboard(){
+  const rs = rows().sort((a,b) => b.pct - a.pct || b.mtdL - a.mtdL);
+  return '<div class="grid2">' +
+    '<div class="panel"><h2>🏆 Top 5 • Achievement</h2>' +
+      rs.slice(0,5).map((p,i) =>
+        '<div class="listrow"><div class="progressmeta"><span>' + (i+1) + '. ' + esc(p.name) + '</span><b>' + fmt(p.pct,1) + '%</b></div>' +
+        progressBar(p.pct) + '</div>').join('') +
+    '</div>' +
+    '<div class="panel"><h2>⚠️ Bottom 5 • Achievement</h2>' +
+      rs.slice(-5).reverse().map((p,i) =>
+        '<div class="listrow"><div class="progressmeta"><span>' + esc(p.name) + '</span><b>' + fmt(p.pct,1) + '%</b></div>' +
+        progressBar(p.pct) + '</div>').join('') +
+    '</div>' +
+  '</div>' +
+  '<div class="panel"><h2>📊 Full Ranking</h2>' +
+    '<div class="scroll"><table><thead><tr>' +
+      '<th>#</th><th>SO</th><th>Cluster</th><th>Target ₹L</th><th>MTD ₹L</th>' +
+      '<th>Cases</th><th>Ach %</th><th>Trend</th>' +
+    '</tr></thead><tbody>' +
+    rs.map((p,i) =>
+      '<tr>' +
+        '<td>' + (i+1) + '</td>' +
+        '<td><b>' + esc(p.name) + '</b></td>' +
+        '<td>' + esc(p.cluster) + '</td>' +
+        '<td>' + fmt(p.target) + '</td>' +
+        '<td>' + fmt(p.mtdL) + '</td>' +
+        '<td>' + p.mtdC + '</td>' +
+        '<td><b>' + fmt(p.pct,1) + '%</b></td>' +
+        '<td>' + sparkline(p.id) + '</td>' +
+      '</tr>').join('') +
+    '</tbody></table></div>' +
+  '</div>';
+}
+
+/* ================= VIEW: CLUSTERS ================= */
+function viewClusters(){
+  const cs = clusters();
+  return '<div class="panel"><h2>🏢 Cluster Comparison</h2>' + clusterBars() + '</div>' +
+    '<div class="panel"><h2>📋 Cluster Detail</h2>' +
+      '<div class="scroll"><table><thead><tr>' +
+        '<th>Cluster</th><th>SO Count</th><th>Target ₹L</th><th>FTD ₹L</th>' +
+        '<th>MTD ₹L</th><th>Cases</th><th>Ach %</th><th>Gap ₹L</th>' +
+      '</tr></thead><tbody>' +
+      cs.map(c =>
+        '<tr>' +
+          '<td><b>' + esc(c.cluster) + '</b></td>' +
+          '<td>' + c.count + '</td>' +
+          '<td>' + fmt(c.target) + '</td>' +
+          '<td>' + fmt(c.ftdL) + '</td>' +
+          '<td>' + fmt(c.mtdL) + '</td>' +
+          '<td>' + c.mtdC + '</td>' +
+          '<td>' + fmt(pct(c.mtdL, c.target),1) + '%</td>' +
+          '<td>' + fmt(Math.max(0, c.target - c.mtdL)) + '</td>' +
+        '</tr>').join('') +
+      '</tbody></table></div>' +
+    '</div>';
+}
+
+/* ================= VIEW: CALENDAR ================= */
+function viewCalendar(){
+  const ym = getYearMonth();
+  const totalDays = getDaysInMonth(ym);
+  const vals = Array.from({length:totalDays}, (_,i) => dateTotals(dayKey(i+1, ym)).amount);
+  const max = Math.max(1, ...vals);
+  const firstDow = getFirstDayOfWeek(ym);
+  
+  let cells = '';
+  ['S','M','T','W','T','F','S'].forEach(d => cells += '<div class="calhead">' + d + '</div>');
+  for (let i = 0; i < firstDow; i++) cells += '<div class="calcell empty"></div>';
+  
+  for (let d = 1; d <= totalDays; d++){
+    const date = dayKey(d, ym);
+    const v = vals[d-1];
+    const intensity = v / max;
+    const alpha = (0.07 + intensity * 0.68).toFixed(2);
+    const future = date > state.asOf;
+    const today = date === state.asOf;
+    const hol = isHoliday(date);
+    const holTitle = hol ? ' • Holiday: ' + state.holidays[date] : '';
+    const bg = future ? '' : (hol && !v ? 'background:#fefbf3;' : 'background:rgba(59,116,196,' + alpha + ');');
+    
+    cells += '<div class="calcell ' + (future ? 'future' : '') + ' ' + (today ? 'today' : '') + (hol ? ' holiday' : '') + '"' +
+      ' style="' + bg + '" onclick="setDate(\'' + date + '\')" title="' + date + holTitle + ' — ₹' + fmt(v) + ' L">' +
+      '<b>' + d + '</b><span>' + (hol && !v ? 'OFF' : (v ? fmt(v,0) : '–')) + '</span></div>';
+  }
+
+  const s = sums();
+  const bestDay = vals.indexOf(Math.max(...vals)) + 1;
+  const hList = Object.entries(state.holidays || {}).filter(([d]) => d.startsWith(ym)).sort();
+
+  return '<div class="panel">' +
+    '<div class="flex between" style="align-items:center;margin-bottom:12px">' +
+      '<button class="btn light" onclick="shiftMonth(-1)">◀ Prev Month</button>' +
+      '<h2 style="margin:0">📅 ' + MONTH_NAMES[getMonth()-1] + ' ' + getYear() + ' Heatmap</h2>' +
+      '<button class="btn light" onclick="shiftMonth(1)">Next Month ▶</button>' +
+    '</div>' +
+    '<div class="note" style="margin-bottom:12px">Tap any date to jump report date. ' +
+      'Dashed border = Holiday / Off-day. ' + (bestDay > 0 && vals[bestDay-1] > 0 ? 'Best day: <b>' + bestDay + ' ' + MONTH_NAMES[getMonth()-1].slice(0,3) + '</b> (₹' + fmt(vals[bestDay-1]) + ' L).' : '') + '</div>' +
+    '<div class="cal">' + cells + '</div>' +
+    '<div class="actions">' +
+      '<span class="pill">MTD ₹' + fmt(s.mtdL) + ' L • ' + s.mtdC + ' cases</span>' +
+      '<span class="pill">Working Days: ' + (totalDays - hList.length) + '</span>' +
+      '<span class="pill warn">Holidays in Month: ' + hList.length + '</span>' +
+    '</div>' +
+  '</div>' +
+  '<div class="panel">' +
+    '<h2>🗓️ Manual Holiday & Off-Day Calendar</h2>' +
+    '<div class="formgrid">' +
+      '<div class="field"><label>Select Date</label><input type="date" id="calHolDate" min="2024-01-01" max="2035-12-31" value="' + state.asOf + '"></div>' +
+      '<div class="field"><label>Holiday Reason / Festival</label><input type="text" id="calHolReason" placeholder="e.g. Festival / Company Holiday"></div>' +
+    '</div>' +
+    '<div class="actions" style="margin-top:10px">' +
+      '<button class="btn gold" onclick="toggleHoliday(document.getElementById(\'calHolDate\').value, document.getElementById(\'calHolReason\').value || \'Holiday\')">Mark / Unmark Holiday</button>' +
+      '<button class="btn light" onclick="fillSundays()">⚡ Mark All Sundays Off (' + MONTH_NAMES[getMonth()-1].slice(0,3) + ')</button>' +
+    '</div>' +
+    '<h3 style="margin-top:14px">Active Holidays in ' + MONTH_NAMES[getMonth()-1] + ' (' + hList.length + ')</h3>' +
+    '<div class="flex" style="gap:6px">' +
+      (hList.length ? hList.map(([d, r]) =>
+        '<span class="pill warn" style="display:inline-flex;align-items:center;gap:4px">' +
+          d.slice(8) + ' ' + MONTH_NAMES[getMonth()-1].slice(0,3) + ': ' + esc(r) +
+          '<b style="cursor:pointer;color:#a8283a;margin-left:4px" onclick="toggleHoliday(\'' + d + '\')">✕</b></span>'
+      ).join('') : '<span class="muted">No holidays configured for this month.</span>') +
+    '</div>' +
+  '</div>' +
+  '<div class="panel"><h2>📈 Daily Trend</h2>' + trendChart() + '</div>' +
+  '<div class="panel"><h2>📆 Date-wise Totals</h2>' +
+    '<div class="scroll"><table><thead><tr>' +
+      '<th>Date</th><th>Status</th><th>Cases</th><th>Amount ₹L</th><th>Commitment ₹L</th><th>Variance ₹L</th><th></th>' +
+    '</tr></thead><tbody>' +
+    Array.from({length:totalDays}, (_, i) => {
+      const date = dayKey(i+1, ym);
+      const d = dateTotals(date);
+      const future = date > state.asOf;
+      const hol = isHoliday(date);
+      return '<tr style="' + (future ? 'opacity:.4' : '') + '">' +
+        '<td><b>' + date + '</b></td>' +
+        '<td>' + (hol ? '<span class="pill warn">' + esc(state.holidays[date]) + '</span>' : '<span class="pill good">Working</span>') + '</td>' +
+        '<td>' + (future ? '—' : d.cases) + '</td>' +
+        '<td>' + (future ? '—' : fmt(d.amount)) + '</td>' +
+        '<td>' + (future ? '—' : fmt(d.commitAmount)) + '</td>' +
+        '<td>' + (future ? '—' : fmt(d.amount - d.commitAmount)) + '</td>' +
+        '<td>' + (future ? '' : '<button class="btn ghost" onclick="setDate(\'' + date + '\');setTab(\'tracker\')">Edit</button>') + '</td>' +
+      '</tr>';
+    }).join('') +
+    '</tbody></table></div>' +
+  '</div>';
+}
+
+function viewAlerts(){
+  const rs = rows();
+  const paceLine = 100 * elapsed() / Math.max(1, num(state.workingDays));
+  const groups = [
+    ['🚫 Zero MTD Disbursement', rs.filter(p => p.mtdL === 0)],
+    ['⚡ Zero FTD Today', rs.filter(p => p.ftdL === 0)],
+    ['🌅 Below Morning Commitment', rs.filter(p => num(p.commit.amount) > p.ftdL)],
+    ['📉 Behind Expected Pace', rs.filter(p => p.pct < paceLine && p.mtdL > 0)],
+    ['🎯 Achieved Target', rs.filter(p => p.pct >= 100)]
+  ];
+  return '<div class="note" style="margin-bottom:12px">Alerts are indicators for review, not proof of misconduct. ' +
+    'Always use date and working-day context when evaluating performance.</div>' +
+    groups.map(g => {
+      const name = g[0], people = g[1];
+      const isGood = name.indexOf('Achieved') >= 0;
+      return '<div class="panel"><h2>' + name + ' (' + people.length + ')</h2>' +
+        (people.length
+          ? people.map(p =>
+              '<div class="listrow">' +
+                '<b>' + esc(p.name) + '</b> <span class="muted">' + esc(p.cluster) + '</span>' +
+                '<div class="muted">FTD ₹' + fmt(p.ftdL) + ' L • MTD ₹' + fmt(p.mtdL) + ' L • ' + fmt(p.pct,1) + '% achieved</div>' +
+              '</div>').join('')
+          : '<span class="pill ' + (isGood ? 'bad' : 'good') + '">' + (isGood ? 'None yet' : 'No alerts') + '</span>') +
+      '</div>';
+    }).join('');
+}
+
+/* ================= VIEW: ATTENDANCE ================= */
+function viewAttendance(){
+  const today = state.asOf;
+  const todayDay = Number(today.slice(-2));
+  const ym = getYearMonth();
+  const totalDays = getDaysInMonth(ym);
+  const people = state.people;
+  const tAtt = todayAttendance();
+  const mAtt = teamAttendance();
+
+  let head = '<th style="min-width:150px">SO / Cluster</th>';
+  for (let i = 1; i <= todayDay; i++) {
+    const isHol = isHoliday(dayKey(i, ym));
+    head += '<th class="att-head" style="' + (isHol ? 'color:#b45309;background:#fff6e5;' : '') + '">' + i + (isHol ? 'H' : '') + '</th>';
+  }
+  head += '<th style="text-align:center;min-width:34px">P</th>' +
+          '<th style="text-align:center;min-width:34px">A</th>' +
+          '<th style="text-align:center;min-width:34px">H</th>' +
+          '<th style="text-align:center;min-width:48px">%</th>';
+
+  let body = '';
+  people.forEach(p => {
+    const sum = attendanceSummary(p.id);
+    let cells = '';
+    for (let i = 1; i <= todayDay; i++){
+      const d = dayKey(i, ym);
+      const st = attendanceFor(p.id, d);
+      cells += '<td class="att-' + (st === 'P' ? 'p' : (st === 'H' ? 'h' : 'a')) + '">' + st + '</td>';
+    }
+    body += '<tr>' +
+      '<td><b>' + esc(p.name) + '</b><div class="muted">' + esc(p.cluster) + '</div></td>' +
+      cells +
+      '<td style="text-align:center"><b style="color:var(--green)">' + sum.present + '</b></td>' +
+      '<td style="text-align:center"><b style="color:var(--red)">' + sum.absent + '</b></td>' +
+      '<td style="text-align:center"><b style="color:#b45309">' + sum.holidays + '</b></td>' +
+      '<td style="text-align:center"><b>' + fmt(sum.pct,1) + '%</b></td>' +
+    '</tr>';
+  });
+
+  if (!deepId || !state.people.some(p => p.id === deepId)) deepId = state.people[0] && state.people[0].id;
+  const dp = state.people.find(p => p.id === deepId);
+  let calHTML = '';
+  if (dp){
+    let cal = '';
+    const firstDow = getFirstDayOfWeek(ym);
+    ['S','M','T','W','T','F','S'].forEach(d => cal += '<div class="calhead">' + d + '</div>');
+    for (let i = 0; i < firstDow; i++) cal += '<div class="calcell empty"></div>';
+    for (let d = 1; d <= totalDays; d++){
+      const date = dayKey(d, ym);
+      const future = date > today;
+      const st = future ? null : attendanceFor(dp.id, d);
+      const cls = future ? 'future' : (st === 'P' ? 'att-p' : (st === 'H' ? 'att-h' : 'att-a'));
+      const bg = future ? '' : (st === 'P' ? 'background:#def7eb;' : (st === 'H' ? 'background:#fff8e9;' : 'background:#ffe7ea;'));
+      cal += '<div class="calcell ' + cls + (date === today ? ' today' : '') + '" style="' + bg + '">' +
+        '<b>' + d + '</b><span>' + (future ? '' : st) + '</span></div>';
+    }
+    const ds = attendanceSummary(dp.id);
+    calHTML = '<div class="cal">' + cal + '</div>' +
+      '<div class="att-summary-row" style="margin-top:12px">' +
+        '<div class="att-stat p"><b>' + ds.present + '</b><span>Present</span></div>' +
+        '<div class="att-stat a"><b>' + ds.absent + '</b><span>Absent</span></div>' +
+        '<div class="att-stat h"><b>' + ds.holidays + '</b><span>Holidays/Off</span></div>' +
+      '</div>';
+  }
+
+  let presentList = '', absentList = '', holidayList = '';
+  people.forEach(p => {
+    const st = attendanceFor(p.id, today);
+    const gl = entry(p.id, today);
+    const ins = insEntry(p.id, today);
+    const line = '<div class="listrow">' +
+      '<b>' + esc(p.name) + '</b> <span class="muted">' + esc(p.cluster) + '</span>' +
+      '<div class="muted">GL ₹' + fmt(gl.amount) + ' L (' + gl.cases + ') • Ins ₹' + fmt(ins.premium,0) + '</div>' +
+    '</div>';
+    if (st === 'P') presentList += line;
+    else if (st === 'H') holidayList += line;
+    else absentList += line;
+  });
+
+  return '<div class="panel">' +
+    '<h2>📋 Automatic Attendance (' + MONTH_NAMES[getMonth()-1] + ' ' + getYear() + ')</h2>' +
+    '<div class="note">Attendance is calculated automatically. <b>PRESENT (P)</b> when business &gt; 0. ' +
+      '<b>HOLIDAY (H)</b> on official off-days with zero business (not penalizing attendance). <b>ABSENT (A)</b> on working days without business.</div>' +
+    '<div class="att-summary-row" style="margin-top:14px">' +
+      '<div class="att-stat p"><b>' + tAtt.present + '</b><span>Present Today</span></div>' +
+      '<div class="att-stat a"><b>' + tAtt.absent + '</b><span>Absent Today</span></div>' +
+      '<div class="att-stat h"><b>' + tAtt.holidays + '</b><span>On Holiday/Off</span></div>' +
+    '</div>' +
+    '<div class="att-summary-row">' +
+      '<div class="att-stat p"><b>' + mAtt.present + '</b><span>MTD Present</span></div>' +
+      '<div class="att-stat a"><b>' + mAtt.absent + '</b><span>MTD Absent</span></div>' +
+      '<div class="att-stat"><b>' + fmt(mAtt.pct,1) + '%</b><span>Rate</span></div>' +
+    '</div>' +
+    '<div class="actions">' +
+      '<button class="btn gold" onclick="downloadAttendanceDetailed()">⬇ Detailed CSV</button>' +
+      '<button class="btn light" onclick="downloadAttendanceSummary()">⬇ Monthly Summary CSV</button>' +
+      '<button class="btn" onclick="copyAttendanceWhatsApp()">📲 Copy WhatsApp</button>' +
+    '</div>' +
+  '</div>' +
+  '<div class="panel"><h2>📅 Monthly Attendance Register</h2>' +
+    '<div class="scroll"><table class="att-table"><thead><tr>' + head + '</tr></thead><tbody>' + body + '</tbody></table></div>' +
+    '<div class="muted" style="margin-top:8px">P = Present, A = Absent, H = Holiday. Dates up to the report date are recorded.</div>' +
+  '</div>' +
+  '<div class="panel"><h2>🔍 SO Attendance Calendar</h2>' +
+    '<div class="field" style="max-width:280px;margin-bottom:12px"><label>Select SO</label>' +
+      '<select onchange="deepId=this.value;render()">' +
+      state.people.map(p => '<option value="' + p.id + '" ' + (p.id === deepId ? 'selected' : '') + '>' + esc(p.name) + '</option>').join('') +
+      '</select></div>' +
+    calHTML +
+  '</div>' +
+  '<div class="grid3">' +
+    '<div class="panel"><h2>✅ Present (' + tAtt.present + ')</h2>' + (presentList || '<p class="muted">None</p>') + '</div>' +
+    '<div class="panel"><h2>❌ Absent (' + tAtt.absent + ')</h2>' + (absentList || '<p class="muted">None</p>') + '</div>' +
+    '<div class="panel"><h2>🏖️ Holiday / Off (' + tAtt.holidays + ')</h2>' + (holidayList || '<p class="muted">None</p>') + '</div>' +
+  '</div>';
+}
+
+/* ================= VIEW: REPORTS ================= */
+function reportText(id){
+  const rs = id === 'all' ? rows() : rows().filter(p => p.id === id);
+  const ins = id === 'all' ? insuranceRows() : insuranceRows().filter(p => p.id === id);
+  const s = sums();
+  const iz = insSums(ins);
+  const target = num(state.teamTarget);
+  const date = state.asOf.split('-').reverse().join('-');
+  const ym = getYearMonth();
+  const curMonthName = MONTH_NAMES[getMonth()-1];
+  
+  let txt = '*GL FTD / MTD PERFORMANCE REPORT*\n📅 *Report Date: ' + date + '* (' + curMonthName + ' ' + getYear() + ')\n\n━━━━━━━━━━━━━━━━━━━━━\n';
+  if (id === 'all'){
+    txt += '📊 *TEAM OVERALL SUMMARY:*\n' +
+      '🎯 *' + curMonthName + ' Target:* ' + cr(target) + '\n' +
+      '⚡ FTD Disbursal: ₹' + fmt(s.ftdL) + ' L (' + s.ftdC + ' Cases)\n' +
+      '🚀 *MTD Disbursal:* ₹' + fmt(s.mtdL) + ' L (' + s.mtdC + ' Cases)\n' +
+      '📉 *Overall Balance Gap:* ' + cr(Math.max(0, target - s.mtdL)) + '\n' +
+      '👥 *Total Team Size:* ' + state.people.length + '\n' +
+      '📌 Target Assigned: ' + cr(s.target) + '\n' +
+      '━━━━━━━━━━━━━━━━━━━━━\n';
+  }
+  txt += '📋 *TEAM WISE PERFORMANCE (TARGET IN Cr., FTD/MTD IN LAKHS):*\n\n';
+  rs.forEach((p,i) => {
+    txt += (i+1) + '. *SO Name- ' + p.name + '*\n' +
+      '   🎯 Target: ' + cr(p.target) + '\n' +
+      '   ⚡ FTD Ach: ₹' + fmt(p.ftdL) + ' L (' + p.ftdC + ' Cases)\n' +
+      '   🚀 MTD Ach: ₹' + fmt(p.mtdL) + ' L (' + p.mtdC + ' Cases)\n' +
+      '   📉 Overall Gap: ' + cr(p.gap) + '\n\n';
+  });
+  txt += '━━━━━━━━━━━━━━━━━━━━━\n\n🛡️ *CROSS SELL — INSURANCE PERFORMANCE*\n🎯 *Premium Target: ₹15,000 per SO*\n';
+  if (id === 'all'){
+    txt += '👥 *Team Insurance Target:* ₹' + fmt(iz.target,0) + '\n' +
+      '⚡ *FTD Premium:* ₹' + fmt(iz.ftdPremium,0) + ' (' + iz.ftdPolicies + ' Policies)\n' +
+      '🚀 *MTD Premium:* ₹' + fmt(iz.mtdPremium,0) + ' (' + iz.mtdPolicies + ' Policies)\n' +
+      '📉 *Insurance Balance:* ₹' + fmt(iz.gap,0) + '\n\n';
+  }
+  ins.forEach((p,i) => {
+    txt += (i+1) + '. *' + p.name + '*\n' +
+      '   🎯 Target: ₹15,000\n' +
+      '   ⚡ FTD: ₹' + fmt(p.insFtdPremium,0) + ' (' + p.insFtdPolicies + ' Policies)\n' +
+      '   🚀 MTD: ₹' + fmt(p.insMtdPremium,0) + ' (' + p.insMtdPolicies + ' Policies)\n' +
+      '   📊 Ach: ' + fmt(p.insPct,1) + '%\n' +
+      '   📉 Balance: ₹' + fmt(p.insGap,0) + '\n\n';
+  });
+  return txt + '━━━━━━━━━━━━━━━━━━━━━';
+}
+
+function viewReports(){
+  return '<div class="panel"><h2>📲 WhatsApp Performance Reports</h2>' +
+    '<div class="field" style="margin-bottom:12px"><label>Choose Report</label>' +
+      '<select onchange="reportId=this.value;render()">' +
+        '<option value="all" ' + (reportId === 'all' ? 'selected' : '') + '>Full Rajasthan Team Report</option>' +
+        state.people.map(p =>
+          '<option value="' + p.id + '" ' + (reportId === p.id ? 'selected' : '') + '>' + esc(p.name) + '</option>').join('') +
+      '</select></div>' +
+    '<div class="actions" style="margin-bottom:12px">' +
+      '<button class="btn gold" onclick="copyReport()">📋 Copy Report</button>' +
+      '<button class="btn" onclick="shareReport()">📲 Share on WhatsApp</button>' +
+      '<button class="btn light" onclick="downloadReport()">⬇ Download TXT</button>' +
+    '</div>' +
+    '<textarea id="reportText" readonly>' + esc(reportText(reportId)) + '</textarea>' +
+    '<p class="muted" style="margin-top:8px">WhatsApp share opens WhatsApp with prefilled text — you select the recipient and send.</p>' +
+  '</div>';
+}
+
+function copyReport(){
+  const t = reportText(reportId);
+  if (navigator.clipboard && window.isSecureContext){
+    navigator.clipboard.writeText(t).then(() => toast('Report copied')).catch(() => fallbackCopy(t));
+  } else fallbackCopy(t);
+}
+function fallbackCopy(t){
+  const a = document.createElement('textarea');
+  a.value = t;
+  document.body.appendChild(a);
+  a.select();
+  try { document.execCommand('copy'); toast('Copied to clipboard'); }
+  catch(e){ toast('Please select and copy the text'); }
+  a.remove();
+}
+function shareReport(){
+  window.open('https://wa.me/?text=' + encodeURIComponent(reportText(reportId)), '_blank', 'noopener');
+}
+function downloadReport(){
+  download('Rajasthan_GL_Report_' + state.asOf + '.txt', reportText(reportId), 'text/plain;charset=utf-8');
+}
+
+/* ================= VIEW: INSURANCE ================= */
+function viewInsurance(){
+  const rs = insuranceRows().sort((a,b) => b.insMtdPremium - a.insMtdPremium);
+  const z = insSums();
+  return '<div class="panel"><h2>🛡️ Insurance Cross Sell</h2>' +
+    '<div class="note">Individual SO premium target is fixed at ₹15,000 for each month. ' +
+      'Insurance is tracked <b>independently</b> and is never added to GL achievement, targets or cases.</div>' +
+    '<div class="statline" style="margin-top:12px">' +
+      '<b>Team Premium Target:</b> ₹' + fmt(z.target,0) + '<br>' +
+      '<b>FTD Premium:</b> ₹' + fmt(z.ftdPremium,0) + ' • ' + z.ftdPolicies + ' Policies<br>' +
+      '<b>MTD Premium:</b> ₹' + fmt(z.mtdPremium,0) + ' • ' + z.mtdPolicies + ' Policies<br>' +
+      '<b>Achievement:</b> ' + fmt(pct(z.mtdPremium, z.target),1) + '%<br>' +
+      '<b>Balance:</b> ₹' + fmt(z.gap,0) +
+    '</div>' +
+    '<div class="actions">' +
+      '<button class="btn gold" onclick="copyInsuranceWhatsApp()">📋 Copy Insurance WhatsApp</button>' +
+      '<button class="btn light" onclick="downloadInsuranceCsv()">⬇ Export Insurance CSV</button>' +
+    '</div>' +
+  '</div>' +
+  '<div class="panel"><h2>SO-wise Insurance Detail</h2>' +
+    '<div class="scroll"><table><thead><tr>' +
+      '<th>SO / Cluster</th><th>Target ₹</th><th>FTD Policies</th><th>FTD ₹</th>' +
+      '<th>MTD Policies</th><th>MTD ₹</th><th>Ach %</th><th>Balance ₹</th>' +
+    '</tr></thead><tbody>' +
+    rs.map(p =>
+      '<tr>' +
+        '<td><b>' + esc(p.name) + '</b><div class="muted">' + esc(p.cluster) + '</div></td>' +
+        '<td>15,000</td>' +
+        '<td><input type="number" min="0" step="1" value="' + p.insFtdPolicies + '" onchange="editInsuranceDaily(\'' + p.id + '\',\'policies\',this.value)"></td>' +
+        '<td><input type="number" min="0" step="1" value="' + p.insFtdPremium + '" onchange="editInsuranceDaily(\'' + p.id + '\',\'premium\',this.value)"></td>' +
+        '<td><input type="number" min="0" step="1" value="' + p.insMtdPolicies + '" onchange="editInsuranceMTD(\'' + p.id + '\',\'policies\',this.value)"></td>' +
+        '<td><input type="number" min="0" step="1" value="' + p.insMtdPremium + '" onchange="editInsuranceMTD(\'' + p.id + '\',\'premium\',this.value)"></td>' +
+        '<td><b>' + fmt(p.insPct,1) + '%</b></td>' +
+        '<td>' + fmt(p.insGap,0) + '</td>' +
+      '</tr>').join('') +
+    '</tbody></table></div>' +
+    '<p class="muted" style="margin-top:8px">Enter today\'s FTD policies & premium. MTD fields are reconciliation-editable.</p>' +
+  '</div>';
+}
+
+/* ================= VIEW: CONTROLS ================= */
+function viewControls(){
+  const s = sums();
+  const ym = getYearMonth();
+  const totalDays = getDaysInMonth(ym);
+  const curY = getYear();
+  const curM = getMonth();
+  let mOpts = '';
+  MONTH_NAMES.forEach((m, idx) => {
+    mOpts += '<option value="' + (idx+1) + '" ' + (idx+1 === curM ? 'selected' : '') + '>' + m + '</option>';
+  });
+  let yOpts = '';
+  [2024, 2025, 2026, 2027, 2028, 2029, 2030, 2031, 2032, 2033, 2034, 2035].forEach(y => {
+    yOpts += '<option value="' + y + '" ' + (y === curY ? 'selected' : '') + '>' + y + '</option>';
+  });
+
+  return '<div class="panel"><h2>⚙️ GL Controls & Configuration</h2>' +
+    '<div class="formgrid" style="grid-template-columns:repeat(auto-fit,minmax(140px,1fr))">' +
+      '<div class="field"><label>Active Month</label>' +
+        '<select onchange="changeMonthYear(' + curY + ', this.value)">' + mOpts + '</select></div>' +
+      '<div class="field"><label>Active Year (Up to 2035)</label>' +
+        '<select onchange="changeMonthYear(this.value, ' + curM + ')">' + yOpts + '</select></div>' +
+      '<div class="field"><label>Team Target (₹ Lakhs)</label>' +
+        '<input type="number" min="0" value="' + state.teamTarget + '" onchange="setConfig(\'teamTarget\',this.value)"></div>' +
+      '<div class="field"><label>Working Days (' + MONTH_NAMES[getMonth()-1] + ')</label>' +
+        '<input type="number" min="1" max="' + totalDays + '" value="' + state.workingDays + '" onchange="setConfig(\'workingDays\',this.value)"></div>' +
+      '<div class="field"><label>Report Date (Any Future Date)</label>' +
+        '<input type="date" min="2024-01-01" max="2035-12-31" value="' + state.asOf + '" onchange="setDate(this.value)"></div>' +
+    '</div>' +
+    '<div class="note" style="margin-top:12px">SO-wise targets total <b>₹' + fmt(s.target) + ' L</b>. ' +
+      'Team target is <b>₹' + fmt(state.teamTarget) + ' L</b>. ' +
+      'Unallocated difference <b>₹' + fmt(Math.max(0, num(state.teamTarget) - s.target)) + ' L</b>.</div>' +
+  '</div>' +
+  '<div class="panel"><h2>👥 SO Management</h2>' +
+    '<div class="scroll"><table><thead><tr>' +
+      '<th>SO Name</th><th>Emp Code</th><th>Cluster</th><th>Target ₹L</th><th>Action</th>' +
+    '</tr></thead><tbody>' +
+    state.people.map(p =>
+      '<tr>' +
+        '<td><input value="' + esc(p.name) + '" onchange="editPerson(\'' + p.id + '\',\'name\',this.value)"></td>' +
+        '<td><input value="' + esc(p.code || '') + '" onchange="editPerson(\'' + p.id + '\',\'code\',this.value)"></td>' +
+        '<td><input value="' + esc(p.cluster) + '" onchange="editPerson(\'' + p.id + '\',\'cluster\',this.value)"></td>' +
+        '<td><input type="number" min="0" value="' + p.target + '" onchange="editPerson(\'' + p.id + '\',\'target\',this.value)"></td>' +
+        '<td><button class="btn danger" onclick="removeSO(\'' + p.id + '\')">Delete</button></td>' +
+      '</tr>').join('') +
+    '</tbody></table></div>' +
+    '<div class="actions"><button class="btn gold" onclick="addSO()">+ Add SO</button></div>' +
+  '</div>';
+}
+
+/* ================= VIEW: BACKUP ================= */
+function viewBackup(){
+  return '<div class="panel"><h2>💾 Backup & Restore</h2>' +
+    '<p class="statline">Auto-save runs in this browser. Download a JSON file to preserve daily entries, ' +
+      'SO controls, morning commitments, insurance data and manual MTD adjustments.</p>' +
+    '<div class="actions">' +
+      '<button class="btn gold" onclick="exportJSON()">⬇ Export JSON Backup</button>' +
+      '<button class="btn light" onclick="document.getElementById(\'fileImport\').click()">⬆ Restore JSON Backup</button>' +
+      '<button class="btn light" onclick="exportCSV()">⬇ Export Daily CSV</button>' +
+      '<button class="btn danger" onclick="resetAll()">Reset All Data</button>' +
+    '</div>' +
+    '<div class="note" style="margin-top:12px">Restore replaces current browser data. JSON is the full-fidelity backup; ' +
+      'CSV is a flattened reporting view and cannot restore settings. Data does not sync across devices.</div>' +
+  '</div>';
+}
+
+/* ================= VIEW: HISTORY ================= */
+function viewHistory(){
+  const h = state.history || [];
+  return '<div class="panel"><h2>🧾 Change History</h2>' +
+    '<div class="note">Records changes made in this browser. Older edits made before this build cannot be reconstructed.</div>' +
+    '<div class="actions">' +
+      '<button class="btn light" onclick="downloadHistoryCsv()">⬇ Export History CSV</button>' +
+      '<button class="btn danger" onclick="clearHistory()">Clear History</button>' +
+    '</div>' +
+    (h.length
+      ? '<div class="scroll"><table><thead><tr><th>Time</th><th>Action</th><th>Details</th></tr></thead><tbody>' +
+        h.slice().reverse().map(x =>
+          '<tr><td>' + esc(x.time) + '</td><td>' + esc(x.action) + '</td><td>' + esc(x.detail) + '</td></tr>').join('') +
+        '</tbody></table></div>'
+      : '<p class="muted">No changes recorded yet.</p>') +
+  '</div>';
+}
+
+/* ================= EXPORTS ================= */
+function csvCell(v){ return '"' + String(v ?? '').replace(/"/g,'""') + '"'; }
+function downloadRows(name, records){
+  download(name, '\ufeff' + records.map(r => r.map(csvCell).join(',')).join('\r\n'), 'text/csv;charset=utf-8');
+}
+function download(name, content, type){
+  const a = document.createElement('a');
+  const url = URL.createObjectURL(new Blob([content], {type: type}));
+  a.href = url;
+  a.download = name;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 2000);
+}
+function exportJSON(){
+  download('Rajasthan_GL_Backup_' + getYearMonth() + '.json', JSON.stringify(state, null, 2), 'application/json');
+  toast('Backup downloaded');
+}
+function exportCSV(){
+  const records = [[
+    'Date','SO','Employee Code','Cluster','Target (Lakhs)',
+    'FTD Cases','FTD Disbursement (Lakhs)',
+    'Commitment Cases','Commitment Amount (Lakhs)',
+    'MTD Cases','MTD Disbursement (Lakhs)',
+    'Manual MTD Recon Cases','Manual MTD Recon Lakhs'
+  ]];
+  const totalDays = getDaysInMonth();
+  for (let i = 1; i <= totalDays; i++){
+    const date = dayKey(i);
+    state.people.forEach(p => {
+      const d = entry(p.id, date);
+      const c = commitEntry(p.id, date);
+      const m = calc(p);
+      records.push([
+        date, p.name, p.code, p.cluster, p.target,
+        d.cases, d.amount, c.cases, c.amount,
+        date === state.asOf ? m.mtdC : '',
+        date === state.asOf ? m.mtdL : '',
+        p.baseC, p.baseL
+      ]);
+    });
+  }
+  downloadRows('Rajasthan_GL_Daily_' + getYearMonth() + '.csv', records);
+  toast('CSV exported');
+}
+function downloadHistoryCsv(){
+  downloadRows('Rajasthan_Change_History.csv',
+    [['Time','Action','Details'], ...(state.history || []).map(x => [x.time, x.action, x.detail])]);
+  toast('History exported');
+}
+function downloadInsuranceCsv(){
+  downloadRows('Rajasthan_Insurance_' + getYearMonth() + '.csv',
+    [['SO','Cluster','Premium Target','FTD Premium','FTD Policies','MTD Premium','MTD Policies','Achievement %','Balance'],
+      ...insuranceRows().map(p => [
+        p.name, p.cluster, INS_TGT,
+        p.insFtdPremium, p.insFtdPolicies,
+        p.insMtdPremium, p.insMtdPolicies,
+        p.insPct.toFixed(2), p.insGap
+      ])]);
+  toast('Insurance CSV exported');
+}
+
+/* ================= ATTENDANCE EXPORTS ================= */
+function downloadAttendanceDetailed(){
+  const todayDay = Number(state.asOf.slice(-2));
+  const ym = getYearMonth();
+  const records = [[
+    'Date','SO','Employee Code','Cluster','Attendance',
+    'GL Amount (L)','GL Cases','Insurance Premium (₹)','Insurance Policies'
+  ]];
+  for (let i = 1; i <= todayDay; i++){
+    const date = dayKey(i, ym);
+    state.people.forEach(p => {
+      const st = attendanceFor(p.id, date);
+      const gl = entry(p.id, date);
+      const ins = insEntry(p.id, date);
+      records.push([
+        date, p.name, p.code, p.cluster,
+        st === 'P' ? 'PRESENT' : (st === 'H' ? 'HOLIDAY' : 'ABSENT'),
+        gl.amount, gl.cases,
+        ins.premium, ins.policies
+      ]);
+    });
+  }
+  downloadRows('Rajasthan_Attendance_Detailed_' + state.asOf + '.csv', records);
+  toast('Detailed attendance CSV downloaded');
+}
+
+function downloadAttendanceSummary(){
+  const records = [[
+    'SO','Employee Code','Cluster','Present Days','Absent Days','Holidays/Off','Total Working Days',
+    'Attendance %','GL MTD (L)','GL Cases MTD','Insurance MTD (₹)'
+  ]];
+  state.people.forEach(p => {
+    const s = attendanceSummary(p.id);
+    const cp = calc(p);
+    const ip = insCalc(p);
+    records.push([
+      p.name, p.code, p.cluster,
+      s.present, s.absent, s.holidays, s.total,
+      s.pct.toFixed(1),
+      cp.mtdL, cp.mtdC,
+      ip.insMtdPremium
+    ]);
+  });
+  downloadRows('Rajasthan_Attendance_Summary_' + state.asOf + '.csv', records);
+  toast('Monthly summary CSV downloaded');
+}
+
+function copyAttendanceWhatsApp(){
+  const today = state.asOf;
+  const dateStr = today.split('-').reverse().join('-');
+  const tAtt = todayAttendance();
+  const mAtt = teamAttendance();
+  const ym = getYearMonth();
+  const totalDays = getDaysInMonth(ym);
+
+  let txt = '📋 *RAJASTHAN ATTENDANCE REPORT*\n';
+  txt += '📅 *Report Date: ' + dateStr + '* (' + MONTH_NAMES[getMonth()-1] + ' ' + getYear() + ')\n';
+  txt += '━━━━━━━━━━━━━━━━━━━━━\n\n';
+  txt += '*TEAM SUMMARY*\n';
+  txt += '👥 Total SO: ' + state.people.length + '\n';
+  txt += '✅ Present Today: ' + tAtt.present + '\n';
+  txt += '❌ Absent Today: ' + tAtt.absent + '\n';
+  txt += '🏖️ Holiday/Off Today: ' + tAtt.holidays + '\n';
+  txt += '📊 Today Rate: ' + fmt(tAtt.pct,1) + '%\n';
+  txt += '📈 MTD Attendance: ' + fmt(mAtt.pct,1) + '% (' + mAtt.present + 'P / ' + mAtt.absent + 'A)\n\n';
+  txt += '━━━━━━━━━━━━━━━━━━━━━\n';
+  txt += '*SO-WISE DAILY ATTENDANCE*\n\n';
+
+  state.people.forEach((p, i) => {
+    const st = attendanceFor(p.id, today);
+    const gl = entry(p.id, today);
+    const ins = insEntry(p.id, today);
+    const sum = attendanceSummary(p.id);
+    const statusIcon = st === 'P' ? '✅' : (st === 'H' ? '🏖️' : '❌');
+    const statusText = st === 'P' ? 'PRESENT' : (st === 'H' ? 'HOLIDAY' : 'ABSENT');
+    let daily = '';
+    for (let d = 1; d <= totalDays; d++){
+      const date = dayKey(d, ym);
+      if (date > today) break;
+      const s = attendanceFor(p.id, date);
+      daily += d + (s === 'P' ? '✓' : (s === 'H' ? 'H' : '✗')) + ' ';
+    }
+    txt += (i+1) + '. *' + p.name + '* (' + p.cluster + ')\n';
+    txt += '   ' + statusIcon + ' Status: *' + statusText + '*\n';
+    txt += '   GL: ₹' + fmt(gl.amount) + ' L (' + gl.cases + ' cases) | Ins: ₹' + fmt(ins.premium,0) + '\n';
+    txt += '   Daily: ' + daily.trim() + '\n';
+    txt += '   Monthly: ' + sum.present + 'P / ' + sum.absent + 'A (' + fmt(sum.pct,1) + '%)\n\n';
+  });
+
+  txt += '━━━━━━━━━━━━━━━━━━━━━\n';
+  txt += 'Generated from GL Command Center';
+
+  fallbackCopy(txt);
+}
+
+function copyInsuranceWhatsApp(){
+  const z = insSums();
+  const t = '🛡️ *RAJASTHAN INSURANCE CROSS SELL REPORT*\n📅 ' + state.asOf +
+    '\n🎯 Target per SO: ₹15,000' +
+    '\n🎯 Team Target: ₹' + fmt(z.target,0) +
+    '\n⚡ FTD Premium: ₹' + fmt(z.ftdPremium,0) + ' (' + z.ftdPolicies + ' Policies)' +
+    '\n🚀 MTD Premium: ₹' + fmt(z.mtdPremium,0) + ' (' + z.mtdPolicies + ' Policies)' +
+    '\n📉 Balance: ₹' + fmt(z.gap,0) + '\n\n' +
+    insuranceRows().sort((a,b) => b.insMtdPremium - a.insMtdPremium).map((p,i) =>
+      (i+1) + '. *' + p.name + '* — Target ₹15,000 | FTD ₹' + fmt(p.insFtdPremium,0) +
+      ' (' + p.insFtdPolicies + ') | MTD ₹' + fmt(p.insMtdPremium,0) +
+      ' (' + p.insMtdPolicies + ') | ' + fmt(p.insPct,1) + '% | Gap ₹' + fmt(p.insGap,0)
+    ).join('\n');
+  fallbackCopy(t);
+}
+
+/* ================= RENDER ================= */
+const TABS = [
+  ['overview',    '📊 Overview'],
+  ['heatmap',     '🔥 Heatmap'],
+  ['broadcast',   '📢 WhatsApp Broadcast'],
+  ['audit',       '🧾 Audit Trail'],
+  ['loans',       '📝 Loan Punching'],
+  ['bankmis',     '📊 Bank MIS'],
+  ['recon',       '📂 MIS Auto-Recon'],
+  ['tracker',     '⚡ SO Tracker'],
+  ['deepdive',    '🔍 Deep Dive'],
+  ['projection',  '🔮 Projection'],
+  ['leaderboard', '🏆 Leaderboard'],
+  ['clusters',    '🏢 Clusters'],
+  ['calendar',    '📅 Calendar'],
+  ['attendance',  '📋 Attendance'],
+  ['alerts',      '🚨 Alerts'],
+  ['reports',     '📲 Reports'],
+  ['insurance',   '🛡️ Insurance'],
+  ['controls',    '⚙️ Controls'],
+  ['backup',      '💾 Backup'],
+  ['history',     '🧾 History']
 ];
-const VIEWS = { overview: viewOverview, tracker: viewTracker, loans: viewLoans, heatmap: viewHeatmap, support: viewSupport };
-​function render(){
-showKpis();
-$('tabs').innerHTML = TABS.map(t => '<button class="tab ' + (tab === t[0] ? 'active' : '') + '" onclick="setTab(\'' + t[0] + '\')">' + t[1] + '</button>').join('');
-$('view').innerHTML = (VIEWS[tab] || viewOverview)();
+
+const VIEWS = {
+  overview: viewOverview,
+  heatmap: viewHeatmap,
+  broadcast: viewBroadcast,
+  audit: viewAuditTrail,
+  loans: viewLoans,
+  bankmis: viewBankMis,
+  recon: viewRecon,
+  tracker: viewTracker,
+  deepdive: viewDeepDive,
+  projection: viewProjection,
+  leaderboard: viewLeaderboard,
+  clusters: viewClusters,
+  calendar: viewCalendar,
+  attendance: viewAttendance,
+  alerts: viewAlerts,
+  reports: viewReports,
+  insurance: viewInsurance,
+  controls: viewControls,
+  backup: viewBackup,
+  history: viewHistory
+};
+
+function render(){
+  showKpis();
+  $('tabs').innerHTML = TABS.map(t =>
+    '<button class="tab ' + (tab === t[0] ? 'active' : '') + '" onclick="setTab(\'' + t[0] + '\')">' + t[1] + '</button>'
+  ).join('');
+  const fn = VIEWS[tab] || viewOverview;
+  $('view').innerHTML = fn();
 }
-​applyTheme();
+
+/* ================= FILE IMPORT ================= */
+document.getElementById('fileImport').addEventListener('change', async e => {
+  const f = e.target.files && e.target.files[0];
+  if (!f) return;
+  try {
+    const v = JSON.parse(await f.text());
+    if (!Array.isArray(v.people) || !v.daily || !v.commitments || !validDay(v.asOf)) {
+      throw new Error('Invalid GL Command Center backup file');
+    }
+    if (!confirm('Restore this backup and replace all current browser data?')) return;
+    state = migrate(v);
+    applyTheme();
+    persist();
+    render();
+    toast('Backup restored successfully');
+  } catch (err){
+    toast('Restore failed: ' + err.message);
+  } finally {
+    e.target.value = '';
+  }
+});
+
+/* ================= BOOT ================= */
+applyTheme();
 persist();
 render();
-window.addEventListener('load', () => startCoinRain(15));
+
+// 30-Second Gold Coin Rain upon page open
+window.addEventListener('load', () => {
+  startCoinRain(30);
+});
+</script>
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js')
+      .then(reg => console.log('Service Worker registered:', reg.scope))
+      .catch(err => console.log('Service Worker registration skipped:', err));
+  });
+}
 </script>
 </body>
 </html>

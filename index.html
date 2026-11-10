@@ -381,7 +381,7 @@ const INITIAL = [
   {id:"16",name:"Rishabh Dadha",             cluster:"Jodhpur",      target:225, code:"200531", baseL:0, baseC:0}
 ];
 
-const KEY     = 'gl_command_center_v13';
+const KEY     = 'gl_command_center_v12';
 const INS_TGT = 15000;
 
 const MONTH_NAMES = [
@@ -1651,33 +1651,9 @@ function clusterBars(){
 }
 
 /* ================= VIEW: TRACKER ================= */
-
-function systemPunchedSummary(soId, ym){
-  ym = ym || getYearMonth();
-  const loans = state.loans || [];
-  const matched = loans.filter(l => l.soId === soId && l.loanDate && l.loanDate.startsWith(ym));
-  const amount = matched.reduce((acc, l) => acc + l.loanAmount, 0);
-  const cases = matched.length;
-  return { amount, cases, count: matched.length };
-}
-
-function teamSystemPunchedSummary(ym){
-  ym = ym || getYearMonth();
-  const loans = state.loans || [];
-  const matched = loans.filter(l => l.loanDate && l.loanDate.startsWith(ym));
-  const amount = matched.reduce((acc, l) => acc + l.loanAmount, 0);
-  const cases = matched.length;
-  return { amount, cases };
-}
-
-
 function viewTracker(){
   const list = filtered();
   const s = sums(list);
-  const ym = getYearMonth();
-  const sysSum = teamSystemPunchedSummary(ym);
-  const varAmt = s.mtdL - sysSum.amount;
-
   const sortSel = '<div class="field" style="max-width:180px;margin-bottom:12px">' +
     '<label>Sort by</label><select onchange="setSort(this.value)">' +
     [['rank','Achievement %'],['mtd','MTD Disbursement'],['ftd','FTD Today'],['gap','Gap to Target'],['name','Name A–Z']]
@@ -1686,36 +1662,32 @@ function viewTracker(){
 
   return toolbar() +
     '<div class="panel">' +
-      '<div class="flex between"><h2>⚡ SO Performance Tracker & System Reconciliation • ' + state.asOf + '</h2>' +
+      '<div class="flex between"><h2>⚡ SO Performance Tracker • ' + state.asOf + '</h2>' +
         '<span class="pill info">' + list.length + ' SO</span></div>' +
-      '<div class="note" style="margin-bottom:12px"><b>Reconciliation Summary (' + MONTH_NAMES[getMonth()-1] + '):</b> Reporting MTD = <b>₹' + fmt(s.mtdL) + ' L</b> | System Punched MIS = <b>₹' + fmt(sysSum.amount) + ' L</b> (' + sysSum.cases + ' cases) | Variance = <b style="color:' + (Math.abs(varAmt)<0.01 ? 'var(--green)' : 'var(--red)') + '">₹' + fmt(varAmt) + ' L</b></div>' +
+      '<div class="note">FTD is editable for the selected date. MTD fields are reconciliation-editable — ' +
+        'direct edits auto-adjust the balance so FTD is never double-counted.</div>' +
       sortSel +
       '<div class="scroll"><table><thead><tr>' +
         '<th>SO / Cluster</th><th>Target ₹L</th><th>FTD Cases</th><th>FTD ₹L</th>' +
-        '<th>Reporting MTD ₹L</th><th>System Punched ₹L</th><th>Variance ₹L</th><th>Ach %</th><th>Gap ₹L</th><th>Req DRR</th><th>Trend</th>' +
+        '<th>MTD Cases</th><th>MTD ₹L</th><th>Ach %</th><th>Gap ₹L</th><th>Req DRR</th><th>Trend</th>' +
       '</tr></thead><tbody>' +
-      list.map(p => {
-        const sysP = systemPunchedSummary(p.id, ym);
-        const diff = p.mtdL - sysP.amount;
-        const diffBadge = Math.abs(diff) < 0.01 ? '<span class="pill good">Match (0)</span>' : '<span class="pill bad">Diff: ₹' + fmt(diff) + 'L</span>';
-        return '<tr>' +
+      list.map(p =>
+        '<tr>' +
           '<td><b>' + esc(p.name) + '</b><div class="muted">' + esc(p.cluster) + '</div></td>' +
           '<td><input type="number" min="0" step="0.01" value="' + p.target + '" onchange="editPerson(\'' + p.id + '\',\'target\',this.value)"></td>' +
           '<td><input type="number" min="0" step="1" value="' + p.ftdC + '" onchange="editDaily(\'' + p.id + '\',\'cases\',this.value)"></td>' +
           '<td><input type="number" min="0" step="0.01" value="' + p.ftdL + '" onchange="editDaily(\'' + p.id + '\',\'amount\',this.value)"></td>' +
-          '<td><b>' + fmt(p.mtdL) + '</b></td>' +
-          '<td><b>₹' + fmt(sysP.amount) + ' L</b><div class="muted">' + sysP.cases + ' cases punched</div></td>' +
-          '<td>' + diffBadge + '</td>' +
+          '<td><input type="number" min="0" step="1" value="' + p.mtdC + '" onchange="editMTD(\'' + p.id + '\',\'cases\',this.value)"></td>' +
+          '<td><input type="number" min="0" step="0.01" value="' + fmt(p.mtdL) + '" onchange="editMTD(\'' + p.id + '\',\'amount\',this.value)"></td>' +
           '<td><b>' + fmt(p.pct,1) + '%</b></td>' +
           '<td>' + fmt(p.gap) + '</td>' +
           '<td>' + fmt(p.reqDRR) + '</td>' +
           '<td>' + sparkline(p.id) + '</td>' +
-        '</tr>';
-      }).join('') +
+        '</tr>'
+      ).join('') +
       '</tbody></table></div>' +
       '<div class="actions">' +
-        '<span class="pill">Filtered total reporting: ₹' + fmt(s.mtdL) + ' L • ' + s.mtdC + ' cases</span>' +
-        '<button class="btn gold" onclick="setTab(\'loans\')">+ Punch Loan in System →</button>' +
+        '<span class="pill">Filtered total: ₹' + fmt(s.mtdL) + ' L • ' + s.mtdC + ' cases</span>' +
         '<button class="btn light" onclick="setTab(\'deepdive\')">SO Deep Dive →</button>' +
       '</div>' +
     '</div>' +
@@ -1737,6 +1709,7 @@ function viewTracker(){
     '</div>';
 }
 
+/* ================= VIEW: DEEP DIVE ================= */
 function viewDeepDive(){
   if (!deepId || !state.people.some(p => p.id === deepId)) deepId = state.people[0] && state.people[0].id;
   const p = rows().find(x => x.id === deepId);

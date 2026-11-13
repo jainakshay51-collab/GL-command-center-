@@ -381,7 +381,7 @@ const INITIAL = [
   {id:"16",name:"Rishabh Dadha",             cluster:"Jodhpur",      target:225, code:"200531", baseL:0, baseC:0}
 ];
 
-const KEY     = 'gl_command_center_v15';
+const KEY     = 'gl_command_center_v17';
 const INS_TGT = 15000;
 
 const MONTH_NAMES = [
@@ -784,15 +784,17 @@ function insEntry(id, date){
 
 function calc(p){
   const today = entry(p.id, state.asOf);
-  let amount = num(p.baseL), cases = num(p.baseC);
+  let dailyAmt = 0, dailyCases = 0;
   const totalDays = getDaysInMonth();
   for (let i = 1; i <= totalDays; i++){
     const date = dayKey(i);
     if (date > state.asOf) break;
     const x = entry(p.id, date);
-    amount += x.amount;
-    cases  += x.cases;
+    dailyAmt += x.amount;
+    dailyCases  += x.cases;
   }
+  const amount = p.manualMtdL !== undefined ? num(p.manualMtdL) : (num(p.baseL) + dailyAmt);
+  const cases = p.manualMtdC !== undefined ? num(p.manualMtdC) : (num(p.baseC) + dailyCases);
   const target = num(p.target);
   const gap = Math.max(0, target - amount);
   const rem = remaining();
@@ -802,6 +804,7 @@ function calc(p){
     reqDRR: rem ? gap / rem : gap, commit: commitEntry(p.id, state.asOf)
   };
 }
+
 function rows(){ return state.people.map(calc); }
 function sums(rs){
   rs = rs || rows();
@@ -1029,17 +1032,16 @@ function editDaily(id, k, v){
 function editMTD(id, k, v){
   const p = state.people.find(x => x.id === id);
   if (!p) return;
-  let total = 0;
-  const totalDays = getDaysInMonth();
-  for (let i = 1; i <= totalDays; i++){
-    const date = dayKey(i);
-    if (date > state.asOf) break;
-    total += num(entry(id, date)[k]);
+  const val = Number(v) || 0;
+  if (k === 'amount') {
+    p.manualMtdL = val;
+  } else {
+    p.manualMtdC = val;
   }
-  p[k === 'cases' ? 'baseC' : 'baseL'] = num(v) - total;
-  pushHistory('MTD adjustment', p.name + ' • ' + k + ' = ' + num(v));
+  pushHistory('MTD adjustment', p.name + ' • ' + k + ' = ' + val);
   persist(); render();
 }
+
 function editCommit(id, k, v){
   state.commitments[state.asOf] = state.commitments[state.asOf] || {};
   state.commitments[state.asOf][id] = state.commitments[state.asOf][id] || { cases:0, amount:0 };

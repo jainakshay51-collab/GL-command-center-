@@ -601,7 +601,7 @@ let coinAnimId = null;
 let coinStopTimer = null;
 let coins = [];
 
-function // startCoinRain(durationSeconds = 30){
+function startCoinRain(durationSeconds = 30){
   const canvas = $('coinCanvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');

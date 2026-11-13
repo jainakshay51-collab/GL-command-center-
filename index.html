@@ -381,7 +381,7 @@ const INITIAL = [
   {id:"16",name:"Rishabh Dadha",             cluster:"Jodhpur",      target:225, code:"200531", baseL:0, baseC:0}
 ];
 
-const KEY     = 'gl_command_center_v17';
+const KEY     = 'gl_command_center_v18';
 const INS_TGT = 15000;
 
 const MONTH_NAMES = [
@@ -769,8 +769,9 @@ function fillSundays(){
 function entry(id, date){
   const d = state.daily[date];
   const r = d && d[id];
-  return r ? { cases: num(r.cases), amount: num(r.amount) } : { cases:0, amount:0 };
+  return r ? { cases: num(r.cases), amount: num(r.amount), btLogins: num(r.btLogins), retailLeads: num(r.retailLeads) } : { cases:0, amount:0, btLogins:0, retailLeads:0 };
 }
+
 function commitEntry(id, date){
   const d = state.commitments[date];
   const r = d && d[id];
@@ -850,10 +851,11 @@ function insSums(rs){
 function attendanceFor(id, date){
   const gl  = entry(id, date);
   const ins = insEntry(id, date);
-  if (gl.amount > 0 || ins.premium > 0) return 'P';
+  if (gl.amount > 0 || ins.premium > 0 || gl.btLogins > 0 || gl.retailLeads > 0) return 'P';
   if (isHoliday(date)) return 'H';
   return 'A';
 }
+
 function attendanceSummary(id){
   let present = 0, absent = 0, holidays = 0;
   const totalDays = getDaysInMonth();
@@ -1692,20 +1694,25 @@ function viewTracker(){
       '<div class="flex between"><h2>⚡ SO Performance Tracker & System Reconciliation • ' + state.asOf + '</h2>' +
         '<span class="pill info">' + list.length + ' SO</span></div>' +
       '<div class="note" style="margin-bottom:12px"><b>Reconciliation Summary (' + MONTH_NAMES[getMonth()-1] + '):</b> Reporting MTD = <b>₹' + fmt(s.mtdL) + ' L</b> | System Punched MIS = <b>₹' + fmt(sysSum.amount) + ' L</b> (' + sysSum.cases + ' cases) | Variance = <b style="color:' + (Math.abs(varAmt)<0.01 ? 'var(--green)' : 'var(--red)') + '">₹' + fmt(varAmt) + ' L</b></div>' +
+      '<div class="note" style="margin-bottom:12px;background:#eef6ff;border-color:#b9d2f5;color:#1e40af">ℹ️ *Attendance Logic:* Present (P) is automatically counted if FTD GL Amount > 0, Insurance Premium > 0, **BT Logins > 0**, or **Retail Leads > 0**.</div>' +
       sortSel +
       '<div class="scroll"><table><thead><tr>' +
         '<th>SO / Cluster</th><th>Target ₹L</th><th>FTD Cases</th><th>FTD ₹L</th>' +
+        '<th>BT Logins</th><th>Retail Leads</th>' +
         '<th>MTD Cases (Edit)</th><th>Reporting MTD ₹L (Edit)</th><th>System Punched ₹L</th><th>Variance ₹L</th><th>Ach %</th><th>Gap ₹L</th><th>Req DRR</th><th>Trend</th>' +
       '</tr></thead><tbody>' +
       list.map(p => {
         const sysP = systemPunchedSummary(p.id, ym);
         const diff = p.mtdL - sysP.amount;
         const diffBadge = Math.abs(diff) < 0.01 ? '<span class="pill good">Match (0)</span>' : '<span class="pill bad">Diff: ₹' + fmt(diff) + 'L</span>';
+        const todayE = entry(p.id, state.asOf);
         return '<tr>' +
           '<td><b>' + esc(p.name) + '</b><div class="muted">' + esc(p.cluster) + '</div></td>' +
           '<td><input type="number" min="0" step="0.01" value="' + p.target + '" onchange="editPerson(\'' + p.id + '\',\'target\',this.value)" title="Edit Target"></td>' +
           '<td><input type="number" min="0" step="1" value="' + p.ftdC + '" onchange="editDaily(\'' + p.id + '\',\'cases\',this.value)" title="Edit FTD Cases"></td>' +
           '<td><input type="number" min="0" step="0.01" value="' + p.ftdL + '" onchange="editDaily(\'' + p.id + '\',\'amount\',this.value)" title="Edit FTD Amount"></td>' +
+          '<td><input type="number" min="0" step="1" value="' + todayE.btLogins + '" onchange="editDaily(\'' + p.id + '\',\'btLogins\',this.value)" title="Edit FTD BT Logins"></td>' +
+          '<td><input type="number" min="0" step="1" value="' + todayE.retailLeads + '" onchange="editDaily(\'' + p.id + '\',\'retailLeads\',this.value)" title="Edit FTD Retail Leads"></td>' +
           '<td><input type="number" min="0" step="1" value="' + p.mtdC + '" onchange="editMTD(\'' + p.id + '\',\'cases\',this.value)" title="Edit MTD Cases"></td>' +
           '<td><input type="number" min="0" step="0.01" value="' + fmt(p.mtdL) + '" onchange="editMTD(\'' + p.id + '\',\'amount\',this.value)" title="Edit Reporting MTD Amount"></td>' +
           '<td><b>₹' + fmt(sysP.amount) + ' L</b><div class="muted">' + sysP.cases + ' cases punched</div></td>' +
@@ -1725,18 +1732,21 @@ function viewTracker(){
     '</div>' +
     '<div class="panel"><h2>📱 Quick Mobile Entry</h2>' +
       '<div class="mobilecards">' +
-      list.map(p =>
-        '<div class="socard">' +
+      list.map(p => {
+        const todayE = entry(p.id, state.asOf);
+        return '<div class="socard">' +
           '<h4>' + esc(p.name) + '</h4>' +
           '<div class="muted">' + esc(p.cluster) + ' • Target ₹' + fmt(p.target) + ' L • ' + fmt(p.pct,1) + '%</div>' +
           '<div class="formgrid" style="margin-top:10px">' +
             '<div class="field"><label>FTD Cases</label><input type="number" min="0" step="1" value="' + p.ftdC + '" onchange="editDaily(\'' + p.id + '\',\'cases\',this.value)"></div>' +
             '<div class="field"><label>FTD ₹L</label><input type="number" min="0" step="0.01" value="' + p.ftdL + '" onchange="editDaily(\'' + p.id + '\',\'amount\',this.value)"></div>' +
+            '<div class="field"><label>BT Logins</label><input type="number" min="0" step="1" value="' + todayE.btLogins + '" onchange="editDaily(\'' + p.id + '\',\'btLogins\',this.value)"></div>' +
+            '<div class="field"><label>Retail Leads</label><input type="number" min="0" step="1" value="' + todayE.retailLeads + '" onchange="editDaily(\'' + p.id + '\',\'retailLeads\',this.value)"></div>' +
             '<div class="field"><label>MTD Cases</label><input type="number" min="0" step="1" value="' + p.mtdC + '" onchange="editMTD(\'' + p.id + '\',\'cases\',this.value)"></div>' +
             '<div class="field"><label>MTD ₹L</label><input type="number" min="0" step="0.01" value="' + fmt(p.mtdL) + '" onchange="editMTD(\'' + p.id + '\',\'amount\',this.value)"></div>' +
           '</div>' +
-        '</div>' +
-      '').join('') +
+        '</div>';
+      }).join('') +
       '</div>' +
     '</div>';
 }

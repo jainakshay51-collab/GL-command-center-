@@ -381,7 +381,7 @@ const INITIAL = [
   {id:"16",name:"Rishabh Dadha",             cluster:"Jodhpur",      target:225, code:"200531", baseL:0, baseC:0}
 ];
 
-const KEY     = 'gl_command_center_v18';
+const KEY     = 'gl_command_center_v19';
 const INS_TGT = 15000;
 
 const MONTH_NAMES = [
@@ -1679,6 +1679,7 @@ function teamSystemPunchedSummary(ym){
 function viewTracker(){
   const list = filtered();
   const s = sums(list);
+  const insList = insuranceRows();
   const ym = getYearMonth();
   const sysSum = teamSystemPunchedSummary(ym);
   const varAmt = s.mtdL - sysSum.amount;
@@ -1699,10 +1700,12 @@ function viewTracker(){
       '<div class="scroll"><table><thead><tr>' +
         '<th>SO / Cluster</th><th>Target ₹L</th><th>FTD Cases</th><th>FTD ₹L</th>' +
         '<th>BT Logins</th><th>Retail Leads</th>' +
+        '<th>Ins FTD Pol</th><th>Ins FTD ₹</th><th>Ins MTD Pol (Edit)</th><th>Ins MTD ₹ (Edit)</th>' +
         '<th>MTD Cases (Edit)</th><th>Reporting MTD ₹L (Edit)</th><th>System Punched ₹L</th><th>Variance ₹L</th><th>Ach %</th><th>Gap ₹L</th><th>Req DRR</th><th>Trend</th>' +
       '</tr></thead><tbody>' +
       list.map(p => {
         const sysP = systemPunchedSummary(p.id, ym);
+        const insP = insList.find(x => x.id === p.id) || { insFtdPolicies:0, insFtdPremium:0, insMtdPolicies:0, insMtdPremium:0 };
         const diff = p.mtdL - sysP.amount;
         const diffBadge = Math.abs(diff) < 0.01 ? '<span class="pill good">Match (0)</span>' : '<span class="pill bad">Diff: ₹' + fmt(diff) + 'L</span>';
         const todayE = entry(p.id, state.asOf);
@@ -1713,6 +1716,10 @@ function viewTracker(){
           '<td><input type="number" min="0" step="0.01" value="' + p.ftdL + '" onchange="editDaily(\'' + p.id + '\',\'amount\',this.value)" title="Edit FTD Amount"></td>' +
           '<td><input type="number" min="0" step="1" value="' + todayE.btLogins + '" onchange="editDaily(\'' + p.id + '\',\'btLogins\',this.value)" title="Edit FTD BT Logins"></td>' +
           '<td><input type="number" min="0" step="1" value="' + todayE.retailLeads + '" onchange="editDaily(\'' + p.id + '\',\'retailLeads\',this.value)" title="Edit FTD Retail Leads"></td>' +
+          '<td><input type="number" min="0" step="1" value="' + insP.insFtdPolicies + '" onchange="editInsuranceDaily(\'' + p.id + '\',\'policies\',this.value)" title="Edit Insurance FTD Policies"></td>' +
+          '<td><input type="number" min="0" step="1" value="' + insP.insFtdPremium + '" onchange="editInsuranceDaily(\'' + p.id + '\',\'premium\',this.value)" title="Edit Insurance FTD Premium"></td>' +
+          '<td><input type="number" min="0" step="1" value="' + insP.insMtdPolicies + '" onchange="editInsuranceMTD(\'' + p.id + '\',\'policies\',this.value)" title="Edit Insurance MTD Policies"></td>' +
+          '<td><input type="number" min="0" step="1" value="' + insP.insMtdPremium + '" onchange="editInsuranceMTD(\'' + p.id + '\',\'premium\',this.value)" title="Edit Insurance MTD Premium"></td>' +
           '<td><input type="number" min="0" step="1" value="' + p.mtdC + '" onchange="editMTD(\'' + p.id + '\',\'cases\',this.value)" title="Edit MTD Cases"></td>' +
           '<td><input type="number" min="0" step="0.01" value="' + fmt(p.mtdL) + '" onchange="editMTD(\'' + p.id + '\',\'amount\',this.value)" title="Edit Reporting MTD Amount"></td>' +
           '<td><b>₹' + fmt(sysP.amount) + ' L</b><div class="muted">' + sysP.cases + ' cases punched</div></td>' +
@@ -1734,6 +1741,7 @@ function viewTracker(){
       '<div class="mobilecards">' +
       list.map(p => {
         const todayE = entry(p.id, state.asOf);
+        const insP = insList.find(x => x.id === p.id) || { insFtdPolicies:0, insFtdPremium:0, insMtdPolicies:0, insMtdPremium:0 };
         return '<div class="socard">' +
           '<h4>' + esc(p.name) + '</h4>' +
           '<div class="muted">' + esc(p.cluster) + ' • Target ₹' + fmt(p.target) + ' L • ' + fmt(p.pct,1) + '%</div>' +
@@ -1742,6 +1750,10 @@ function viewTracker(){
             '<div class="field"><label>FTD ₹L</label><input type="number" min="0" step="0.01" value="' + p.ftdL + '" onchange="editDaily(\'' + p.id + '\',\'amount\',this.value)"></div>' +
             '<div class="field"><label>BT Logins</label><input type="number" min="0" step="1" value="' + todayE.btLogins + '" onchange="editDaily(\'' + p.id + '\',\'btLogins\',this.value)"></div>' +
             '<div class="field"><label>Retail Leads</label><input type="number" min="0" step="1" value="' + todayE.retailLeads + '" onchange="editDaily(\'' + p.id + '\',\'retailLeads\',this.value)"></div>' +
+            '<div class="field"><label>Ins FTD Pol</label><input type="number" min="0" step="1" value="' + insP.insFtdPolicies + '" onchange="editInsuranceDaily(\'' + p.id + '\',\'policies\',this.value)"></div>' +
+            '<div class="field"><label>Ins FTD ₹</label><input type="number" min="0" step="1" value="' + insP.insFtdPremium + '" onchange="editInsuranceDaily(\'' + p.id + '\',\'premium\',this.value)"></div>' +
+            '<div class="field"><label>Ins MTD Pol</label><input type="number" min="0" step="1" value="' + insP.insMtdPolicies + '" onchange="editInsuranceMTD(\'' + p.id + '\',\'policies\',this.value)"></div>' +
+            '<div class="field"><label>Ins MTD ₹</label><input type="number" min="0" step="1" value="' + insP.insMtdPremium + '" onchange="editInsuranceMTD(\'' + p.id + '\',\'premium\',this.value)"></div>' +
             '<div class="field"><label>MTD Cases</label><input type="number" min="0" step="1" value="' + p.mtdC + '" onchange="editMTD(\'' + p.id + '\',\'cases\',this.value)"></div>' +
             '<div class="field"><label>MTD ₹L</label><input type="number" min="0" step="0.01" value="' + fmt(p.mtdL) + '" onchange="editMTD(\'' + p.id + '\',\'amount\',this.value)"></div>' +
           '</div>' +

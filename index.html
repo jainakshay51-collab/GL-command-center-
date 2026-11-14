@@ -401,7 +401,7 @@ const INITIAL = [
   {id:"16",name:"Rishabh Dadha",             cluster:"Jodhpur",      target:225, code:"200531", baseL:0, baseC:0}
 ];
 
-const KEY     = 'gl_command_center_v20';
+const KEY     = 'gl_command_center_v21';
 const INS_TGT = 15000;
 
 const MONTH_NAMES = [
@@ -1674,9 +1674,10 @@ function viewTracker(){
   return toolbar() +
     '<div class="panel">' +
       '<div class="flex between"><h2>⚡ SO Performance Tracker & System Reconciliation • ' + state.asOf + '</h2>' +
-        '<span class="pill info">' + list.length + ' SO</span></div>' +
+        '<div class="flex"><button class="btn gold" onclick="persist();render();toast(\'💾 All Tracker changes saved successfully!\')">💾 Save Tracker Changes</button>' +
+        '<span class="pill info">' + list.length + ' SO</span></div></div>' +
       '<div class="note" style="margin-bottom:12px"><b>Reconciliation Summary (' + MONTH_NAMES[getMonth()-1] + '):</b> Reporting MTD = <b>₹' + fmt(s.mtdL) + ' L</b> | System Punched MIS = <b>₹' + fmt(sysSum.amount) + ' L</b> (' + sysSum.cases + ' cases) | Variance = <b style="color:' + (Math.abs(varAmt)<0.01 ? 'var(--green)' : 'var(--red)') + '">₹' + fmt(varAmt) + ' L</b></div>' +
-      '<div class="note" style="margin-bottom:12px;background:#eef6ff;border-color:#b9d2f5;color:#1e40af">ℹ️ *Attendance Logic:* Present (P) is automatically counted if FTD GL Amount > 0, Insurance Premium > 0, **BT Logins > 0**, or **Retail Leads > 0**.</div>' +
+      '<div class="note" style="margin-bottom:12px;background:#eef6ff;border-color:#b9d2f5;color:#1e40af">ℹ️ *Fully Editable:* Every cell in this table auto-saves instantly on change. Use the Save button above to force backup.</div>' +
       sortSel +
       '<div class="scroll"><table><thead><tr>' +
         '<th>SO / Cluster</th><th>Target ₹L</th><th>FTD Cases</th><th>FTD ₹L</th>' +
@@ -1714,32 +1715,9 @@ function viewTracker(){
       '</tbody></table></div>' +
       '<div class="actions">' +
         '<span class="pill">Filtered total reporting: ₹' + fmt(s.mtdL) + ' L • ' + s.mtdC + ' cases</span>' +
+        '<button class="btn gold" onclick="persist();render();toast(\'💾 All Tracker changes saved successfully!\')">💾 Save Tracker Changes</button>' +
         '<button class="btn gold" onclick="setTab(\'loans\')">+ Punch Loan in System →</button>' +
         '<button class="btn light" onclick="setTab(\'deepdive\')">SO Deep Dive →</button>' +
-      '</div>' +
-    '</div>' +
-    '<div class="panel"><h2>📱 Quick Mobile Entry</h2>' +
-      '<div class="mobilecards">' +
-      list.map(p => {
-        const todayE = entry(p.id, state.asOf);
-        const insP = insList.find(x => x.id === p.id) || { insFtdPolicies:0, insFtdPremium:0, insMtdPolicies:0, insMtdPremium:0 };
-        return '<div class="socard">' +
-          '<h4>' + esc(p.name) + '</h4>' +
-          '<div class="muted">' + esc(p.cluster) + ' • Target ₹' + fmt(p.target) + ' L • ' + fmt(p.pct,1) + '%</div>' +
-          '<div class="formgrid" style="margin-top:10px">' +
-            '<div class="field"><label>FTD Cases</label><input type="number" min="0" step="1" value="' + p.ftdC + '" onchange="editDaily(\'' + p.id + '\',\'cases\',this.value)"></div>' +
-            '<div class="field"><label>FTD ₹L</label><input type="number" min="0" step="0.01" value="' + p.ftdL + '" onchange="editDaily(\'' + p.id + '\',\'amount\',this.value)"></div>' +
-            '<div class="field"><label>BT Logins</label><input type="number" min="0" step="1" value="' + todayE.btLogins + '" onchange="editDaily(\'' + p.id + '\',\'btLogins\',this.value)"></div>' +
-            '<div class="field"><label>Retail Leads</label><input type="number" min="0" step="1" value="' + todayE.retailLeads + '" onchange="editDaily(\'' + p.id + '\',\'retailLeads\',this.value)"></div>' +
-            '<div class="field"><label>Ins FTD Pol</label><input type="number" min="0" step="1" value="' + insP.insFtdPolicies + '" onchange="editInsuranceDaily(\'' + p.id + '\',\'policies\',this.value)"></div>' +
-            '<div class="field"><label>Ins FTD ₹</label><input type="number" min="0" step="1" value="' + insP.insFtdPremium + '" onchange="editInsuranceDaily(\'' + p.id + '\',\'premium\',this.value)"></div>' +
-            '<div class="field"><label>Ins MTD Pol</label><input type="number" min="0" step="1" value="' + insP.insMtdPolicies + '" onchange="editInsuranceMTD(\'' + p.id + '\',\'policies\',this.value)"></div>' +
-            '<div class="field"><label>Ins MTD ₹</label><input type="number" min="0" step="1" value="' + insP.insMtdPremium + '" onchange="editInsuranceMTD(\'' + p.id + '\',\'premium\',this.value)"></div>' +
-            '<div class="field"><label>MTD Cases</label><input type="number" min="0" step="1" value="' + p.mtdC + '" onchange="editMTD(\'' + p.id + '\',\'cases\',this.value)"></div>' +
-            '<div class="field"><label>MTD ₹L</label><input type="number" min="0" step="0.01" value="' + fmt(p.mtdL) + '" onchange="editMTD(\'' + p.id + '\',\'amount\',this.value)"></div>' +
-          '</div>' +
-        '</div>';
-      }).join('') +
       '</div>' +
     '</div>';
 }

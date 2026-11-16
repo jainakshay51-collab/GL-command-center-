@@ -500,7 +500,7 @@ function freshState(){
 
 function migrate(s){
   s.version = 6;
-  s.asOf = validDay(s.asOf) && s.asOf.startsWith('2026-11') ? s.asOf : '2026-11-16';
+  s.asOf = '2026-11-16';
   s.theme = s.theme || 'navy';
   s.workingDays = num(s.workingDays) || 17;
   s.teamTarget  = num(s.teamTarget)  || 2300;

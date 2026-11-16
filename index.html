@@ -1214,6 +1214,8 @@ function showKpis(){
     subtitle.textContent = curMonthName + ' ' + getYear() + ' • SO-wise Performance Intelligence';
   }
 
+    const drrVal = remaining() ? Math.max(0, target - s.mtdL) / remaining() : Math.max(0, target - s.mtdL);
+
   const cards = [
     { t:'Team Target',        v: cr(target),                s: '₹' + fmt(target,0) + ' L',            c:'gold',  i:'🎯' },
     { t:'MTD Disbursement',   v: '₹' + fmt(s.mtdL) + ' L',  s: s.mtdC + ' cases',                     c:'green', i:'🚀' },
@@ -1221,7 +1223,7 @@ function showKpis(){
     { t:'Insurance FTD/MTD',  v: '₹' + fmt(iz.mtdPremium,0), s: 'FTD: ₹' + fmt(iz.ftdPremium,0) + ' • ' + iz.mtdPolicies + ' policies', c:'gold', i:'🛡️' },
     { t:'Achievement',        v: fmt(ach,1) + '%',          s: 'Expected pace ' + fmt(pace,1) + '%',  c:'gold',  i:'📊' },
     { t:'Balance Gap',        v: cr(gap),                   s: '₹' + fmt(gap) + ' L remaining',       c:'red',   i:'📉' },
-    { t:'Required DRR',       v: '₹' + fmt(remaining() ? gap/remaining() : gap) + ' L', s: remaining() + ' working days left', c:'blue', i:'⏱' },
+    { t:'Required DRR',       v: '₹' + fmt(drrVal) + ' L',  s: '(Team Target - MTD) ÷ ' + remaining() + ' days left', c:'blue',   i:'⏱' },
     { t:'Projected Close',    v: cr(proj),                  s: proj >= target ? 'On track' : 'Short by ' + cr(target - proj), c: proj >= target ? 'green' : 'red', i:'🔮' },
     { t:'Attendance Today',   v: att.present + '/' + (att.present + att.absent), s: fmt(att.pct,1) + '% present' + (att.holidays ? ' (' + att.holidays + ' on Off)' : ''), c:'green', i:'📋' }
   ];

@@ -401,7 +401,7 @@ const INITIAL = [
   {id:"16",name:"Rishabh Dadha",             cluster:"Jodhpur",      target:225, code:"200531", baseL:0, baseC:0}
 ];
 
-const KEY     = 'gl_command_center_v23_AI';
+const KEY     = 'gl_command_center_v24_LeaveHD';
 const INS_TGT = 15000;
 
 const MONTH_NAMES = [
@@ -829,7 +829,11 @@ function insSums(rs){
 }
 
 /* ================= ATTENDANCE (AUTO) ================= */
+
 function attendanceFor(id, date){
+  if (state.manualAttendance && state.manualAttendance[date] && state.manualAttendance[date][id]){
+    return state.manualAttendance[date][id];
+  }
   const gl  = entry(id, date);
   const ins = insEntry(id, date);
   if (gl.amount > 0 || ins.premium > 0 || gl.btLogins > 0 || gl.retailLeads > 0) return 'P';
@@ -837,47 +841,69 @@ function attendanceFor(id, date){
   return 'A';
 }
 
+function setManualAttendance(id, date, statusVal){
+  state.manualAttendance = state.manualAttendance || {};
+  state.manualAttendance[date] = state.manualAttendance[date] || {};
+  if (!statusVal || statusVal === 'Auto'){
+    delete state.manualAttendance[date][id];
+    toast('Attendance reset to auto');
+  } else {
+    state.manualAttendance[date][id] = statusVal;
+    toast('Attendance set to ' + statusVal + ' for ' + date);
+  }
+  pushHistory('Manual Attendance', 'SO ID ' + id + ' on ' + date + ' = ' + (statusVal || 'Auto'));
+  persist(); render();
+}
+
 function attendanceSummary(id){
-  let present = 0, absent = 0, holidays = 0;
+  let present = 0, absent = 0, holidays = 0, halfDays = 0, leaves = 0;
   const totalDays = getDaysInMonth();
   for (let i = 1; i <= totalDays; i++){
     const date = dayKey(i);
     if (date > state.asOf) break;
     const st = attendanceFor(id, date);
     if (st === 'P') present++;
+    else if (st === 'HD') { present += 0.5; halfDays++; }
+    else if (st === 'L') leaves++;
     else if (st === 'H') holidays++;
     else absent++;
   }
-  const workingDaysElapsed = present + absent;
+  const workingDaysElapsed = present + absent + halfDays + leaves;
   return {
-    present, absent, holidays, total: workingDaysElapsed,
-    pct: workingDaysElapsed ? 100 * present / workingDaysElapsed : (present ? 100 : 0)
+    present, absent, holidays, halfDays, leaves, total: workingDaysElapsed,
+    pct: workingDaysElapsed ? 100 * (present + 0.5 * halfDays) / workingDaysElapsed : (present ? 100 : 0)
   };
 }
+
 function teamAttendance(){
-  let present = 0, absent = 0, holidays = 0;
+  let present = 0, absent = 0, holidays = 0, halfDays = 0, leaves = 0;
   state.people.forEach(p => {
     const s = attendanceSummary(p.id);
     present += s.present;
     absent  += s.absent;
     holidays += s.holidays;
+    halfDays += s.halfDays;
+    leaves += s.leaves;
   });
-  const total = present + absent;
-  return { present, absent, holidays, total, pct: total ? 100 * present / total : 0 };
+  const total = present + absent + halfDays + leaves;
+  return { present, absent, holidays, halfDays, leaves, total, pct: total ? 100 * present / total : 0 };
 }
+
 function todayAttendance(){
-  let present = 0, absent = 0, holidays = 0;
+  let present = 0, absent = 0, holidays = 0, halfDays = 0, leaves = 0;
   state.people.forEach(p => {
     const st = attendanceFor(p.id, state.asOf);
     if (st === 'P') present++;
+    else if (st === 'HD') halfDays++;
+    else if (st === 'L') leaves++;
     else if (st === 'H') holidays++;
     else absent++;
   });
-  const total = present + absent;
-  return { present, absent, holidays, total, pct: total ? 100 * present / total : (present ? 100 : 0) };
+  const total = present + absent + halfDays + leaves;
+  return { present, absent, holidays, halfDays, leaves, total, pct: total ? 100 * present / (total || 1) : 0 };
 }
 
-/* ================= TIME HELPERS ================= */
+
 function elapsed(){
   const curDay = Number(state.asOf.slice(-2));
   let d = 0;
@@ -2065,9 +2091,11 @@ function viewAttendance(){
     const isHol = isHoliday(dayKey(i, ym));
     head += '<th class="att-head" style="' + (isHol ? 'color:#b45309;background:#fff6e5;' : '') + '">' + i + (isHol ? 'H' : '') + '</th>';
   }
-  head += '<th style="text-align:center;min-width:34px">P</th>' +
-          '<th style="text-align:center;min-width:34px">A</th>' +
-          '<th style="text-align:center;min-width:34px">H</th>' +
+  head += '<th style="text-align:center;min-width:30px">P</th>' +
+          '<th style="text-align:center;min-width:30px">A</th>' +
+          '<th style="text-align:center;min-width:30px">HD</th>' +
+          '<th style="text-align:center;min-width:30px">L</th>' +
+          '<th style="text-align:center;min-width:30px">H</th>' +
           '<th style="text-align:center;min-width:48px">%</th>';
 
   let body = '';
@@ -2077,71 +2105,30 @@ function viewAttendance(){
     for (let i = 1; i <= todayDay; i++){
       const d = dayKey(i, ym);
       const st = attendanceFor(p.id, d);
-      cells += '<td class="att-' + (st === 'P' ? 'p' : (st === 'H' ? 'h' : 'a')) + '">' + st + '</td>';
+      const cls = st === 'P' ? 'att-p' : (st === 'HD' ? 'att-h' : (st === 'L' || st === 'A' ? 'att-a' : 'att-h'));
+      cells += '<td class="' + cls + '" title="' + d + ': ' + st + '">' + st + '</td>';
     }
     body += '<tr>' +
       '<td><b>' + esc(p.name) + '</b><div class="muted">' + esc(p.cluster) + '</div></td>' +
       cells +
       '<td style="text-align:center"><b style="color:var(--green)">' + sum.present + '</b></td>' +
       '<td style="text-align:center"><b style="color:var(--red)">' + sum.absent + '</b></td>' +
+      '<td style="text-align:center"><b style="color:var(--amber)">' + sum.halfDays + '</b></td>' +
+      '<td style="text-align:center"><b style="color:var(--blue)">' + sum.leaves + '</b></td>' +
       '<td style="text-align:center"><b style="color:#b45309">' + sum.holidays + '</b></td>' +
       '<td style="text-align:center"><b>' + fmt(sum.pct,1) + '%</b></td>' +
     '</tr>';
   });
 
-  if (!deepId || !state.people.some(p => p.id === deepId)) deepId = state.people[0] && state.people[0].id;
-  const dp = state.people.find(p => p.id === deepId);
-  let calHTML = '';
-  if (dp){
-    let cal = '';
-    const firstDow = getFirstDayOfWeek(ym);
-    ['S','M','T','W','T','F','S'].forEach(d => cal += '<div class="calhead">' + d + '</div>');
-    for (let i = 0; i < firstDow; i++) cal += '<div class="calcell empty"></div>';
-    for (let d = 1; d <= totalDays; d++){
-      const date = dayKey(d, ym);
-      const future = date > today;
-      const st = future ? null : attendanceFor(dp.id, d);
-      const cls = future ? 'future' : (st === 'P' ? 'att-p' : (st === 'H' ? 'att-h' : 'att-a'));
-      const bg = future ? '' : (st === 'P' ? 'background:#def7eb;' : (st === 'H' ? 'background:#fff8e9;' : 'background:#ffe7ea;'));
-      cal += '<div class="calcell ' + cls + (date === today ? ' today' : '') + '" style="' + bg + '">' +
-        '<b>' + d + '</b><span>' + (future ? '' : st) + '</span></div>';
-    }
-    const ds = attendanceSummary(dp.id);
-    calHTML = '<div class="cal">' + cal + '</div>' +
-      '<div class="att-summary-row" style="margin-top:12px">' +
-        '<div class="att-stat p"><b>' + ds.present + '</b><span>Present</span></div>' +
-        '<div class="att-stat a"><b>' + ds.absent + '</b><span>Absent</span></div>' +
-        '<div class="att-stat h"><b>' + ds.holidays + '</b><span>Holidays/Off</span></div>' +
-      '</div>';
-  }
-
-  let presentList = '', absentList = '', holidayList = '';
-  people.forEach(p => {
-    const st = attendanceFor(p.id, today);
-    const gl = entry(p.id, today);
-    const ins = insEntry(p.id, today);
-    const line = '<div class="listrow">' +
-      '<b>' + esc(p.name) + '</b> <span class="muted">' + esc(p.cluster) + '</span>' +
-      '<div class="muted">GL ₹' + fmt(gl.amount) + ' L (' + gl.cases + ') • Ins ₹' + fmt(ins.premium,0) + '</div>' +
-    '</div>';
-    if (st === 'P') presentList += line;
-    else if (st === 'H') holidayList += line;
-    else absentList += line;
-  });
-
   return '<div class="panel">' +
-    '<h2>📋 Automatic Attendance (' + MONTH_NAMES[getMonth()-1] + ' ' + getYear() + ')</h2>' +
-    '<div class="note">Attendance is calculated automatically. <b>PRESENT (P)</b> when business &gt; 0. ' +
-      '<b>HOLIDAY (H)</b> on official off-days with zero business (not penalizing attendance). <b>ABSENT (A)</b> on working days without business.</div>' +
-    '<div class="att-summary-row" style="margin-top:14px">' +
+    '<h2>📋 Automatic & Manual Attendance (' + MONTH_NAMES[getMonth()-1] + ' ' + getYear() + ')</h2>' +
+    '<div class="note">Attendance is tracked via business activity, BT logins, retail leads, and manual overrides. <b>HD</b> = Half-Day, <b>L</b> = Leave, <b>P</b> = Present, <b>A</b> = Absent.</div>' +
+    '<div class="att-summary-row" style="grid-template-columns:repeat(5,1fr);margin-top:14px">' +
       '<div class="att-stat p"><b>' + tAtt.present + '</b><span>Present Today</span></div>' +
       '<div class="att-stat a"><b>' + tAtt.absent + '</b><span>Absent Today</span></div>' +
-      '<div class="att-stat h"><b>' + tAtt.holidays + '</b><span>On Holiday/Off</span></div>' +
-    '</div>' +
-    '<div class="att-summary-row">' +
-      '<div class="att-stat p"><b>' + mAtt.present + '</b><span>MTD Present</span></div>' +
-      '<div class="att-stat a"><b>' + mAtt.absent + '</b><span>MTD Absent</span></div>' +
-      '<div class="att-stat"><b>' + fmt(mAtt.pct,1) + '%</b><span>Rate</span></div>' +
+      '<div class="att-stat" style="background:#fffbeb;border-color:#fde68a"><b style="color:#d97706">' + tAtt.halfDays + '</b><span>Half-Day</span></div>' +
+      '<div class="att-stat" style="background:#eff6ff;border-color:#bfdbfe"><b style="color:#2563eb">' + tAtt.leaves + '</b><span>On Leave</span></div>' +
+      '<div class="att-stat h"><b>' + tAtt.holidays + '</b><span>Holiday/Off</span></div>' +
     '</div>' +
     '<div class="actions">' +
       '<button class="btn gold" onclick="downloadAttendanceDetailed()">⬇ Detailed CSV</button>' +
@@ -2149,25 +2136,38 @@ function viewAttendance(){
       '<button class="btn" onclick="copyAttendanceWhatsApp()">📲 Copy WhatsApp</button>' +
     '</div>' +
   '</div>' +
+  '<div class="panel"><h2>🛠️ Manual Attendance Override (Date-wise Leave / Half-Day)</h2>' +
+    '<div class="formgrid">' +
+      '<div class="field"><label>Select Date</label><input type="date" id="manualAttDate" value="' + state.asOf + '"></div>' +
+      '<div class="field"><label>Select SO</label><select id="manualAttSoId">' +
+        state.people.map(p => '<option value="' + p.id + '">' + esc(p.name) + ' (' + esc(p.cluster) + ')</option>').join('') +
+      '</select></div>' +
+      '<div class="field"><label>Status</label><select id="manualAttStatus">' +
+        '<option value="Auto">Auto (Default calculation)</option>' +
+        '<option value="P">Present (P)</option>' +
+        '<option value="A">Absent (A)</option>' +
+        '<option value="HD">Half-Day (HD)</option>' +
+        '<option value="L">Leave (L)</option>' +
+        '<option value="H">Holiday (H)</option>' +
+      '</select></div>' +
+      '<div class="field" style="justify-content:flex-end"><label>&nbsp;</label>' +
+        '<button class="btn gold" onclick="applyManualAttendanceFromForm()">Apply Override</button></div>' +
+    '</div>' +
+  '</div>' +
   '<div class="panel"><h2>📅 Monthly Attendance Register</h2>' +
     '<div class="scroll"><table class="att-table"><thead><tr>' + head + '</tr></thead><tbody>' + body + '</tbody></table></div>' +
-    '<div class="muted" style="margin-top:8px">P = Present, A = Absent, H = Holiday. Dates up to the report date are recorded.</div>' +
-  '</div>' +
-  '<div class="panel"><h2>🔍 SO Attendance Calendar</h2>' +
-    '<div class="field" style="max-width:280px;margin-bottom:12px"><label>Select SO</label>' +
-      '<select onchange="deepId=this.value;render()">' +
-      state.people.map(p => '<option value="' + p.id + '" ' + (p.id === deepId ? 'selected' : '') + '>' + esc(p.name) + '</option>').join('') +
-      '</select></div>' +
-    calHTML +
-  '</div>' +
-  '<div class="grid3">' +
-    '<div class="panel"><h2>✅ Present (' + tAtt.present + ')</h2>' + (presentList || '<p class="muted">None</p>') + '</div>' +
-    '<div class="panel"><h2>❌ Absent (' + tAtt.absent + ')</h2>' + (absentList || '<p class="muted">None</p>') + '</div>' +
-    '<div class="panel"><h2>🏖️ Holiday / Off (' + tAtt.holidays + ')</h2>' + (holidayList || '<p class="muted">None</p>') + '</div>' +
+    '<div class="muted" style="margin-top:8px">P = Present, A = Absent, HD = Half-Day, L = Leave, H = Holiday.</div>' +
   '</div>';
 }
 
-/* ================= VIEW: REPORTS ================= */
+function applyManualAttendanceFromForm(){
+  const date = document.getElementById('manualAttDate').value;
+  const soId = document.getElementById('manualAttSoId').value;
+  const status = document.getElementById('manualAttStatus').value;
+  if (!date || !soId) { toast('Select date and SO'); return; }
+  setManualAttendance(soId, date, status);
+}
+
 function reportText(id){
   const rs = id === 'all' ? rows() : rows().filter(p => p.id === id);
   const ins = id === 'all' ? insuranceRows() : insuranceRows().filter(p => p.id === id);

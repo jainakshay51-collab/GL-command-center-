@@ -401,7 +401,7 @@ const INITIAL = [
   {id:"16",name:"Rishabh Dadha",             cluster:"Jodhpur",      target:225, code:"200531", baseL:0, baseC:0}
 ];
 
-const KEY     = 'gl_command_center_v22';
+const KEY     = 'gl_command_center_v23_AI';
 const INS_TGT = 15000;
 
 const MONTH_NAMES = [
@@ -2555,6 +2555,7 @@ function copyInsuranceWhatsApp(){
 
 /* ================= RENDER ================= */
 const TABS = [
+  ['ai', '🤖 AI Hub'],
   ['overview',    '📊 Overview'],
   ['heatmap',     '🔥 Heatmap'],
   ['broadcast',   '📢 WhatsApp Broadcast'],
@@ -2578,6 +2579,7 @@ const TABS = [
 ];
 
 const VIEWS = {
+  ai: viewAIHub,
   overview: viewOverview,
   heatmap: viewHeatmap,
   broadcast: viewBroadcast,
@@ -2630,6 +2632,128 @@ document.getElementById('fileImport').addEventListener('change', async e => {
     e.target.value = '';
   }
 });
+
+
+/* ================= AI INTELLIGENCE HUB & FEATURES ================= */
+function getAIPerformanceInsights(){
+  const rs = rows();
+  const s = sums();
+  const target = num(state.teamTarget);
+  const ach = target ? 100 * s.mtdL / target : 0;
+  const rem = remaining();
+  const reqDrr = rem ? Math.max(0, target - s.mtdL) / rem : 0;
+  
+  let insights = [];
+  
+  if (ach >= 80) {
+    insights.push({t: '🔥 Momentum Alert', c: 'green', m: 'Team is performing exceptionally well with ' + fmt(ach,1) + '% achievement. Maintain current DRR pace of ₹' + fmt(reqDrr,1) + ' L/day to close above target.'});
+  } else if (ach >= 50) {
+    insights.push({t: '⚡ Acceleration Needed', c: 'amber', m: 'Team achievement is at ' + fmt(ach,1) + '%. To bridge the balance gap, daily disbursement must be accelerated by at least 25% across lagging clusters.'});
+  } else {
+    insights.push({t: '🚨 Critical Attention Required', c: 'red', m: 'Current pace is lagging behind team target. Immediate intervention is recommended for SOs with zero MTD disbursement.'});
+  }
+
+  // Top Performer
+  const topSo = rs.slice().sort((a,b) => b.pct - a.pct)[0];
+  if (topSo){
+    insights.push({t: '🏆 Top AI Star', c: 'gold', m: esc(topSo.name) + ' (' + esc(p_cluster(topSo) || topSo.cluster) + ') is leading the pack with ' + fmt(topSo.pct,1) + '% achievement (₹' + fmt(topSo.mtdL) + ' L).'});
+  }
+
+  // Lagging SOs count
+  const zeroSos = rs.filter(p => p.mtdL === 0);
+  if (zeroSos.length > 0){
+    insights.push({t: '⚠️ Risk Factor', c: 'red', m: zeroSos.length + ' Service Officers currently have 0 MTD disbursement. Priority calling recommended.'});
+  }
+
+  return insights;
+}
+
+function p_cluster(p){ return p.cluster; }
+
+function viewAIHub(){
+  const insights = getAIPerformanceInsights();
+  const rs = rows();
+  const s = sums();
+  const target = num(state.teamTarget);
+  const proj = projected();
+  const successProb = clamp(Math.round(100 * proj / Math.max(1, target)), 5, 99);
+
+  return '<div class="panel"><h2>🤖 AI Performance Coach & Intelligence Hub</h2>' +
+    '<div class="note" style="margin-bottom:14px">Powered by advanced local business intelligence heuristics, analyzing team velocity, cluster distribution, and required daily run-rates in real time.</div>' +
+    '<div class="grid3" style="gap:12px;margin-bottom:14px">' +
+      '<div class="kpi gold"><div class="kpi-body"><label>AI Success Probability</label><strong>' + successProb + '%</strong><small>Month-end target hit chance</small></div></div>' +
+      '<div class="kpi green"><div class="kpi-body"><label>AI Recommended DRR</label><strong>₹' + fmt(remaining() ? Math.max(0, target - s.mtdL)/remaining() : 0) + ' L</strong><small>Per working day required</small></div></div>' +
+      '<div class="kpi blue"><div class="kpi-body"><label>AI Risk Index</label><strong>' + rs.filter(p=>p.pct<50).length + ' SOs</strong><small>Underperforming threshold</small></div></div>' +
+    '</div>' +
+  '</div>' +
+  '<div class="panel"><h2>💡 Real-Time AI Strategic Recommendations</h2>' +
+    '<div class="grid2" style="gap:10px">' +
+    insights.map(i =>
+      '<div class="panel" style="margin:0;border-left:4px solid var(--' + i.c + ');background:#fff">' +
+        '<div style="font-weight:850;font-size:13px;margin-bottom:4px">' + i.t + '</div>' +
+        '<div class="muted" style="color:var(--ink);font-size:12px;line-height:1.5">' + i.m + '</div>' +
+      '</div>'
+    ).join('') +
+    '</div>' +
+  '</div>' +
+  '<div class="panel"><h2>💬 AI Smart WhatsApp Broadcast Studio</h2>' +
+    '<div class="note" style="margin-bottom:12px">Select broadcast tone and generate AI-crafted personalized messaging for your team instantly.</div>' +
+    '<div class="formgrid" style="margin-bottom:12px">' +
+      '<div class="field"><label>Select SO</label><select id="aiBroadcastSo">' +
+        state.people.map(p => '<option value="' + p.id + '">' + esc(p.name) + ' (' + esc(p.cluster) + ')</option>').join('') +
+      '</select></div>' +
+      '<div class="field"><label>Broadcast Tone</label><select id="aiBroadcastTone">' +
+        '<option value="motivational">🔥 High Motivational & Energetic</option>' +
+        '<option value="urgent">⚡ Urgent Push & Gap Closer</option>' +
+        '<option value="appreciation">🏆 Celebration & Appreciation</option>' +
+      '</select></div>' +
+    '</div>' +
+    '<div class="actions" style="margin-bottom:12px">' +
+      '<button class="btn gold" onclick="generateAIBroadcastMessage()">🤖 Generate AI Message</button>' +
+      '<button class="btn" onclick="window.open(\'https://wa.me/?text=\' + encodeURIComponent($(\'aiBroadcastText\').value), \'_blank\')">📲 Send via WhatsApp</button>' +
+    '</div>' +
+    '<textarea id="aiBroadcastText" readonly placeholder="Click generate to create AI message..."></textarea>' +
+  '</div>';
+}
+
+function generateAIBroadcastMessage(){
+  const soId = $('aiBroadcastSo').value;
+  const tone = $('aiBroadcastTone').value;
+  const p = rows().find(x => x.id === soId);
+  if (!p) return;
+
+  let msg = '';
+  if (tone === 'motivational'){
+    msg = '🌟 *MANIPAL FINTECH — SALES POWER-UP* 🌟\n\n' +
+      'Dear *' + p.name + '* (' + p.cluster + '),\n' +
+      'Your potential is limitless! Here is your current milestone status for ' + MONTH_NAMES[getMonth()-1] + ':\n\n' +
+      '🎯 Target: ₹' + fmt(p.target) + ' L\n' +
+      '🚀 Achieved MTD: ₹' + fmt(p.mtdL) + ' L (' + p.mtdC + ' cases)\n' +
+      '📊 Achievement: *' + fmt(p.pct,1) + '%*\n' +
+      '📉 Remaining Gap: ₹' + fmt(p.gap) + ' L\n\n' +
+      '💪 Let\'s crush today\'s targets and set new benchmarks!\n_— Regional Head Sales, Rajasthan_';
+  } else if (tone === 'urgent'){
+    msg = '⚡ *URGENT PERFORMANCE ACCELERATION* ⚡\n\n' +
+      'Dear *' + p.name + '* (' + p.cluster + '),\n' +
+      'Time is of the essence! We need an immediate push to bridge your balance gap:\n\n' +
+      '🎯 Target: ₹' + fmt(p.target) + ' L\n' +
+      '🚀 MTD Achieved: ₹' + fmt(p.mtdL) + ' L\n' +
+      '📉 Balance Gap: *₹' + fmt(p.gap) + ' L*\n' +
+      '⏱️ Required DRR: ₹' + fmt(p.reqDRR) + ' L/day\n\n' +
+      '🔥 Focus on high-value gold loan logins today and close strong!\n_— Regional Head Sales, Rajasthan_';
+  } else {
+    msg = '🏆 *OUTSTANDING PERFORMANCE APPRECIATION* 🏆\n\n' +
+      'Dear *' + p.name + '* (' + p.cluster + '),\n' +
+      'Kudos on your fantastic execution and winning momentum this month!\n\n' +
+      '🚀 MTD Disbursed: ₹' + fmt(p.mtdL) + ' L (' + p.mtdC + ' cases)\n' +
+      '📊 Achievement: *' + fmt(p.pct,1) + '%*\n\n' +
+      '⭐ Thank you for leading by example. Keep soaring higher!\n_— Regional Head Sales, Rajasthan_';
+  }
+
+  $('aiBroadcastText').value = msg;
+  toast('🤖 AI broadcast message generated successfully');
+}
+
 
 /* ================= BOOT ================= */
 applyTheme();

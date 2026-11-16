@@ -524,7 +524,7 @@ function migrate(s){
     "2026-11-24": "Guru Nanak Jayanti",
     "2026-11-29": "Sunday"
   };
-  s.people = (s.people || []).map(p => ({...p, target: num(p.target), baseL: num(p.baseL), baseC: num(p.baseC)}));
+  s.people = (s.people || []).map(p => ({...p, target: num(p.target), baseL: num(p.baseL), baseC: num(p.baseC), status: p.status || 'Active'}));
   return s;
 }
 
@@ -1732,7 +1732,7 @@ function viewTracker(){
           '<td><input type="number" min="0" step="1" value="' + insP.insMtdPremium + '" onchange="editInsuranceMTD(\'' + p.id + '\',\'premium\',this.value)" title="Edit Insurance MTD Premium"></td>' +
           '<td><input type="number" min="0" step="1" value="' + p.mtdC + '" onchange="editMTD(\'' + p.id + '\',\'cases\',this.value)" title="Edit MTD Cases"></td>' +
           '<td><input type="number" min="0" step="0.01" value="' + fmt(p.mtdL) + '" onchange="editMTD(\'' + p.id + '\',\'amount\',this.value)" title="Edit Reporting MTD Amount"></td>' +
-          '<td><b>₹' + fmt(sysP.amount) + ' L</b><div class="muted">' + sysP.cases + ' cases punched</div></td>' +
+          '<td style="cursor:pointer;background:#f8fbff" onclick="openSoLoanCasesModal(' + p.id + ')" title="Click to view case-wise loan details"><b>₹' + fmt(sysP.amount) + ' L</b><div class="muted" style="color:var(--blue);font-weight:750">' + sysP.cases + ' cases (View 🔍)</div></td>' +
           '<td>' + diffBadge + '</td>' +
           '<td><b>' + fmt(p.pct,1) + '%</b></td>' +
           '<td>' + fmt(p.gap) + '</td>' +
@@ -2330,9 +2330,9 @@ function viewControls(){
       'Team target is <b>₹' + fmt(state.teamTarget) + ' L</b>. ' +
       'Unallocated difference <b>₹' + fmt(Math.max(0, num(state.teamTarget) - s.target)) + ' L</b>.</div>' +
   '</div>' +
-  '<div class="panel"><h2>👥 SO Management</h2>' +
+  '<div class="panel"><h2>👥 SO Management (Active / Exit Status)</h2>' +
     '<div class="scroll"><table><thead><tr>' +
-      '<th>SO Name</th><th>Emp Code</th><th>Cluster</th><th>Target ₹L</th><th>Action</th>' +
+      '<th>SO Name</th><th>Emp Code</th><th>Cluster</th><th>Target ₹L</th><th>Status</th><th>Action</th>' +
     '</tr></thead><tbody>' +
     state.people.map(p =>
       '<tr>' +
@@ -2340,6 +2340,7 @@ function viewControls(){
         '<td><input value="' + esc(p.code || '') + '" onchange="editPerson(\'' + p.id + '\',\'code\',this.value)"></td>' +
         '<td><input value="' + esc(p.cluster) + '" onchange="editPerson(\'' + p.id + '\',\'cluster\',this.value)"></td>' +
         '<td><input type="number" min="0" value="' + p.target + '" onchange="editPerson(\'' + p.id + '\',\'target\',this.value)"></td>' +
+        '<td><select onchange="editPerson(\'' + p.id + '\',\'status\',this.value)"><option value="Active" ' + (p.status !== 'Exit' ? 'selected' : '') + '>Active</option><option value="Exit" ' + (p.status === 'Exit' ? 'selected' : '') + '>Exit</option></select></td>' +
         '<td><button class="btn danger" onclick="removeSO(\'' + p.id + '\')">Delete</button></td>' +
       '</tr>').join('') +
     '</tbody></table></div>' +
@@ -2347,7 +2348,6 @@ function viewControls(){
   '</div>';
 }
 
-/* ================= VIEW: BACKUP ================= */
 function viewBackup(){
   return '<div class="panel"><h2>💾 Backup & Restore</h2>' +
     '<p class="statline">Auto-save runs in this browser. Download a JSON file to preserve daily entries, ' +

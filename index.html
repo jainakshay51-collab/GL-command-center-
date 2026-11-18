@@ -2558,6 +2558,9 @@ function copyInsuranceWhatsApp(){
 /* ================= RENDER ================= */
 const TABS = [
   ['ai', '🤖 AI Hub'],
+  ['executive',   '📑 Executive Report'],
+  ['simulator',   '🎯 Simulator'],
+  ['checkins',    '📍 Field Check-Ins'],
   ['overview',    '📊 Overview'],
   ['heatmap',     '🔥 Heatmap'],
   ['broadcast',   '📢 WhatsApp Broadcast'],
@@ -2582,6 +2585,9 @@ const TABS = [
 
 const VIEWS = {
   ai: viewAIHub,
+  executive: viewExecutiveSummary,
+  simulator: viewSimulator,
+  checkins: viewFieldCheckIns,
   overview: viewOverview,
   heatmap: viewHeatmap,
   broadcast: viewBroadcast,
@@ -2754,6 +2760,130 @@ function generateAIBroadcastMessage(){
 
   $('aiBroadcastText').value = msg;
   toast('🤖 AI broadcast message generated successfully');
+}
+
+
+
+/* ================= CREATIVE NEW FEATURES (v30) ================= */
+
+// 1. Gamification Badges Logic
+function getSoBadges(p, ins){
+  let badges = [];
+  if (p.pct >= 100) badges.push({n: '🌟 Century Striker', d: 'Hit >=100% Target'});
+  else if (p.pct >= 75) badges.push({n: '🔵 On Track', d: '75-99% Achievement'});
+  
+  if (p.ftdL >= 15) badges.push({n: '⚡ FTD Rocket', d: 'High daily disbursal'});
+  if (ins && ins.insMtdPremium >= 15000) badges.push({n: '🛡️ Insurance Champion', d: 'Hit insurance target'});
+  if (p.mtdL === 0) badges.push({n: '⚠️ Needs Push', d: '0 MTD disbursement'});
+  return badges;
+}
+
+// 2. Field Activity / Check-In Log
+function addFieldCheckIn(form){
+  const soId = form.checkInSoId.value;
+  const clientName = form.checkInClient.value.trim();
+  const location = form.checkInLoc.value.trim();
+  const notes = form.checkInNotes.value.trim();
+  if (!soId || !clientName || !location){ toast('Fill required check-in fields'); return; }
+  
+  state.checkIns = state.checkIns || [];
+  state.checkIns.push({
+    id: 'ci_' + Date.now(),
+    date: state.asOf,
+    soId,
+    clientName,
+    location,
+    notes
+  });
+  pushHistory('Field Check-In', 'SO ID ' + soId + ' visited ' + clientName + ' at ' + location);
+  persist(); render();
+  toast('Field check-in recorded successfully');
+  form.reset();
+}
+
+function viewFieldCheckIns(){
+  state.checkIns = state.checkIns || [];
+  return '<div class="panel"><h2>📍 Field Activity & Check-In Log</h2>' +
+    '<div class="note" style="margin-bottom:12px">Log field visits and client meetings across clusters (Udaipur, Jodhpur, Jaipur, Ajmer, Bikaner, etc.).</div>' +
+    '<form onsubmit="event.preventDefault(); addFieldCheckIn(this);" class="formgrid">' +
+      '<div class="field"><label>Select SO</label><select name="checkInSoId" required>' +
+        '<option value="">Select Service Officer</option>' +
+        state.people.map(p => '<option value="' + p.id + '">' + esc(p.name) + ' (' + esc(p.cluster) + ')</option>').join('') +
+      '</select></div>' +
+      '<div class="field"><label>Client / Dealer Name</label><input type="text" name="checkInClient" placeholder="e.g. Shri Ram Jewellers" required></div>' +
+      '<div class="field"><label>Location / Area</label><input type="text" name="checkInLoc" placeholder="e.g. Pratap Nagar, Udaipur" required></div>' +
+      '<div class="field" style="grid-column:span 2"><label>Visit Notes / Outcome</label><input type="text" name="checkInNotes" placeholder="Discussed gold loan renewal & file login"></div>' +
+    '</form>' +
+    '<div class="actions" style="margin-top:10px">' +
+      '<button class="btn gold" onclick="addFieldCheckIn(this.form)">+ Log Field Visit</button>' +
+    '</div>' +
+  '</div>' +
+  '<div class="panel"><h2>📋 Field Check-In Ledger (' + state.asOf + ')</h2>' +
+    '<div class="scroll"><table><thead><tr><th>Date</th><th>SO Name</th><th>Cluster</th><th>Client Name</th><th>Location</th><th>Notes</th></tr></thead><tbody>' +
+    (state.checkIns.length ? state.checkIns.slice().reverse().map(ci => {
+      const p = state.people.find(x => x.id === ci.soId);
+      return '<tr><td>' + ci.date + '</td><td><b>' + esc(p ? p.name : 'Unknown') + '</b></td><td>' + esc(p ? p.cluster : '') + '</td><td>' + esc(ci.clientName) + '</td><td>' + esc(ci.location) + '</td><td class="muted">' + esc(ci.notes) + '</td></tr>';
+    }).join('') : '<tr><td colspan="6" class="muted center">No field check-ins recorded yet.</td></tr>') +
+    '</tbody></table></div>' +
+  '</div>';
+}
+
+// 3. "What-If" Scenario Simulator
+function viewSimulator(){
+  state.simParams = state.simParams || { dailyRunRate: 25, extraDays: remaining() };
+  const s = sums();
+  const target = num(state.teamTarget);
+  const drr = num(state.simParams.dailyRunRate);
+  const days = num(state.simParams.extraDays);
+  const simTotal = s.mtdL + (drr * days);
+  const simAch = target ? (100 * simTotal / target) : 0;
+  const simGap = Math.max(0, target - simTotal);
+
+  return '<div class="panel"><h2>🎯 What-If Scenario Simulator & Forecasting</h2>' +
+    '<div class="note" style="margin-bottom:12px">Simulate future disbursement velocity. Adjust daily run-rate and working days to preview month-end closing position instantly.</div>' +
+    '<div class="formgrid">' +
+      '<div class="field"><label>Simulated Daily Run-Rate (₹L / day)</label>' +
+        '<input type="number" min="0" step="1" value="' + drr + '" oninput="state.simParams.dailyRunRate=num(this.value);render()"></div>' +
+      '<div class="field"><label>Remaining Days to Simulate</label>' +
+        '<input type="number" min="0" max="31" step="1" value="' + days + '" oninput="state.simParams.extraDays=num(this.value);render()"></div>' +
+    '</div>' +
+    '<div class="grid3" style="margin-top:14px">' +
+      '<div class="kpi gold"><div class="kpi-body"><label>Simulated Month-End</label><strong>₹' + fmt(simTotal) + ' L</strong><small>' + cr(simTotal) + '</small></div></div>' +
+      '<div class="kpi green"><div class="kpi-body"><label>Simulated Achievement</label><strong>' + fmt(simAch,1) + '%</strong><small>' + (simAch >= 100 ? 'Target Hit! 🏆' : 'Keep Pushing') + '</small></div></div>' +
+      '<div class="kpi red"><div class="kpi-body"><label>Simulated Balance Gap</label><strong>₹' + fmt(simGap) + ' L</strong><small>' + cr(simGap) + '</small></div></div>' +
+    '</div>' +
+  '</div>';
+}
+
+// 4. Executive Summary View
+function viewExecutiveSummary(){
+  const s = sums();
+  const target = num(state.teamTarget);
+  const ach = target ? (100 * s.mtdL / target) : 0;
+  const ins = insSums();
+  const att = teamAttendance();
+  const rs = rows().sort((a,b) => b.pct - a.pct);
+
+  return '<div class="panel"><h2>📑 Executive Summary & Board Report</h2>' +
+    '<div class="note" style="margin-bottom:12px">One-click executive briefing document summarizing regional performance across Rajasthan. Ready for printing or PDF export.</div>' +
+    '<div class="actions" style="margin-bottom:14px">' +
+      '<button class="btn gold" onclick="window.print()">🖨️ Print / Save as PDF</button>' +
+    '</div>' +
+    '<div style="background:#fff;border:1px solid var(--line);border-radius:12px;padding:20px;color:var(--ink)">' +
+      '<div class="flex between"><div><h3 style="margin:0">MANIPAL FINTECH — RAJASTHAN REGION</h3><div class="muted">Monthly Business Intelligence & Performance Report • ' + MONTH_NAMES[getMonth()-1] + ' ' + getYear() + '</div></div>' +
+      '<span class="pill good">Status: LIVE</span></div>' +
+      '<hr style="border:0;border-top:1px solid var(--line);margin:14px 0">' +
+      '<div class="grid3" style="margin-bottom:14px">' +
+        '<div><label class="muted">Team Target</label><div style="font-size:18px;font-weight:850">' + cr(target) + '</div></div>' +
+        '<div><label class="muted">MTD Disbursement</label><div style="font-size:18px;font-weight:850;color:var(--green)">₹' + fmt(s.mtdL) + ' L</div></div>' +
+        '<div><label class="muted">Achievement</label><div style="font-size:18px;font-weight:850;color:var(--blue)">' + fmt(ach,1) + '%</div></div>' +
+      '</div>' +
+      '<h4>Cluster-wise Performance Breakdown</h4>' +
+      '<div class="scroll"><table><thead><tr><th>Cluster</th><th>Target ₹L</th><th>MTD ₹L</th><th>Ach %</th></tr></thead><tbody>' +
+      clusters().map(c => '<tr><td><b>' + esc(c.cluster) + '</b></td><td>' + fmt(c.target) + '</td><td><b>₹' + fmt(c.mtdL) + ' L</b></td><td><b>' + fmt(pct(c.mtdL, c.target),1) + '%</b></td></tr>').join('') +
+      '</tbody></table></div>' +
+    '</div>' +
+  '</div>';
 }
 
 

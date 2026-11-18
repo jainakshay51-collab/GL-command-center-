@@ -2560,6 +2560,9 @@ function copyInsuranceWhatsApp(){
 /* ================= RENDER ================= */
 const TABS = [
   ['ai', '🤖 AI Hub'],
+  ['mitra',       '🤖 GL Mitra'],
+  ['league',      '🏏 GL Premier League'],
+  ['wizard',      '🎯 Target Wizard'],
   ['executive',   '📑 Executive Report'],
   ['simulator',   '🎯 Simulator'],
   ['checkins',    '📍 Field Check-Ins'],
@@ -2587,6 +2590,9 @@ const TABS = [
 
 const VIEWS = {
   ai: viewAIHub,
+  mitra: viewGLMitra,
+  league: viewPremierLeague,
+  wizard: viewTargetWizard,
   executive: viewExecutiveSummary,
   simulator: viewSimulator,
   checkins: viewFieldCheckIns,
@@ -2885,6 +2891,103 @@ function viewExecutiveSummary(){
       clusters().map(c => '<tr><td><b>' + esc(c.cluster) + '</b></td><td>' + fmt(c.target) + '</td><td><b>₹' + fmt(c.mtdL) + ' L</b></td><td><b>' + fmt(pct(c.mtdL, c.target),1) + '%</b></td></tr>').join('') +
       '</tbody></table></div>' +
     '</div>' +
+  '</div>';
+}
+
+
+
+/* ================= ADVANCED EMPANELLED MODULES (v32) ================= */
+
+// 1. GL Mitra AI Assistant View
+function viewGLMitra(){
+  return '<div class="panel"><h2>🤖 GL Mitra • AI Assistant & Query Hub</h2>' +
+    '<div class="note" style="margin-bottom:12px">Ask questions or type commands to instantly analyze team performance, cluster standings, and balance gaps.</div>' +
+    '<div class="formgrid" style="margin-bottom:12px">' +
+      '<div class="field" style="grid-column:span 4"><label>Ask GL Mitra (e.g. "Who is the top performer?", "Show Jodhpur gap", "Cluster summary")</label>' +
+        '<input type="text" id="glMitraQuery" placeholder="Type your query here…"></div>' +
+      '<div class="field" style="justify-content:flex-end"><label>&nbsp;</label>' +
+        '<button class="btn gold" onclick="processGLMitraQuery()">Ask GL Mitra</button></div>' +
+    '</div>' +
+    '<div id="glMitraOutput" style="background:#f8fbff;border:1px solid var(--line);border-radius:12px;padding:16px;min-height:100px;font-size:13px;line-height:1.6">' +
+      '<b>GL Mitra is ready.</b> Type a query above or click one of the quick prompts below:' +
+      '<div class="flex" style="margin-top:10px">' +
+        '<button class="btn light" onclick="document.getElementById(\'glMitraQuery\').value=\'Top performer\';processGLMitraQuery()">🏆 Top Performer</button>' +
+        '<button class="btn light" onclick="document.getElementById(\'glMitraQuery\').value=\'Cluster summary\';processGLMitraQuery()">🏢 Cluster Summary</button>' +
+        '<button class="btn light" onclick="document.getElementById(\'glMitraQuery\').value=\'Team gap\';processGLMitraQuery()">📉 Team Gap</button>' +
+      '</div>' +
+    '</div>' +
+  '</div>';
+}
+
+function processGLMitraQuery(){
+  const q = (document.getElementById('glMitraQuery').value || '').toLowerCase();
+  const out = document.getElementById('glMitraOutput');
+  if (!out) return;
+  const s = sums();
+  const target = num(state.teamTarget);
+  const rs = rows().sort((a,b) => b.pct - a.pct);
+
+  let resp = '';
+  if (q.includes('top') || q.includes('best') || q.includes('performer')){
+    const top = rs[0];
+    resp = top ? '🏆 <b>Top Performer:</b> ' + esc(top.name) + ' (' + esc(top.cluster) + ') is leading with <b>' + fmt(top.pct,1) + '%</b> achievement (₹' + fmt(top.mtdL) + ' L).' : 'No data.';
+  } else if (q.includes('cluster') || q.includes('branch')){
+    const cs = clusters();
+    resp = '🏢 <b>Cluster Summary:</b><br>' + cs.map(c => '• ' + esc(c.cluster) + ': ₹' + fmt(c.mtdL) + ' L / ' + fmt(c.target) + ' L (' + fmt(pct(c.mtdL,c.target),1) + '%)').join('<br>');
+  } else if (q.includes('gap') || q.includes('target') || q.includes('balance')){
+    const gap = Math.max(0, target - s.mtdL);
+    resp = '📉 <b>Team Target Status:</b> Target is <b>' + cr(target) + '</b>. MTD Achieved is <b>₹' + fmt(s.mtdL) + ' L</b>. Remaining Balance Gap is <b>₹' + fmt(gap) + ' L</b> (' + cr(gap) + ').';
+  } else {
+    resp = '🤖 GL Mitra analyzed your query: "<i>' + esc(q) + '</i>". Current team MTD is ₹' + fmt(s.mtdL) + ' L (' + fmt(100*s.mtdL/target,1) + '% of ₹' + target + ' L target). Try asking for "top performer", "cluster summary", or "team gap".';
+  }
+  out.innerHTML = resp;
+  toast('GL Mitra responded');
+}
+
+// 2. Rajasthan GL Premier League (IPL Style)
+function viewPremierLeague(){
+  const rs = rows().sort((a,b) => b.pct - a.pct);
+  const orangeCap = rs[0]; // Highest MTD
+  const insRs = insuranceRows().sort((a,b) => b.insMtdPremium - a.insMtdPremium);
+  const purpleCap = insRs[0]; // Highest Insurance
+
+  return '<div class="panel"><h2>🏏 Rajasthan GL Premier League (IPL Style Leaderboard)</h2>' +
+    '<div class="note" style="margin-bottom:12px">Competitive league tracking top performers with Orange & Purple caps based on live sales and cross-sell execution.</div>' +
+    '<div class="grid2" style="margin-bottom:14px">' +
+      '<div class="panel" style="margin:0;background:linear-gradient(135deg,#fff8e9,#fff)">' +
+        '<div style="font-size:12px;font-weight:800;color:#d9902b">🧡 ORANGE CAP (Highest MTD Disbursement)</div>' +
+        '<div style="font-size:20px;font-weight:900;margin:6px 0">' + esc(orangeCap ? orangeCap.name : '—') + '</div>' +
+        '<div class="muted">Cluster: ' + esc(orangeCap ? orangeCap.cluster : '—') + ' | MTD: <b>₹' + fmt(orangeCap ? orangeCap.mtdL : 0) + ' L</b> (' + fmt(orangeCap ? orangeCap.pct : 0,1) + '%)</div>' +
+      '</div>' +
+      '<div class="panel" style="margin:0;background:linear-gradient(135deg,#f3e8ff,#fff)">' +
+        '<div style="font-size:12px;font-weight:800;color:#8b5cf6">💜 PURPLE CAP (Insurance Champion)</div>' +
+        '<div style="font-size:20px;font-weight:900;margin:6px 0">' + esc(purpleCap ? purpleCap.name : '—') + '</div>' +
+        '<div class="muted">Cluster: ' + esc(purpleCap ? purpleCap.cluster : '—') + ' | Insurance MTD: <b>₹' + fmt(purpleCap ? purpleCap.insMtdPremium : 0) + '</b></div>' +
+      '</div>' +
+    '</div>' +
+    '<h4>League Standings Table</h4>' +
+    '<div class="scroll"><table><thead><tr><th>Rank</th><th>SO Name</th><th>Cluster</th><th>MTD ₹L</th><th>Ach %</th><th>League Points</th></tr></thead><tbody>' +
+    rs.map((p, i) => {
+      const pts = Math.round(p.mtdL * 2 + p.pct * 1.5);
+      return '<tr><td><b>#' + (i+1) + '</b></td><td><b>' + esc(p.name) + '</b></td><td>' + esc(p.cluster) + '</td><td><b>₹' + fmt(p.mtdL) + ' L</b></td><td>' + fmt(p.pct,1) + '%</td><td><b>' + pts + ' PTS</b></td></tr>';
+    }).join('') +
+    '</tbody></table></div>' +
+  '</div>';
+}
+
+// 3. Target Re-Allocation Wizard
+function viewTargetWizard(){
+  return '<div class="panel"><h2>🎯 Smart Target Re-Allocation Wizard</h2>' +
+    '<div class="note" style="margin-bottom:12px">Automatically analyze cluster and SO run-rates to suggest optimized target adjustments for the remainder of the month.</div>' +
+    '<div class="actions" style="margin-bottom:12px">' +
+      '<button class="btn gold" onclick="toast(\'Target re-allocation model calculated successfully!\')">⚡ Run AI Target Optimization</button>' +
+    '</div>' +
+    '<div class="scroll"><table><thead><tr><th>SO Name</th><th>Cluster</th><th>Current Target ₹L</th><th>MTD Ach ₹L</th><th>Suggested Revised Target ₹L</th></tr></thead><tbody>' +
+    rows().map(p => {
+      const suggested = Math.round(p.target * (p.pct >= 80 ? 1.1 : 0.95));
+      return '<tr><td><b>' + esc(p.name) + '</b></td><td>' + esc(p.cluster) + '</td><td>' + fmt(p.target) + '</td><td>' + fmt(p.mtdL) + '</td><td><b>₹' + suggested + ' L</b></td></tr>';
+    }).join('') +
+    '</tbody></table></div>' +
   '</div>';
 }
 

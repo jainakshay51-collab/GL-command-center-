@@ -466,7 +466,8 @@ function toast(msg){
 
 /* ================= STATE ================= */
 function freshState(){
-  const todayStr = new Date().toISOString().slice(0,10);
+  const _fn = new Date();
+  const todayStr = _fn.getFullYear() + '-' + String(_fn.getMonth() + 1).padStart(2, '0') + '-' + String(_fn.getDate()).padStart(2, '0');
   return {
     version: 6,
     asOf: todayStr,
@@ -502,7 +503,9 @@ function freshState(){
 
 function migrate(s){
   s.version = 6;
-  s.asOf = '2026-11-16';
+  const _now = new Date();
+  const _todayLocal = _now.getFullYear() + '-' + String(_now.getMonth() + 1).padStart(2, '0') + '-' + String(_now.getDate()).padStart(2, '0');
+  s.asOf = _todayLocal;
   s.theme = s.theme || 'navy';
   s.workingDays = num(s.workingDays) || 17;
   s.teamTarget  = num(s.teamTarget)  || 2300;
